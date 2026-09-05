@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint Mobile v2</title>
+<title>Audio Vocabulary Sprint Mobile v2.1</title>
 <style>
 :root { --bg:#f6f5f1; --card:#fff; --text:#1d1d1f; --muted:#777; --line:#ddd; }
 *{box-sizing:border-box}
@@ -108,7 +108,7 @@ button.action{
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">Mobile v2 · 只听声音 → PASS / AGAIN</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">Mobile v2.1 · 只听声音 → PASS / AGAIN</div></div>
  <div class="stats"><span id="mastered">0</span> mastered<br><span id="active">0</span> active · <span id="unseen">0</span> unseen</div>
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
@@ -133,6 +133,7 @@ button.action{
    <button class="small" id="export">导出进度</button>
    <label class="small" style="cursor:pointer">导入进度<input id="importFile" type="file" accept=".json,application/json" style="display:none"></label>
    <label class="small" style="cursor:pointer">导入新词表<input id="importWordsFile" type="file" accept=".txt,text/plain" style="display:none"></label>
+   <button class="small" id="syncBtn">☁️ 同步</button>
    <button class="small" id="reset">重置全部</button>
   </div>
  </div>
