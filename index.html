@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint v3.1</title>
+<title>Audio Vocabulary Sprint v3.2</title>
 <style>
 :root { --bg:#f6f5f1; --card:#fff; --text:#1d1d1f; --muted:#777; --line:#ddd; }
 *{box-sizing:border-box}
@@ -195,12 +195,24 @@ main{
   }
 }
 
+
+@media(min-width:760px){
+  .controls{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .controls > :nth-child(1){grid-column:1 / span 3}
+  .controls > :nth-child(2){grid-column:4 / span 3}
+  .controls > :nth-child(3){grid-column:7 / span 3}
+  .controls > :nth-child(4){grid-column:10 / span 3}
+  .controls > :nth-child(5){grid-column:3 / span 3}
+  .controls > :nth-child(6){grid-column:6 / span 3}
+  .controls > :nth-child(7){grid-column:9 / span 3}
+}
+
 </style>
 </head>
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.1 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.2 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
  <div class="stats"><span id="mastered">0</span> mastered<br><span id="active">0</span> active · <span id="unseen">0</span> unseen</div>
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
@@ -226,7 +238,7 @@ main{
    
    <label class="small" style="cursor:pointer">导入新词表<input id="importWordsFile" type="file" accept=".txt,text/plain" style="display:none"></label>
    <button class="small" id="syncBtn">☁️ 同步</button>
-   <button class="small" id="reset">重置全部</button>
+   <button class="small" id="reset">重置本机</button>
   </div>
  </div>
 </section>
@@ -415,8 +427,24 @@ document.getElementById("voice").onclick=()=>{
  speakCurrent();
 };
 document.getElementById("info").onclick=()=>{
- let debt=Object.entries(state.debts).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,20);
- document.getElementById("panel").innerHTML='<h2>规则</h2><p>第一次 PASS：直接清零。第一次 AGAIN：error debt = 1。以后 AGAIN +1，PASS −1；debt 到 0 后永久退出词池。</p><p>AGAIN 的词会至少隔一段词后再出现，避免靠刚刚形成的短时记忆。</p><h2>当前钉子户</h2><ol>'+debt.map(x=>'<li>'+escapeHtml(x[0])+' — debt '+x[1]+'</li>').join('')+'</ol><button class="action" onclick="closePanel()">关闭</button>';
+ const debt=Object.entries(state.debts)
+   .filter(x=>Number(x[1])>0 && !state.mastered[x[0]])
+   .sort((a,b)=>Number(b[1])-Number(a[1]) || a[0].localeCompare(b[0]));
+ const top=debt.slice(0,20);
+ const list=rows=>rows.length
+   ? '<ol>'+rows.map(x=>'<li>'+escapeHtml(x[0])+' — debt '+x[1]+'</li>').join('')+'</ol>'
+   : '<p>暂无钉子户 🎉</p>';
+ document.getElementById("panel").innerHTML=
+   '<h2>规则</h2>'+
+   '<p>第一次 PASS：直接清零。第一次 AGAIN：error debt = 1。以后 AGAIN +1，PASS −1；debt 到 0 后进入 Mastered。</p>'+
+   '<p>AGAIN 的词会至少隔一段词后再出现，避免靠刚刚形成的短时记忆。</p>'+
+   '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入 Mastered 后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
+   '<h2>🔩 当前钉子户 '+debt.length+'</h2>'+
+   list(top)+
+   (debt.length>20
+     ? '<details><summary>查看全部 '+debt.length+' 个</summary>'+list(debt)+'</details>'
+     : '')+
+   '<button class="action" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
 };
 
@@ -471,15 +499,22 @@ document.getElementById("masteredList").onclick=showMastered;
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};
 document.getElementById("reset").onclick=()=>{
- if(confirm("确定清空当前手机端的所有学习进度？清空后会恢复完整基础词表并重新随机洗牌。")){
+ if(confirm("重置本机学习进度？
+
+这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。
+
+重置后如果再上传，会用重置后的空白进度覆盖云端。")){
    localStorage.removeItem(KEY);
    state={debts:{},mastered:{},seen:{},highestDebt:{},current:null,queue:WORDS.slice(),voiceIndex:state.voiceIndex||0};
    shuffle(state.queue);
+   localStorage.setItem("audio_vocab_sprint_just_reset","1");
    save();
    speechSynthesis.cancel();
    revealed=false; started=false;
    document.getElementById("answer").innerHTML="";
-   document.getElementById("hint").textContent="进度已清空并重新洗牌。点击喇叭开始。";
+   document.getElementById("hint").textContent="本机进度已重置。点击喇叭开始。";
+   alert("本机已重置。
+⚠️ 此时上传 GitHub 会覆盖云端进度。");
  }
 };
 
@@ -679,6 +714,9 @@ async function syncUpload(){
     alert("请先在 Token 设置里粘贴并保存 token。");
     return;
   }
+  if(localStorage.getItem("audio_vocab_sprint_just_reset")==="1"){
+    if(!confirm("⚠️ 当前设备刚刚执行过“重置本机”。\n\n继续上传会用重置后的进度覆盖 GitHub 云端 progress.json。\n\n确定继续上传吗？")) return;
+  }
   setSyncStatus("正在上传…");
   try{
     const existing = await githubGetProgress();
@@ -706,6 +744,7 @@ async function syncUpload(){
       try{ detail = (await r.json()).message || ""; }catch(e){}
       throw new Error(`GitHub ${r.status}${detail ? ": "+detail : ""}`);
     }
+    localStorage.removeItem("audio_vocab_sprint_just_reset");
     const now = new Date();
     setSyncStatus("上传成功 · " + now.toLocaleString());
   }catch(e){
@@ -755,6 +794,7 @@ async function syncDownload(){
     }
 
     save();
+    localStorage.removeItem("audio_vocab_sprint_just_reset");
     setSyncStatus("下载成功 · " + new Date().toLocaleString());
     alert("已从 GitHub 下载并覆盖当前设备进度。");
     location.reload();
