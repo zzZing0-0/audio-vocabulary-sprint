@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint v3.2</title>
+<title>Audio Vocabulary Sprint v3.2.1</title>
 <style>
 :root { --bg:#f6f5f1; --card:#fff; --text:#1d1d1f; --muted:#777; --line:#ddd; }
 *{box-sizing:border-box}
@@ -212,7 +212,7 @@ main{
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.2 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.2.1 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
  <div class="stats"><span id="mastered">0</span> mastered<br><span id="active">0</span> active · <span id="unseen">0</span> unseen</div>
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
@@ -499,11 +499,7 @@ document.getElementById("masteredList").onclick=showMastered;
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};
 document.getElementById("reset").onclick=()=>{
- if(confirm("重置本机学习进度？
-
-这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。
-
-重置后如果再上传，会用重置后的空白进度覆盖云端。")){
+ if(confirm("重置本机学习进度？\n\n这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。\n\n重置后如果再上传，会用重置后的空白进度覆盖云端。")){
    localStorage.removeItem(KEY);
    state={debts:{},mastered:{},seen:{},highestDebt:{},current:null,queue:WORDS.slice(),voiceIndex:state.voiceIndex||0};
    shuffle(state.queue);
@@ -513,8 +509,7 @@ document.getElementById("reset").onclick=()=>{
    revealed=false; started=false;
    document.getElementById("answer").innerHTML="";
    document.getElementById("hint").textContent="本机进度已重置。点击喇叭开始。";
-   alert("本机已重置。
-⚠️ 此时上传 GitHub 会覆盖云端进度。");
+   alert("本机已重置。\n⚠️ 此时上传 GitHub 会覆盖云端进度。");
  }
 };
 
