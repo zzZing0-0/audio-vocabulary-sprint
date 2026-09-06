@@ -204,3 +204,10 @@ main{
 .wordNoteWrap label{display:block;font-size:13px;color:#666;margin-bottom:6px}
 .wordNoteInput{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid #d7d7d7;border-radius:10px;background:#fff;font:inherit;color:inherit}
 .wordNoteInput:focus{outline:2px solid rgba(0,0,0,.12);outline-offset:1px}
+
+.syncMeta{
+  margin:4px 0 14px;
+  font-size:13px;
+  color:#777;
+  text-align:center;
+}

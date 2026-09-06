@@ -5,8 +5,30 @@ const SYNC = {
   path: "progress.json",
   branch: "main",
   tokenKey: "audio_vocab_sprint_github_token",
-  backupKey: "audio_vocab_sprint_universal_v3_backup"
+  backupKey: "audio_vocab_sprint_universal_v3_backup",
+  lastSyncAtKey: "audio_vocab_sprint_last_sync_at",
+  lastSyncActionKey: "audio_vocab_sprint_last_sync_action"
 };
+
+
+function updateLastSyncInfo(){
+  const el = document.getElementById("lastSyncInfo");
+  if(!el) return;
+  const iso = localStorage.getItem(SYNC.lastSyncAtKey);
+  const action = localStorage.getItem(SYNC.lastSyncActionKey);
+  if(!iso){
+    el.textContent = "上次同步：尚未同步";
+    return;
+  }
+  const d = new Date(iso);
+  const actionText = action === "upload" ? "上传" : action === "download" ? "下载" : "同步";
+  el.textContent = "上次同步：" + d.toLocaleString() + "（" + actionText + "）";
+}
+function markSyncSuccess(action){
+  localStorage.setItem(SYNC.lastSyncAtKey, new Date().toISOString());
+  localStorage.setItem(SYNC.lastSyncActionKey, action);
+  updateLastSyncInfo();
+}
 
 function getSyncToken(){
   return localStorage.getItem(SYNC.tokenKey) || "";
@@ -85,6 +107,7 @@ async function syncUpload(){
     }
     localStorage.removeItem("audio_vocab_sprint_just_reset");
     const now = new Date();
+    markSyncSuccess("upload");
     setSyncStatus("上传成功 · " + now.toLocaleString());
   }catch(e){
     console.error(e);
@@ -137,6 +160,7 @@ async function syncDownload(){
 
     save();
     localStorage.removeItem("audio_vocab_sprint_just_reset");
+    markSyncSuccess("download");
     setSyncStatus("下载成功 · " + new Date().toLocaleString());
     alert("已从 GitHub 下载并覆盖当前设备进度。");
     location.reload();
@@ -154,6 +178,7 @@ if(syncBtn) syncBtn.onclick = ()=>{
   document.getElementById("syncTokenInput").value = "";
   const deviceName = (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "手机端" : "电脑端";
   setSyncStatus(getSyncToken() ? `${deviceName} Token 已保存，可同步。` : `${deviceName} 尚未保存 Token。`);
+  updateLastSyncInfo();
 };
 const syncClose = document.getElementById("syncClose");
 const syncUploadBtn = document.getElementById("syncUpload");
@@ -173,3 +198,5 @@ document.getElementById("syncClearToken").onclick = ()=>{
   document.getElementById("syncTokenInput").value = "";
   setSyncStatus("Token 已清除。");
 };
+
+updateLastSyncInfo();

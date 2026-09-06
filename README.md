@@ -44,3 +44,8 @@ Reveal now provides four reference links:
 - YouGlish: current word in real YouTube speech contexts
 - PlayPhrase: current word in movie/TV phrase contexts
 The current word is URL-encoded into both context-search links automatically.
+
+## v3.6.1
+- Note placeholder is now generic.
+- Sync modal shows this browser/device's last successful sync time and whether it was an upload or download.
+- The timestamp updates only after a successful GitHub sync.

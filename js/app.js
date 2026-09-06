@@ -36,7 +36,7 @@ function reveal(){
     '</div>'+
     '<div class="wordNoteWrap">'+
       '<label for="wordNoteInput">📝 Note</label>'+
-      '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和 nail 混；重音在第一音节" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
+      '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</div>';
 }
 
