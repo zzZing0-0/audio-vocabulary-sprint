@@ -1,17 +1,25 @@
-# Audio Vocabulary Sprint v3.4
+# Audio Vocabulary Sprint v3.4.1
 
-Structure:
-- `index.html` — page structure only
-- `css/style.css` — styles
+## Structure
+- `index.html` — page structure
+- `css/style.css` — visual styles
 - `data/vocabulary.js` — built-in 3453-word base vocabulary
-- `js/app.js` — learning logic, scheduling, local storage, import, GitHub sync
+- `js/storage.js` — state initialization, migration, localStorage, combined word bank
+- `js/scheduler.js` — PASS / AGAIN, debt, daily eligibility, queue scheduling
+- `js/app.js` — UI, speech, dictionary links, Mastered/Active panels, word-list import
+- `js/github-sync.js` — GitHub progress.json upload/download and token handling
 
-Persistence contract:
-- Existing localStorage key is intentionally unchanged: `audio_vocab_sprint_universal_v3`
-- GitHub `progress.json` remains the learning archive.
-- v3.4 adds `state.customWords` for permanently imported word lists.
-- Older v3.3 saves are migrated automatically with `customWords: []`.
-- Existing `mastered`, `debts`, `seen`, `highestDebt`, `lastReviewedDate`, `queue`, and `voiceIndex` are preserved.
+## Persistence
+- localStorage key remains `audio_vocab_sprint_universal_v3`
+- existing Mastered / debt / seen / peak / review-date data is preserved
+- imported TXT lists are permanently stored in `state.customWords`
+- `state.customWords` syncs with GitHub `progress.json`
+- older saves without `customWords` migrate automatically
 
-Deployment:
-Copy this folder's contents to the repository root, replacing the old single `index.html`.
+## Word-list import
+UTF-8 `.txt`, one word or phrase per line.
+Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive duplicates are ignored.
+
+## Lists
+- Active / 钉子户: Top 10 shown first, remainder collapsed
+- Mastered: Top 10 by historical peak shown first, remainder collapsed

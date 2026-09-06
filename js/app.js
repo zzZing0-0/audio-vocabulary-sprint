@@ -1,90 +1,13 @@
-const BASE_WORDS = window.BASE_WORDS || [];
-
-const KEY="audio_vocab_sprint_universal_v3";
-let state = JSON.parse(localStorage.getItem(KEY)||"null") || {
-  debts:{}, mastered:{}, seen:{}, highestDebt:{}, current:null, queue:[], voiceIndex:0
-};
-// Migrate older saves. Current debt can be recovered; historical peaks from old versions cannot.
-state.debts = state.debts || {};
-state.mastered = state.mastered || {};
-state.seen = state.seen || {};
-state.highestDebt = state.highestDebt || {};
-state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
-state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
-
-function allWords(){
-  const out=[];
-  const keys=new Set();
-  for(const raw of BASE_WORDS.concat(state.customWords)){
-    const w=String(raw||"").trim();
-    const k=w.toLowerCase();
-    if(!w || keys.has(k)) continue;
-    keys.add(k);
-    out.push(w);
-  }
-  return out;
-}
-
-for (const [w,d] of Object.entries(state.debts)) {
-  state.highestDebt[w] = Math.max(state.highestDebt[w]||0, Number(d)||0);
-}
-// A brand-new progress state gets a fresh randomized queue.
-// Existing progress is preserved exactly as saved.
-if (!state.current && (!state.queue || state.queue.length === 0) &&
-    Object.keys(state.seen || {}).length === 0) {
-  state.queue = WORDS.slice();
-  shuffle(state.queue);
-}
 let voices=[], revealed=false, started=false;
 
-function save(){ localStorage.setItem(KEY,JSON.stringify(state)); updateStats(); }
-function shuffle(a){ for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
-function localDateKey(){
-  const d=new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-function activeEligibleToday(w){
-  return (state.debts[w]||0)>0 && !state.mastered[w] && state.lastReviewedDate[w]!==localDateKey();
-}
-function eligible(){
-  return allWords().filter(w=>!state.mastered[w] && (!(state.debts[w]>0) || activeEligibleToday(w)));
-}
-function refill(){
-  let unseen=allWords().filter(w=>!state.seen[w]&&!state.mastered[w]);
-  let debt=allWords().filter(w=>activeEligibleToday(w));
-  shuffle(unseen); shuffle(debt);
-  let q=[], ui=0, di=0;
-  while(ui<unseen.length || di<debt.length){
-    for(let k=0;k<12 && ui<unseen.length;k++) q.push(unseen[ui++]);
-    if(di<debt.length) q.push(debt[di++]);
-  }
-  state.queue=q;
-}
-function popNextEligible(){
-  const today=localDateKey();
-  while(state.queue.length){
-    const w=state.queue.shift();
-    if(state.mastered[w]) continue;
-    if((state.debts[w]||0)>0 && state.lastReviewedDate[w]===today) continue;
-    return w;
-  }
-  return null;
-}
-function next(){
-  speechSynthesis.cancel(); revealed=false;
-  document.getElementById("answer").innerHTML="";
-  if(!state.queue.length) refill();
-  let prev=state.current, guard=0;
-  while(state.queue.length && state.queue[0]===prev && guard++<5) state.queue.push(state.queue.shift());
-  state.current=popNextEligible();
-  if(!state.current){ refill(); state.current=popNextEligible(); }
-  if(!state.current){
-    document.getElementById("answer").innerHTML='<div class="word">🎉 今天可复习的词已完成</div>';
-    save(); return;
-  }
-  state.seen[state.current]=true; save();
-  setTimeout(speakCurrent,120);
-}
+
+
+
+
+
+
+
+
 function selectedVoice(){
   let en=voices.filter(v=>/^en[-_]/i.test(v.lang));
   if(!en.length) return null;
@@ -110,33 +33,9 @@ function reveal(){
     '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
     '</div>';
 }
-function pass(){
-  if(!state.current)return;
-  let w=state.current, d=state.debts[w]||0;
-  if(d<=1){
-    delete state.debts[w];
-    delete state.lastReviewedDate[w];
-    state.mastered[w]=true;
-  }else{
-    state.debts[w]=d-1;
-    state.lastReviewedDate[w]=localDateKey();
-  }
-  revealThenNext("PASS");
-}
-function again(){
-  if(!state.current)return;
-  let w=state.current;
-  state.debts[w]=(state.debts[w]||0)+1;
-  state.highestDebt[w]=Math.max(state.highestDebt[w]||0, state.debts[w]);
-  state.lastReviewedDate[w]=localDateKey();
-  revealThenNext("AGAIN");
-}
-function revealThenNext(kind){
-  reveal(); save();
-  let el=document.getElementById("hint");
-  el.textContent=kind==="PASS"?"✓ PASS":"↻ AGAIN";
-  setTimeout(()=>{el.textContent="听到后只判断：能否立刻想到单词和意思？";next()},950);
-}
+
+
+
 function updateStats(){
  let m=Object.keys(state.mastered).length;
  let a=Object.values(state.debts).filter(x=>x>0).length;
@@ -180,7 +79,7 @@ document.getElementById("info").onclick=()=>{
  const debt=Object.entries(state.debts)
    .filter(x=>Number(x[1])>0 && !state.mastered[x[0]])
    .sort((a,b)=>Number(b[1])-Number(a[1]) || a[0].localeCompare(b[0]));
- const top=debt.slice(0,20);
+ const top=debt.slice(0,10);
  const list=rows=>rows.length
    ? '<ol>'+rows.map(x=>'<li>'+escapeHtml(x[0])+' — debt '+x[1]+'</li>').join('')+'</ol>'
    : '<p>暂无钉子户 🎉</p>';
@@ -192,8 +91,8 @@ document.getElementById("info").onclick=()=>{
    '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p>'+
    '<h2>🔩 当前钉子户 '+debt.length+'</h2>'+
    list(top)+
-   (debt.length>20
-     ? '<details><summary>查看全部 '+debt.length+' 个</summary>'+list(debt)+'</details>'
+   (debt.length>10
+     ? '<details><summary>展开其余 '+(debt.length-10)+' 个</summary>'+list(debt.slice(10))+'</details>'
      : '')+
    '<button class="action" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
@@ -233,10 +132,17 @@ function showMastered(){
   const rows=Object.keys(state.mastered)
     .map(w=>[w,state.highestDebt[w]||0])
     .sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0]));
-  const body = rows.length ? rows.map(([w,d])=>
+  const rowHtml=([w,d])=>
     '<div class="masterRow"><span>'+escapeHtml(w)+'</span><span>peak '+d+'</span>'+
-    '<button class="miniBtn" onclick='+JSON.stringify("reAddWord("+JSON.stringify(w)+")")+'>重新加入</button></div>'
-  ).join('') : '<p>还没有 mastered 单词。</p>';
+    '<button class="miniBtn" onclick='+JSON.stringify("reAddWord("+JSON.stringify(w)+")")+'>重新加入</button></div>';
+  const topRows=rows.slice(0,10);
+  const restRows=rows.slice(10);
+  const body = rows.length
+    ? topRows.map(rowHtml).join('')+
+      (restRows.length
+        ? '<details><summary>展开其余 '+restRows.length+' 个</summary>'+restRows.map(rowHtml).join('')+'</details>'
+        : '')
+    : '<p>还没有 mastered 单词。</p>';
   document.getElementById("panel").innerHTML=
     '<h2>Mastered</h2>'+
     '<p>按历史最高 error debt 降序排列。peak 会永久保留，即使后来清零。</p>'+
@@ -271,7 +177,7 @@ async function exportProgress(){
     app: "Audio Vocabulary Sprint",
     version: 3,
     exportedAt: new Date().toISOString(),
-    totalWords: WORDS.length,
+    totalWords: allWords().length,
     state: state
   };
   const stamp = new Date().toISOString().slice(0,10);
@@ -319,6 +225,8 @@ async function importProgress(file){
       mastered: incoming.mastered || {},
       seen: incoming.seen || {},
       highestDebt: incoming.highestDebt || {},
+      lastReviewedDate: incoming.lastReviewedDate || {},
+      customWords: Array.isArray(incoming.customWords) ? incoming.customWords : [],
       current: incoming.current || null,
       queue: Array.isArray(incoming.queue) ? incoming.queue : [],
       voiceIndex: incoming.voiceIndex || 0
@@ -419,178 +327,3 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
 
 
 updateStats();
-
-// ===== GitHub Sync v2 =====
-const SYNC = {
-  owner: "zzZing0-0",
-  repo: "audio-vocabulary-sprint-data",
-  path: "progress.json",
-  branch: "main",
-  tokenKey: "audio_vocab_sprint_github_token",
-  backupKey: "audio_vocab_sprint_universal_v3_backup"
-};
-
-function getSyncToken(){
-  return localStorage.getItem(SYNC.tokenKey) || "";
-}
-function setSyncStatus(msg){
-  const el = document.getElementById("syncStatus");
-  if(el) el.textContent = msg;
-}
-function syncApiUrl(){
-  return `https://api.github.com/repos/${SYNC.owner}/${SYNC.repo}/contents/${SYNC.path}`;
-}
-function syncHeaders(){
-  const token = getSyncToken();
-  return {
-    "Accept":"application/vnd.github+json",
-    "Authorization":"Bearer " + token,
-    "X-GitHub-Api-Version":"2022-11-28"
-  };
-}
-function bytesToBase64(str){
-  const bytes = new TextEncoder().encode(str);
-  let bin = "";
-  for(const b of bytes) bin += String.fromCharCode(b);
-  return btoa(bin);
-}
-function base64ToUtf8(b64){
-  const bin = atob(b64.replace(/\n/g,""));
-  const bytes = Uint8Array.from(bin, c=>c.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
-}
-async function githubGetProgress(){
-  const r = await fetch(syncApiUrl(), {headers: syncHeaders()});
-  if(r.status === 404) return null;
-  if(!r.ok){
-    let detail = "";
-    try{ detail = (await r.json()).message || ""; }catch(e){}
-    throw new Error(`GitHub ${r.status}${detail ? ": "+detail : ""}`);
-  }
-  return await r.json();
-}
-async function syncUpload(){
-  const token = getSyncToken();
-  if(!token){
-    alert("请先在 Token 设置里粘贴并保存 token。");
-    return;
-  }
-  if(localStorage.getItem("audio_vocab_sprint_just_reset")==="1"){
-    if(!confirm("⚠️ 当前设备刚刚执行过“重置本机”。\n\n继续上传会用重置后的进度覆盖 GitHub 云端 progress.json。\n\n确定继续上传吗？")) return;
-  }
-  setSyncStatus("正在上传…");
-  try{
-    const existing = await githubGetProgress();
-    const payload = {
-      app:"Audio Vocabulary Sprint",
-      version:6,
-      syncedAt:new Date().toISOString(),
-      source: (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "mobile" : "desktop",
-      state:state
-    };
-    const body = {
-      message:"Update Audio Vocabulary Sprint progress",
-      content:bytesToBase64(JSON.stringify(payload,null,2)),
-      branch:SYNC.branch
-    };
-    if(existing && existing.sha) body.sha = existing.sha;
-
-    const r = await fetch(syncApiUrl(), {
-      method:"PUT",
-      headers:{...syncHeaders(),"Content-Type":"application/json"},
-      body:JSON.stringify(body)
-    });
-    if(!r.ok){
-      let detail = "";
-      try{ detail = (await r.json()).message || ""; }catch(e){}
-      throw new Error(`GitHub ${r.status}${detail ? ": "+detail : ""}`);
-    }
-    localStorage.removeItem("audio_vocab_sprint_just_reset");
-    const now = new Date();
-    setSyncStatus("上传成功 · " + now.toLocaleString());
-  }catch(e){
-    console.error(e);
-    setSyncStatus("上传失败 · " + e.message);
-    alert("上传失败：\n" + e.message);
-  }
-}
-async function syncDownload(){
-  const token = getSyncToken();
-  if(!token){
-    alert("请先在 Token 设置里粘贴并保存 token。");
-    return;
-  }
-  if(!confirm("从 GitHub 下载会覆盖当前设备进度。\n下载前会自动保存一份本机备份。\n\n继续吗？")) return;
-
-  setSyncStatus("正在下载…");
-  try{
-    const existing = await githubGetProgress();
-    if(!existing || !existing.content){
-      throw new Error("云端还没有 progress.json，请先从某台设备上传一次。");
-    }
-    const txt = base64ToUtf8(existing.content);
-    const payload = JSON.parse(txt);
-    const incoming = payload.state || payload;
-
-    if(!incoming || typeof incoming !== "object" || !incoming.debts || !incoming.mastered || !incoming.seen){
-      throw new Error("progress.json 格式不正确。");
-    }
-
-    // one-step local backup before overwrite
-    localStorage.setItem(SYNC.backupKey, JSON.stringify({
-      backedUpAt:new Date().toISOString(),
-      state:state
-    }));
-
-    state = incoming;
-    state.debts = state.debts || {};
-    state.mastered = state.mastered || {};
-    state.seen = state.seen || {};
-    state.highestDebt = state.highestDebt || {};
-    state.lastReviewedDate = state.lastReviewedDate || {};
-    state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
-    state.queue = Array.isArray(state.queue) ? state.queue : [];
-    state.voiceIndex = Number(state.voiceIndex)||0;
-
-    for (const [w,d] of Object.entries(state.debts)) {
-      state.highestDebt[w] = Math.max(state.highestDebt[w]||0, Number(d)||0);
-    }
-
-    save();
-    localStorage.removeItem("audio_vocab_sprint_just_reset");
-    setSyncStatus("下载成功 · " + new Date().toLocaleString());
-    alert("已从 GitHub 下载并覆盖当前设备进度。");
-    location.reload();
-  }catch(e){
-    console.error(e);
-    setSyncStatus("下载失败 · " + e.message);
-    alert("下载失败：\n" + e.message);
-  }
-}
-
-const syncBtn = document.getElementById("syncBtn");
-const syncOverlay = document.getElementById("syncOverlay");
-if(syncBtn) syncBtn.onclick = ()=>{
-  syncOverlay.style.display = "flex";
-  document.getElementById("syncTokenInput").value = "";
-  const deviceName = (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "手机端" : "电脑端";
-  setSyncStatus(getSyncToken() ? `${deviceName} Token 已保存，可同步。` : `${deviceName} 尚未保存 Token。`);
-};
-const syncClose = document.getElementById("syncClose");
-const syncUploadBtn = document.getElementById("syncUpload");
-const syncDownloadBtn = document.getElementById("syncDownload");
-if(syncClose) syncClose.onclick = ()=> syncOverlay.style.display = "none";
-if(syncUploadBtn) syncUploadBtn.onclick = syncUpload;
-if(syncDownloadBtn) syncDownloadBtn.onclick = syncDownload;
-document.getElementById("syncSaveToken").onclick = ()=>{
-  const v = document.getElementById("syncTokenInput").value.trim();
-  if(!v){ alert("请先粘贴 token。"); return; }
-  localStorage.setItem(SYNC.tokenKey, v);
-  document.getElementById("syncTokenInput").value = "";
-  setSyncStatus("Token 已保存到此浏览器。");
-};
-document.getElementById("syncClearToken").onclick = ()=>{
-  localStorage.removeItem(SYNC.tokenKey);
-  document.getElementById("syncTokenInput").value = "";
-  setSyncStatus("Token 已清除。");
-};
