@@ -49,3 +49,13 @@ The current word is URL-encoded into both context-search links automatically.
 - Note placeholder is now generic.
 - Sync modal shows this browser/device's last successful sync time and whether it was an upload or download.
 - The timestamp updates only after a successful GitHub sync.
+
+## v3.7
+- Main subtitle now shows only the version number.
+- Last successful sync time is shown in its own status row above the upload/download buttons.
+- New-word debt baseline is now conceptually 1:
+  - first PASS: 1 → 0 → Mastered
+  - first AGAIN: 1 → 2
+  - later PASS: debt −1, at most once per local calendar day
+  - later AGAIN: debt +1
+- The baseline debt is not persisted before the user judges the word, so merely opening/closing the page cannot create artificial debt.

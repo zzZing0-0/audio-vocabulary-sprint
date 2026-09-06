@@ -24,10 +24,10 @@ function speakCurrent(){ if(state.current) speakText(state.current); }
 function reveal(){
   if(!state.current)return;
   revealed=true;
-  let d=state.debts[state.current]||0;
+  let d=state.debts[state.current]||1;
   document.getElementById("answer").innerHTML=
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
-    '<div class="note">'+(d?('debt '+d):'首次出现')+'</div>'+
+    '<div class="note">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
       '<a href="https://www.ldoceonline.com/dictionary/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Longman 英英</a>'+
       '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
@@ -107,7 +107,7 @@ document.getElementById("info").onclick=()=>{
    : '<p>暂无钉子户 🎉</p>';
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
-   '<p>第一次 PASS：直接清零。第一次 AGAIN：error debt = 1。以后 AGAIN +1，PASS −1；debt 到 0 后进入 Mastered。</p>'+
+   '<p>每个新词首次出现时默认 debt = 1。PASS：debt −1；AGAIN：debt +1。debt 到 0 后进入 Mastered。因此首次 PASS 直接清零；首次 AGAIN 会变成 debt = 2。</p>'+
    '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入 Mastered 后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
    '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p>'+
