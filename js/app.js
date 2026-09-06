@@ -25,16 +25,16 @@ function reveal(){
   if(!state.current)return;
   revealed=true;
   let d=state.debts[state.current]||0;
-  document.getElementById("answer").innerHTML =
+  document.getElementById("answer").innerHTML=
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
-    '<div class="level">'+(d?('Error debt: '+d):'首次出现')+'</div>'+
+    '<div class="note">'+(d?('debt '+d):'首次出现')+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
-    '<a href="https://www.ldoceonline.com/dictionary/'+encodeURIComponent(state.current.toLowerCase().replace(/\\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Longman 英英</a>'+
-    '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
+      '<a href="https://www.ldoceonline.com/dictionary/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Longman 英英</a>'+
+      '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
     '</div>'+
     '<div class="wordNoteWrap">'+
-    '<label for="wordNoteInput">📝 Note</label>'+
-    '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和 nail 混；重音在第一音节" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
+      '<label for="wordNoteInput">📝 Note</label>'+
+      '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和 nail 混；重音在第一音节" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</div>';
 }
 

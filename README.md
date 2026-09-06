@@ -29,3 +29,6 @@ Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive 
 - Note input appears after Reveal and saves on blur/change or PASS/AGAIN.
 - Notes sync inside GitHub `progress.json`.
 - Old saves without `notes` migrate automatically to `{}`.
+
+## v3.5.1
+- Fix: Note input now reliably renders after Reveal.
