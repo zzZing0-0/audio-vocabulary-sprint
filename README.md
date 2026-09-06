@@ -23,3 +23,9 @@ Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive 
 ## Lists
 - Active / 钉子户: Top 10 shown first, remainder collapsed
 - Mastered: Top 10 by historical peak shown first, remainder collapsed
+
+## v3.5 Notes
+- Each word can store a free-text note in `state.notes`.
+- Note input appears after Reveal and saves on blur/change or PASS/AGAIN.
+- Notes sync inside GitHub `progress.json`.
+- Old saves without `notes` migrate automatically to `{}`.

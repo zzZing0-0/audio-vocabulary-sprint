@@ -31,11 +31,25 @@ function reveal(){
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
     '<a href="https://www.ldoceonline.com/dictionary/'+encodeURIComponent(state.current.toLowerCase().replace(/\\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Longman 英英</a>'+
     '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
+    '</div>'+
+    '<div class="wordNoteWrap">'+
+    '<label for="wordNoteInput">📝 Note</label>'+
+    '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和 nail 混；重音在第一音节" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</div>';
 }
 
 
 
+
+function saveCurrentNote(){
+  if(!state.current) return;
+  const input=document.getElementById("wordNoteInput");
+  if(!input) return;
+  const text=input.value.trim();
+  if(text) state.notes[state.current]=text;
+  else delete state.notes[state.current];
+  save();
+}
 function updateStats(){
  let m=Object.keys(state.mastered).length;
  let a=Object.values(state.debts).filter(x=>x>0).length;
@@ -66,6 +80,12 @@ document.getElementById("speak").onclick=()=>{
     speakCurrent();
   }
 };
+document.getElementById("answer").addEventListener("change",e=>{
+  if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
+});
+document.getElementById("answer").addEventListener("blur",e=>{
+  if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
+},true);
 document.getElementById("reveal").onclick=reveal;
 document.getElementById("pass").onclick=()=>{if(!started){started=true;next()}else pass()};
 document.getElementById("again").onclick=()=>{if(!started){started=true;next()}else again()};
@@ -160,7 +180,7 @@ document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closeP
 document.getElementById("reset").onclick=()=>{
  if(confirm("重置本机学习进度？\n\n这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。\n\n重置后如果再上传，会用重置后的空白进度覆盖云端。")){
    localStorage.removeItem(KEY);
-   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],current:null,queue:BASE_WORDS.slice(),voiceIndex:state.voiceIndex||0};
+   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},current:null,queue:BASE_WORDS.slice(),voiceIndex:state.voiceIndex||0};
    shuffle(state.queue);
    localStorage.setItem("audio_vocab_sprint_just_reset","1");
    save();
@@ -227,6 +247,7 @@ async function importProgress(file){
       highestDebt: incoming.highestDebt || {},
       lastReviewedDate: incoming.lastReviewedDate || {},
       customWords: Array.isArray(incoming.customWords) ? incoming.customWords : [],
+      notes: (incoming.notes && typeof incoming.notes === "object") ? incoming.notes : {},
       current: incoming.current || null,
       queue: Array.isArray(incoming.queue) ? incoming.queue : [],
       voiceIndex: incoming.voiceIndex || 0

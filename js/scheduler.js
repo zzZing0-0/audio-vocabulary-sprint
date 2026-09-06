@@ -52,6 +52,7 @@ function next(){
 
 function pass(){
   if(!state.current)return;
+  saveCurrentNote();
   let w=state.current, d=state.debts[w]||0;
   if(d<=1){
     delete state.debts[w];
@@ -66,6 +67,7 @@ function pass(){
 
 function again(){
   if(!state.current)return;
+  saveCurrentNote();
   let w=state.current;
   state.debts[w]=(state.debts[w]||0)+1;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, state.debts[w]);
