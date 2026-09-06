@@ -36,3 +36,11 @@ Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive 
 ## v3.5.2
 - Fix deployment cache issue: local CSS/JS asset URLs now include a version query string.
 - This forces browsers/GitHub Pages to fetch the new `app.js` instead of reusing an older cached module.
+
+## v3.6 Context pronunciation
+Reveal now provides four reference links:
+- Longman: dictionary pronunciation/definition
+- Cambridge: dictionary pronunciation/Chinese support
+- YouGlish: current word in real YouTube speech contexts
+- PlayPhrase: current word in movie/TV phrase contexts
+The current word is URL-encoded into both context-search links automatically.
