@@ -32,3 +32,7 @@ Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive 
 
 ## v3.5.1
 - Fix: Note input now reliably renders after Reveal.
+
+## v3.5.2
+- Fix deployment cache issue: local CSS/JS asset URLs now include a version query string.
+- This forces browsers/GitHub Pages to fetch the new `app.js` instead of reusing an older cached module.
