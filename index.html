@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint v3.2.1</title>
+<title>Audio Vocabulary Sprint v3.3</title>
 <style>
 :root { --bg:#f6f5f1; --card:#fff; --text:#1d1d1f; --muted:#777; --line:#ddd; }
 *{box-sizing:border-box}
@@ -212,7 +212,7 @@ main{
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.2.1 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.3 · Desktop + Mobile · 只听声音 → PASS / AGAIN</div></div>
  <div class="stats"><span id="mastered">0</span> mastered<br><span id="active">0</span> active · <span id="unseen">0</span> unseen</div>
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
@@ -297,6 +297,7 @@ state.debts = state.debts || {};
 state.mastered = state.mastered || {};
 state.seen = state.seen || {};
 state.highestDebt = state.highestDebt || {};
+state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 for (const [w,d] of Object.entries(state.debts)) {
   state.highestDebt[w] = Math.max(state.highestDebt[w]||0, Number(d)||0);
 }
@@ -311,13 +312,19 @@ let voices=[], revealed=false, started=false;
 
 function save(){ localStorage.setItem(KEY,JSON.stringify(state)); updateStats(); }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
+function localDateKey(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function activeEligibleToday(w){
+  return (state.debts[w]||0)>0 && !state.mastered[w] && state.lastReviewedDate[w]!==localDateKey();
+}
 function eligible(){
-  return WORDS.filter(w=>!state.mastered[w]);
+  return WORDS.filter(w=>!state.mastered[w] && (!(state.debts[w]>0) || activeEligibleToday(w)));
 }
 function refill(){
-  // Mix unseen and debt words. Debt words re-enter naturally, but avoid immediate repetition.
   let unseen=WORDS.filter(w=>!state.seen[w]&&!state.mastered[w]);
-  let debt=WORDS.filter(w=>(state.debts[w]||0)>0&&!state.mastered[w]);
+  let debt=WORDS.filter(w=>activeEligibleToday(w));
   shuffle(unseen); shuffle(debt);
   let q=[], ui=0, di=0;
   while(ui<unseen.length || di<debt.length){
@@ -326,15 +333,26 @@ function refill(){
   }
   state.queue=q;
 }
+function popNextEligible(){
+  const today=localDateKey();
+  while(state.queue.length){
+    const w=state.queue.shift();
+    if(state.mastered[w]) continue;
+    if((state.debts[w]||0)>0 && state.lastReviewedDate[w]===today) continue;
+    return w;
+  }
+  return null;
+}
 function next(){
   speechSynthesis.cancel(); revealed=false;
   document.getElementById("answer").innerHTML="";
   if(!state.queue.length) refill();
   let prev=state.current, guard=0;
   while(state.queue.length && state.queue[0]===prev && guard++<5) state.queue.push(state.queue.shift());
-  state.current=state.queue.shift()||null;
+  state.current=popNextEligible();
+  if(!state.current){ refill(); state.current=popNextEligible(); }
   if(!state.current){
-    document.getElementById("answer").innerHTML='<div class="word">🎉 全部清零</div>';
+    document.getElementById("answer").innerHTML='<div class="word">🎉 今天可复习的词已完成</div>';
     save(); return;
   }
   state.seen[state.current]=true; save();
@@ -368,8 +386,14 @@ function reveal(){
 function pass(){
   if(!state.current)return;
   let w=state.current, d=state.debts[w]||0;
-  if(d<=1){ delete state.debts[w]; state.mastered[w]=true; }
-  else state.debts[w]=d-1;
+  if(d<=1){
+    delete state.debts[w];
+    delete state.lastReviewedDate[w];
+    state.mastered[w]=true;
+  }else{
+    state.debts[w]=d-1;
+    state.lastReviewedDate[w]=localDateKey();
+  }
   revealThenNext("PASS");
 }
 function again(){
@@ -377,9 +401,7 @@ function again(){
   let w=state.current;
   state.debts[w]=(state.debts[w]||0)+1;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, state.debts[w]);
-  // Put it back later, never immediately.
-  let gap=25+Math.floor(Math.random()*26);
-  state.queue.splice(Math.min(gap,state.queue.length),0,w);
+  state.lastReviewedDate[w]=localDateKey();
   revealThenNext("AGAIN");
 }
 function revealThenNext(kind){
@@ -407,7 +429,8 @@ document.getElementById("speak").onclick=()=>{
     speechSynthesis.cancel();
     revealed=false;
     if(!state.queue.length) refill();
-    state.current=state.queue.shift()||null;
+    state.current=popNextEligible();
+    if(!state.current){ refill(); state.current=popNextEligible(); }
     if(state.current){
       state.seen[state.current]=true;
       save();
@@ -437,7 +460,7 @@ document.getElementById("info").onclick=()=>{
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
    '<p>第一次 PASS：直接清零。第一次 AGAIN：error debt = 1。以后 AGAIN +1，PASS −1；debt 到 0 后进入 Mastered。</p>'+
-   '<p>AGAIN 的词会至少隔一段词后再出现，避免靠刚刚形成的短时记忆。</p>'+
+   '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入 Mastered 后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
    '<h2>🔩 当前钉子户 '+debt.length+'</h2>'+
    list(top)+
@@ -454,6 +477,7 @@ function reAddWord(word){
   state.debts[word]=1;              // one successful recognition clears this review
   state.seen[word]=true;
   state.highestDebt[word]=Math.max(state.highestDebt[word]||0, 1);
+  delete state.lastReviewedDate[word];
   // Put it into the queue soon, but not necessarily immediately.
   const gap=Math.min(10+Math.floor(Math.random()*16), state.queue.length);
   state.queue.splice(gap,0,word);
@@ -470,6 +494,7 @@ function reAddTop(n){
     state.debts[w]=1;
     state.seen[w]=true;
     state.highestDebt[w]=Math.max(state.highestDebt[w]||0,1);
+    delete state.lastReviewedDate[w];
     state.queue.push(w);
   });
   shuffle(state.queue);
@@ -501,7 +526,7 @@ document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closeP
 document.getElementById("reset").onclick=()=>{
  if(confirm("重置本机学习进度？\n\n这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。\n\n重置后如果再上传，会用重置后的空白进度覆盖云端。")){
    localStorage.removeItem(KEY);
-   state={debts:{},mastered:{},seen:{},highestDebt:{},current:null,queue:WORDS.slice(),voiceIndex:state.voiceIndex||0};
+   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},current:null,queue:WORDS.slice(),voiceIndex:state.voiceIndex||0};
    shuffle(state.queue);
    localStorage.setItem("audio_vocab_sprint_just_reset","1");
    save();
@@ -717,7 +742,7 @@ async function syncUpload(){
     const existing = await githubGetProgress();
     const payload = {
       app:"Audio Vocabulary Sprint",
-      version:4,
+      version:5,
       syncedAt:new Date().toISOString(),
       source: (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "mobile" : "desktop",
       state:state
@@ -781,6 +806,7 @@ async function syncDownload(){
     state.mastered = state.mastered || {};
     state.seen = state.seen || {};
     state.highestDebt = state.highestDebt || {};
+    state.lastReviewedDate = state.lastReviewedDate || {};
     state.queue = Array.isArray(state.queue) ? state.queue : [];
     state.voiceIndex = Number(state.voiceIndex)||0;
 
