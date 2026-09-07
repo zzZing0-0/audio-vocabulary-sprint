@@ -29,8 +29,8 @@ function reveal(){
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
     '<div class="note">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
-      '<a href="https://www.ldoceonline.com/dictionary/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Longman 英英</a>'+
-      '<a href="https://dictionary.cambridge.org/dictionary/english-chinese-simplified/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 Cambridge 英中</a>'+
+      '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
+      '<a href="https://dict.youdao.com/w/eng/'+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 有道英中</a>'+
       '<a href="https://youglish.com/pronounce/'+encodeURIComponent(state.current)+'/english" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎧 YouGlish 语境</a>'+
       '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
     '</div>'+
