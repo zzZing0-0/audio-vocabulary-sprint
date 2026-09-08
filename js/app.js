@@ -173,9 +173,9 @@ document.getElementById("pass").onclick=()=>{if(!started){started=true;next()}el
 document.getElementById("again").onclick=()=>{if(!started){started=true;next()}else again()};
 document.getElementById("voice").onclick=()=>{
  if(!voices.length)return;
- state.voiceIndex=(state.voiceIndex+1)%voices.length; save();
- document.getElementById("hint").textContent="Voice: "+en[state.voiceIndex].name;
- speakCurrent();
+ state.voiceIndex=(state.voiceIndex+1)%voices.length;
+ save();
+ if(state.current) speakCurrent();
 };
 document.getElementById("info").onclick=()=>{
  document.getElementById("panel").innerHTML=
