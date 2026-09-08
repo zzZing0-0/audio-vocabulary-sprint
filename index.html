@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint v3.9.2</title>
-<link rel="stylesheet" href="css/style.css?v=3.9.2">
+<title>Audio Vocabulary Sprint v3.10</title>
+<link rel="stylesheet" href="css/style.css?v=3.10">
 </head>
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.9.2</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.10</div></div>
  <div class="stats"><span id="mastered">0</span> mastered<br><span id="active">0</span> active · <span id="unseen">0</span> unseen</div>
 </div>
 <div class="progress"><div class="bar" id="bar"></div></div>
@@ -17,9 +17,10 @@
  <div>
   <div class="listen">
    <button class="speaker" id="speak" aria-label="播放发音">🔊</button>
+   <div class="voiceInfo" id="voiceInfo"></div>
    <div class="hint" id="hint">点击喇叭开始；之后每个词会自动播放</div>
   </div>
-  <div class="answer" id="answer"></div>
+  <div class="answerFxStage"><div class="answer" id="answer"></div><canvas id="wordDissolveFx" aria-hidden="true"></canvas></div>
  </div>
  <div>
   <div class="actions">
@@ -89,11 +90,11 @@
   </div>
 </div>
 
-<script src="data/vocabulary.js?v=3.9.2"></script>
-<script src="js/storage.js?v=3.9.2"></script>
-<script src="js/scheduler.js?v=3.9.2"></script>
-<script src="js/app.js?v=3.9.2"></script>
-<script src="js/github-sync.js?v=3.9.2"></script>
+<script src="data/vocabulary.js?v=3.10"></script>
+<script src="js/storage.js?v=3.10"></script>
+<script src="js/scheduler.js?v=3.10"></script>
+<script src="js/app.js?v=3.10"></script>
+<script src="js/github-sync.js?v=3.10"></script>
 
 
 

@@ -36,6 +36,7 @@ function popNextEligible(){
 
 function next(){
   speechSynthesis.cancel(); revealed=false;
+  resetWordDissolve();
   document.getElementById("answer").innerHTML="";
   if(!state.queue.length) refill();
   let prev=state.current, guard=0;
