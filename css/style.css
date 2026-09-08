@@ -313,3 +313,85 @@ button.controlBtn{
 .card.masteredGlow{animation:masteredGlow .85s ease}
 .utilityBtn{background:transparent!important;border-color:transparent!important;box-shadow:none!important;color:#666!important}
 .secondaryTool{opacity:.68}
+
+/* ===== v3.9.1 control hierarchy ===== */
+.learningControls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  width:100%;
+  margin:16px auto 0;
+}
+.learningControls .controlBtn{
+  min-height:48px;
+  border:1px solid #dedede;
+  border-radius:14px;
+  background:#fff;
+}
+.utilityRow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  margin-top:12px;
+  min-height:38px;
+}
+.utilityLink{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  background:transparent;
+  padding:8px 2px;
+  color:#666;
+  font:inherit;
+  font-size:13px;
+  cursor:pointer;
+}
+.utilityLink:active{transform:scale(.98)}
+.moreTools{position:relative}
+.moreTools summary{
+  list-style:none;
+  cursor:pointer;
+  color:#777;
+  font-size:18px;
+  line-height:1;
+  padding:8px 6px 11px;
+  user-select:none;
+}
+.moreTools summary::-webkit-details-marker{display:none}
+.moreToolsMenu{
+  position:absolute;
+  right:-6px;
+  bottom:38px;
+  z-index:30;
+  min-width:180px;
+  padding:8px;
+  background:#fff;
+  border:1px solid #e5e5e5;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+.moreToolItem{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  width:100%;
+  min-height:42px;
+  margin:0;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:#555;
+  font:inherit;
+  font-size:13px;
+  cursor:pointer;
+}
+.moreToolItem:hover{background:#f5f5f5}
+.moreToolItem + .moreToolItem{margin-top:3px}
+.dangerLite{color:#888}
+@media(max-width:560px){
+  .learningControls{grid-template-columns:1fr 1fr;gap:8px}
+  .utilityRow{gap:22px;margin-top:10px}
+  .moreToolsMenu{right:-8px}
+}

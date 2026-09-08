@@ -19,9 +19,8 @@ let voices=[], revealed=false, started=false;
 
 
 function selectedVoice(){
-  let en=voices.filter(v=>/^en[-_]/i.test(v.lang));
-  if(!en.length) return null;
-  return en[state.voiceIndex % en.length];
+  if(!voices.length) return null;
+  return voices[state.voiceIndex % voices.length];
 }
 function speakText(text){
   speechSynthesis.cancel();
@@ -143,7 +142,7 @@ function updateStats(){
  document.getElementById("bar").style.width=(m/Math.max(allWords().length,1)*100)+"%";
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
-function loadVoices(){voices=speechSynthesis.getVoices();}
+function loadVoices(){voices=getPreferredEnglishVoices();}
 speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
 
 document.getElementById("speak").onclick=()=>{
@@ -173,8 +172,8 @@ document.getElementById("reveal").onclick=reveal;
 document.getElementById("pass").onclick=()=>{if(!started){started=true;next()}else pass()};
 document.getElementById("again").onclick=()=>{if(!started){started=true;next()}else again()};
 document.getElementById("voice").onclick=()=>{
- let en=voices.filter(v=>/^en[-_]/i.test(v.lang)); if(!en.length)return;
- state.voiceIndex=(state.voiceIndex+1)%en.length; save();
+ if(!voices.length)return;
+ state.voiceIndex=(state.voiceIndex+1)%voices.length; save();
  document.getElementById("hint").textContent="Voice: "+en[state.voiceIndex].name;
  speakCurrent();
 };
