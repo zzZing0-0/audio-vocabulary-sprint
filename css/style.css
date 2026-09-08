@@ -215,3 +215,32 @@ main{
 .sync-last{
   margin-bottom:10px;
 }
+
+
+/* ===== v3.8 UI refinements ===== */
+.card{position:relative}
+.debtBadge{
+  position:absolute;top:18px;left:20px;
+  font-size:12px;color:#999;background:#f6f6f4;
+  border-radius:999px;padding:5px 8px;line-height:1;
+}
+.listLinks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.linkBtn{display:flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #ddd;border-radius:12px;background:#fff;min-height:44px}
+.confettiCanvas{position:fixed;inset:0;z-index:9999;pointer-events:none}
+.listPage{max-width:860px;margin:0 auto;padding:28px 18px 60px;width:100%}
+.listPageHead{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:18px}
+.listPageHead h1{margin:0;font-size:26px}
+.backLink{text-decoration:none;color:#555;border:1px solid #ddd;border-radius:12px;padding:9px 12px;background:#fff;font-size:13px}
+.listCard{background:#fff;border-radius:22px;padding:20px;box-shadow:0 5px 25px rgba(0,0,0,.05)}
+.listSummary{font-size:13px;color:#777;margin-bottom:14px}
+.wordListRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:11px 4px;border-bottom:1px solid #eee;font-size:14px}
+.wordListRow:last-child{border-bottom:0}
+.wordListWord{font-weight:650;word-break:break-word}
+.wordListMeta{font-size:12px;color:#777;white-space:nowrap}
+.wordListNote{grid-column:1 / -1;color:#888;font-size:12px;margin-top:-4px}
+@media(max-width:500px){
+  .debtBadge{top:14px;left:14px}
+  .listLinks{grid-template-columns:1fr}
+  .wordListRow{grid-template-columns:minmax(0,1fr) auto}
+  .wordListRow .miniBtn{grid-column:1 / -1;justify-self:end}
+}

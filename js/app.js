@@ -26,13 +26,14 @@ function reveal(){
   revealed=true;
   let d=state.debts[state.current]||1;
   document.getElementById("answer").innerHTML=
+    '<div class="debtBadge">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
-    '<div class="note">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
       '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
       '<a href="https://dict.youdao.com/w/eng/'+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 有道英中</a>'+
       '<a href="https://youglish.com/pronounce/'+encodeURIComponent(state.current)+'/english" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎧 YouGlish 语境</a>'+
       '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
+      '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
     '<div class="wordNoteWrap">'+
       '<label for="wordNoteInput">📝 Note</label>'+
@@ -42,6 +43,37 @@ function reveal(){
 
 
 
+
+function celebratePass(){
+  const canvas=document.createElement("canvas");
+  canvas.className="confettiCanvas";
+  document.body.appendChild(canvas);
+  const ctx=canvas.getContext("2d");
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=window.innerWidth,h=window.innerHeight;
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  canvas.style.width=w+"px"; canvas.style.height=h+"px";
+  ctx.scale(dpr,dpr);
+  const colors=["#ff5f57","#ffbd2e","#28c840","#5ac8fa","#af52de","#ff2d55"];
+  const pieces=Array.from({length:72},()=>({
+    x:w*(0.15+Math.random()*0.7), y:h*0.18+Math.random()*20,
+    vx:(Math.random()-.5)*8, vy:-4-Math.random()*7,
+    g:.22+Math.random()*.16, r:3+Math.random()*4,
+    rot:Math.random()*Math.PI, vr:(Math.random()-.5)*.35,
+    c:colors[Math.floor(Math.random()*colors.length)]
+  }));
+  const start=performance.now();
+  function frame(now){
+    ctx.clearRect(0,0,w,h);
+    for(const p of pieces){
+      p.x+=p.vx; p.vy+=p.g; p.y+=p.vy; p.rot+=p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c;
+      ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); ctx.restore();
+    }
+    if(now-start<900) requestAnimationFrame(frame); else canvas.remove();
+  }
+  requestAnimationFrame(frame);
+}
 
 function saveCurrentNote(){
   if(!state.current) return;
@@ -98,84 +130,19 @@ document.getElementById("voice").onclick=()=>{
  speakCurrent();
 };
 document.getElementById("info").onclick=()=>{
- const debt=Object.entries(state.debts)
-   .filter(x=>Number(x[1])>0 && !state.mastered[x[0]])
-   .sort((a,b)=>Number(b[1])-Number(a[1]) || a[0].localeCompare(b[0]));
- const top=debt.slice(0,10);
- const list=rows=>rows.length
-   ? '<ol>'+rows.map(x=>'<li>'+escapeHtml(x[0])+' — debt '+x[1]+'</li>').join('')+'</ol>'
-   : '<p>暂无钉子户 🎉</p>';
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
-   '<p>每个新词首次出现时默认 debt = 1。PASS：debt −1；AGAIN：debt +1。debt 到 0 后进入 Mastered。因此首次 PASS 直接清零；首次 AGAIN 会变成 debt = 2。</p>'+
+   '<p>每个新词首次出现时默认 debt = 1。PASS：debt −1；AGAIN：debt +1。debt 到 0 后进入已掌握。因此首次 PASS 直接清零；首次 AGAIN 会变成 debt = 2。</p>'+
    '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
-   '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入 Mastered 后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
+   '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
    '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p>'+
-   '<h2>🔩 当前钉子户 '+debt.length+'</h2>'+
-   list(top)+
-   (debt.length>10
-     ? '<details><summary>展开其余 '+(debt.length-10)+' 个</summary>'+list(debt.slice(10))+'</details>'
-     : '')+
-   '<button class="action" onclick="closePanel()">关闭</button>';
+   '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">🔩 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✓ 查看已掌握</a></div>'+
+   '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
 };
 
-function reAddWord(word){
-  if(!state.mastered[word]) return;
-  delete state.mastered[word];
-  state.debts[word]=1;              // one successful recognition clears this review
-  state.seen[word]=true;
-  state.highestDebt[word]=Math.max(state.highestDebt[word]||0, 1);
-  delete state.lastReviewedDate[word];
-  // Put it into the queue soon, but not necessarily immediately.
-  const gap=Math.min(10+Math.floor(Math.random()*16), state.queue.length);
-  state.queue.splice(gap,0,word);
-  save();
-  showMastered();
-}
-function reAddTop(n){
-  const rows=Object.keys(state.mastered)
-    .map(w=>[w,state.highestDebt[w]||0])
-    .sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0]))
-    .slice(0,n);
-  rows.forEach(([w])=>{
-    delete state.mastered[w];
-    state.debts[w]=1;
-    state.seen[w]=true;
-    state.highestDebt[w]=Math.max(state.highestDebt[w]||0,1);
-    delete state.lastReviewedDate[w];
-    state.queue.push(w);
-  });
-  shuffle(state.queue);
-  save();
-  showMastered();
-}
-function showMastered(){
-  const rows=Object.keys(state.mastered)
-    .map(w=>[w,state.highestDebt[w]||0])
-    .sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0]));
-  const rowHtml=([w,d])=>
-    '<div class="masterRow"><span>'+escapeHtml(w)+'</span><span>peak '+d+'</span>'+
-    '<button class="miniBtn" onclick='+JSON.stringify("reAddWord("+JSON.stringify(w)+")")+'>重新加入</button></div>';
-  const topRows=rows.slice(0,10);
-  const restRows=rows.slice(10);
-  const body = rows.length
-    ? topRows.map(rowHtml).join('')+
-      (restRows.length
-        ? '<details><summary>展开其余 '+restRows.length+' 个</summary>'+restRows.map(rowHtml).join('')+'</details>'
-        : '')
-    : '<p>还没有 mastered 单词。</p>';
-  document.getElementById("panel").innerHTML=
-    '<h2>Mastered</h2>'+
-    '<p>按历史最高 error debt 降序排列。peak 会永久保留，即使后来清零。</p>'+
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'+
-    '<button class="miniBtn" onclick="reAddTop(10)">重刷 Top 10</button>'+
-    '<button class="miniBtn" onclick="reAddTop(50)">重刷 Top 50</button>'+
-    '</div>'+body+
-    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
-  document.getElementById("overlay").style.display="flex";
-}
-document.getElementById("masteredList").onclick=showMastered;
+document.getElementById("activeList").onclick=()=>{ window.location.href="active.html"; };
+document.getElementById("masteredList").onclick=()=>{ window.location.href="mastered.html"; };
 
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};

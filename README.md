@@ -59,3 +59,11 @@ The current word is URL-encoded into both context-search links automatically.
   - later PASS: debt −1, at most once per local calendar day
   - later AGAIN: debt +1
 - The baseline debt is not persisted before the user judges the word, so merely opening/closing the page cannot create artificial debt.
+
+## v3.8
+- Added RhymeZone similar-sound lookup.
+- Moved debt badge to the card top-left.
+- Renamed Mastered UI entry to 已掌握.
+- Moved 钉子户 and 已掌握 full lists to active.html and mastered.html; main page no longer renders those lists.
+- Added lightweight PASS confetti celebration.
+- Preserved localStorage key and learning-state schema.
