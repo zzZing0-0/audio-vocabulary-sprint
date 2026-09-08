@@ -29,11 +29,11 @@ function reveal(){
     '<div class="debtBadge">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
-      '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
-      '<a href="https://dict.youdao.com/w/eng/'+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">📘 有道英中</a>'+
-      '<a href="https://youglish.com/pronounce/'+encodeURIComponent(state.current)+'/english" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎧 YouGlish 语境</a>'+
-      '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
-      '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="_blank" rel="noopener" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
+      '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="vocabLookup" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
+      '<a href="https://dict.youdao.com/w/eng/'+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">📘 有道英中</a>'+
+      '<a href="https://youglish.com/pronounce/'+encodeURIComponent(state.current)+'/english" target="vocabLookup" style="color:#666;text-decoration:none">🎧 YouGlish 语境</a>'+
+      '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
+      '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
     '<div class="wordNoteWrap">'+
       '<label for="wordNoteInput">📝 Note</label>'+
@@ -43,6 +43,33 @@ function reveal(){
 
 
 
+
+function playPassSound(){
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const ctx=new AudioCtx();
+    const now=ctx.currentTime;
+    const master=ctx.createGain();
+    master.gain.setValueAtTime(0.0001,now);
+    master.gain.exponentialRampToValueAtTime(0.16,now+0.012);
+    master.gain.exponentialRampToValueAtTime(0.0001,now+0.48);
+    master.connect(ctx.destination);
+
+    [[659.25,0],[783.99,0.09],[1046.50,0.18]].forEach(([freq,delay])=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.type="sine";
+      osc.frequency.setValueAtTime(freq,now+delay);
+      gain.gain.setValueAtTime(0.0001,now+delay);
+      gain.gain.exponentialRampToValueAtTime(0.7,now+delay+0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.20);
+      osc.connect(gain); gain.connect(master);
+      osc.start(now+delay); osc.stop(now+delay+0.22);
+    });
+    setTimeout(()=>{ try{ctx.close()}catch(e){} },800);
+  }catch(e){}
+}
 
 function celebratePass(){
   const canvas=document.createElement("canvas");

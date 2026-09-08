@@ -53,7 +53,7 @@ function next(){
 function pass(){
   if(!state.current)return;
   saveCurrentNote();
-  celebratePass();
+  celebratePass(); playPassSound();
   let w=state.current, d=state.debts[w]||1;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, d);
   if(d<=1){
