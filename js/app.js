@@ -388,28 +388,82 @@ function resetWordDissolve(){
   if(c){const x=c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height);}
 }
 function dissolveCurrentWord(){
-  const answer=document.getElementById("answer"),wordEl=answer&&answer.querySelector(".word"),canvas=document.getElementById("wordDissolveFx");
+  const answer=document.getElementById("answer");
+  const wordEl=answer&&answer.querySelector(".word");
+  const canvas=document.getElementById("wordDissolveFx");
   if(!wordEl||!canvas||!wordEl.textContent.trim())return;
-  const stage=canvas.parentElement,sr=stage.getBoundingClientRect(),wr=wordEl.getBoundingClientRect(),dpr=Math.max(1,devicePixelRatio||1);
-  canvas.width=Math.max(1,Math.round(sr.width*dpr));canvas.height=Math.max(1,Math.round(sr.height*dpr));
-  canvas.style.width=sr.width+"px";canvas.style.height=sr.height+"px";
-  const ctx=canvas.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);
-  const off=document.createElement("canvas"),w=Math.max(1,wr.width),h=Math.max(1,wr.height);
-  off.width=Math.ceil(w*dpr);off.height=Math.ceil(h*dpr);
-  const o=off.getContext("2d");o.scale(dpr,dpr);const cs=getComputedStyle(wordEl);
-  o.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;o.textBaseline="top";o.fillStyle=cs.color||"#222";o.fillText(wordEl.textContent,0,0);
-  const data=o.getImageData(0,0,off.width,off.height).data,particles=[],step=Math.max(3,Math.round(3*dpr)),bx=wr.left-sr.left,by=wr.top-sr.top;
-  for(let py=0;py<off.height;py+=step)for(let px=0;px<off.width;px+=step){
-    const i=(py*off.width+px)*4;
-    if(data[i+3]>80&&Math.random()<.58)particles.push({x:bx+px/dpr,y:by+py/dpr,vx:(Math.random()-.5)*1.7+.7,vy:(Math.random()-.5)*1.1-.25,r:1.1+Math.random()*1.5,life:1,fade:.018+Math.random()*.014});
+
+  const wr=wordEl.getBoundingClientRect();
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+  canvas.width=Math.max(1,Math.round(window.innerWidth*dpr));
+  canvas.height=Math.max(1,Math.round(window.innerHeight*dpr));
+  canvas.style.width=window.innerWidth+"px";
+  canvas.style.height=window.innerHeight+"px";
+
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const w=Math.max(1,wr.width),h=Math.max(1,wr.height);
+  const off=document.createElement("canvas");
+  off.width=Math.ceil(w*dpr);
+  off.height=Math.ceil(h*dpr);
+  const o=off.getContext("2d");
+  o.scale(dpr,dpr);
+
+  const cs=getComputedStyle(wordEl);
+  o.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  o.textBaseline="top";
+  o.fillStyle=cs.color||"#222";
+  o.fillText(wordEl.textContent,0,0);
+
+  const data=o.getImageData(0,0,off.width,off.height).data;
+  const particles=[];
+  const step=Math.max(3,Math.round(3*dpr));
+
+  for(let py=0;py<off.height;py+=step){
+    for(let px=0;px<off.width;px+=step){
+      const i=(py*off.width+px)*4;
+      if(data[i+3]>80&&Math.random()<.58){
+        particles.push({
+          x:wr.left+px/dpr,
+          y:wr.top+py/dpr,
+          vx:(Math.random()-.5)*1.7+.7,
+          vy:(Math.random()-.5)*1.1-.25,
+          r:1.1+Math.random()*1.5,
+          life:1,
+          fade:.018+Math.random()*.014
+        });
+      }
+    }
   }
   if(!particles.length)return;
-  wordEl.style.opacity="0";const start=performance.now();
+
+  wordEl.style.opacity="0";
+  const start=performance.now();
+
   function frame(t){
-    ctx.clearRect(0,0,sr.width,sr.height);
-    for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vx*=.992;p.vy-=.002;p.life-=p.fade;if(p.life<=0)continue;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle="rgb(75,82,90)";ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for(const p of particles){
+      p.x+=p.vx;
+      p.y+=p.vy;
+      p.vx*=.992;
+      p.vy-=.002;
+      p.life-=p.fade;
+      if(p.life<=0)continue;
+
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle="rgb(75,82,90)";
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    }
     ctx.globalAlpha=1;
-    if(t-start<900&&particles.some(p=>p.life>0))requestAnimationFrame(frame);else ctx.clearRect(0,0,sr.width,sr.height);
+
+    if(t-start<900&&particles.some(p=>p.life>0)){
+      requestAnimationFrame(frame);
+    }else{
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    }
   }
   requestAnimationFrame(frame);
 }
