@@ -60,6 +60,7 @@ function pass(){
     delete state.debts[w];
     delete state.lastReviewedDate[w];
     state.mastered[w]=true;
+    playMasteredSound(); celebrateMastered();
   }else{
     state.debts[w]=d-1;
     state.lastReviewedDate[w]=localDateKey();
@@ -68,6 +69,7 @@ function pass(){
 }
 
 function again(){
+  playAgainSound(); celebrateAgain();
   if(!state.current)return;
   saveCurrentNote();
   let w=state.current;

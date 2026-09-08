@@ -1,3 +1,13 @@
+
+function getPreferredEnglishVoices(){
+  const all=speechSynthesis.getVoices();
+  const english=all.filter(v => /^en([-_]|$)/i.test(v.lang || ""));
+  if(!english.length) return all;
+  const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;
+  const preferred=english.filter(v => !novelty.test(v.name || ""));
+  return preferred.length>=2 ? preferred : english;
+}
+
 let voices=[], revealed=false, started=false;
 
 
@@ -39,6 +49,8 @@ function reveal(){
       '<label for="wordNoteInput">📝 Note</label>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</div>';
+
+  try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
 }
 
 
@@ -351,3 +363,61 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
 
 
 updateStats();
+
+
+let neutralFeedbackCtx=null;
+function getNeutralFeedbackCtx(){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx) return null;
+  if(!neutralFeedbackCtx) neutralFeedbackCtx=new AudioCtx();
+  if(neutralFeedbackCtx.state==="suspended") neutralFeedbackCtx.resume().catch(()=>{});
+  return neutralFeedbackCtx;
+}
+function playAgainSound(){
+  try{
+    const ctx=getNeutralFeedbackCtx(); if(!ctx) return;
+    const now=ctx.currentTime+0.01;
+    [[392,0,.11],[440,.075,.12]].forEach(([f,d,dur])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="sine"; o.frequency.setValueAtTime(f,now+d);
+      g.gain.setValueAtTime(.0001,now+d);
+      g.gain.exponentialRampToValueAtTime(.045,now+d+.012);
+      g.gain.exponentialRampToValueAtTime(.0001,now+d+dur);
+      o.connect(g); g.connect(ctx.destination); o.start(now+d); o.stop(now+d+dur+.03);
+    });
+  }catch(e){}
+}
+function playMasteredSound(){
+  try{
+    const ctx=getNeutralFeedbackCtx(); if(!ctx) return;
+    const now=ctx.currentTime+0.01;
+    [[659.25,0,.16],[783.99,.09,.17],[987.77,.18,.18],[1318.51,.29,.27]].forEach(([f,d,dur])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="sine"; o.frequency.setValueAtTime(f,now+d);
+      g.gain.setValueAtTime(.0001,now+d);
+      g.gain.exponentialRampToValueAtTime(.09,now+d+.012);
+      g.gain.exponentialRampToValueAtTime(.0001,now+d+dur);
+      o.connect(g); g.connect(ctx.destination); o.start(now+d); o.stop(now+d+dur+.03);
+    });
+  }catch(e){}
+}
+function celebrateAgain(){
+  const card=document.querySelector(".card"); if(!card) return;
+  card.classList.remove("againPulse"); void card.offsetWidth; card.classList.add("againPulse");
+  setTimeout(()=>card.classList.remove("againPulse"),520);
+}
+function celebrateMastered(){
+  const card=document.querySelector(".card"); if(!card) return;
+  card.classList.remove("masteredGlow"); void card.offsetWidth; card.classList.add("masteredGlow");
+  setTimeout(()=>card.classList.remove("masteredGlow"),900);
+}
+function debtVisualClass(d){
+  d=Number(d)||1;
+  return d>=7?"debtExtreme":d>=4?"debtHigh":d>=2?"debtMid":"debtLow";
+}
+function styleDebtBadge(d){
+  const badge=document.querySelector(".debtBadge"); if(!badge) return;
+  badge.classList.remove("debtLow","debtMid","debtHigh","debtExtreme");
+  badge.classList.add(debtVisualClass(d));
+  if(Number(d)>=7 && !badge.textContent.includes("🔥")) badge.textContent="🔥 "+badge.textContent;
+}

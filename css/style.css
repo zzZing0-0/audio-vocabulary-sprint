@@ -299,3 +299,17 @@ button.controlBtn{
 /* ===== v3.8.3 result badge ===== */
 .debtBadge.passBadge{color:#3d7a49;background:#edf7ef;font-weight:650}
 .debtBadge.againBadge{color:#8a5a36;background:#faf1e8;font-weight:650}
+
+/* v3.9: playful feedback, while keeping the listening task visually clean */
+.debtBadge{transition:background .2s ease,color .2s ease,transform .2s ease,border-color .2s ease}
+.debtBadge.debtLow{background:#f1f1f1;color:#777}
+.debtBadge.debtMid{background:#eef5ff;color:#47719a;border-color:#d8e8f8}
+.debtBadge.debtHigh{background:#fff4df;color:#9a641c;border-color:#f3d7a7}
+.debtBadge.debtExtreme{background:#f8e8ef;color:#9a365f;border-color:#edc4d5;animation:debtHeat 1.8s ease-in-out infinite}
+@keyframes debtHeat{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes againPulse{0%{transform:translateY(0)}35%{transform:translateY(-2px)}70%{transform:translateY(1px)}100%{transform:translateY(0)}}
+.card.againPulse{animation:againPulse .48s ease}
+@keyframes masteredGlow{0%,100%{box-shadow:0 12px 34px rgba(0,0,0,.08)}45%{box-shadow:0 12px 46px rgba(0,0,0,.17)}}
+.card.masteredGlow{animation:masteredGlow .85s ease}
+.utilityBtn{background:transparent!important;border-color:transparent!important;box-shadow:none!important;color:#666!important}
+.secondaryTool{opacity:.68}
