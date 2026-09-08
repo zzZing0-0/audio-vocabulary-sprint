@@ -79,7 +79,14 @@ function again(){
 
 function revealThenNext(kind){
   reveal(); save();
-  let el=document.getElementById("hint");
-  el.textContent=kind==="PASS"?"✓ PASS":"↻ AGAIN";
-  setTimeout(()=>{el.textContent="听到后只判断：能否立刻想到单词和意思？";next()},950);
+  const badge=document.querySelector("#answer .debtBadge");
+  if(badge){
+    badge.textContent=kind==="PASS"?"✓ PASS":"↻ AGAIN";
+    badge.classList.add(kind==="PASS"?"passBadge":"againBadge");
+  }
+  setTimeout(()=>{
+    const hint=document.getElementById("hint");
+    if(hint) hint.textContent="听到后只判断：能否立刻想到单词和意思？";
+    next();
+  },950);
 }

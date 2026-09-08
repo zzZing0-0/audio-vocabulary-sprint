@@ -295,3 +295,7 @@ button.controlBtn{
     padding:9px 7px;
   }
 }
+
+/* ===== v3.8.3 result badge ===== */
+.debtBadge.passBadge{color:#3d7a49;background:#edf7ef;font-weight:650}
+.debtBadge.againBadge{color:#8a5a36;background:#faf1e8;font-weight:650}

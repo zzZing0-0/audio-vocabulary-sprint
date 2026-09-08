@@ -44,30 +44,40 @@ function reveal(){
 
 
 
+let passAudioCtx=null;
 function playPassSound(){
   try{
     const AudioCtx=window.AudioContext||window.webkitAudioContext;
     if(!AudioCtx) return;
-    const ctx=new AudioCtx();
-    const now=ctx.currentTime;
-    const master=ctx.createGain();
-    master.gain.setValueAtTime(0.0001,now);
-    master.gain.exponentialRampToValueAtTime(0.16,now+0.012);
-    master.gain.exponentialRampToValueAtTime(0.0001,now+0.48);
-    master.connect(ctx.destination);
+    if(!passAudioCtx || passAudioCtx.state==="closed") passAudioCtx=new AudioCtx();
 
-    [[659.25,0],[783.99,0.09],[1046.50,0.18]].forEach(([freq,delay])=>{
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      osc.type="sine";
-      osc.frequency.setValueAtTime(freq,now+delay);
-      gain.gain.setValueAtTime(0.0001,now+delay);
-      gain.gain.exponentialRampToValueAtTime(0.7,now+delay+0.012);
-      gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.20);
-      osc.connect(gain); gain.connect(master);
-      osc.start(now+delay); osc.stop(now+delay+0.22);
-    });
-    setTimeout(()=>{ try{ctx.close()}catch(e){} },800);
+    const play=()=>{
+      const ctx=passAudioCtx;
+      const now=ctx.currentTime+0.01;
+      const master=ctx.createGain();
+      master.gain.setValueAtTime(0.0001,now);
+      master.gain.exponentialRampToValueAtTime(0.18,now+0.012);
+      master.gain.exponentialRampToValueAtTime(0.0001,now+0.55);
+      master.connect(ctx.destination);
+
+      [[659.25,0],[783.99,0.09],[1046.50,0.18]].forEach(([freq,delay])=>{
+        const osc=ctx.createOscillator();
+        const gain=ctx.createGain();
+        osc.type="sine";
+        osc.frequency.setValueAtTime(freq,now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.75,now+delay+0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.22);
+        osc.connect(gain); gain.connect(master);
+        osc.start(now+delay); osc.stop(now+delay+0.24);
+      });
+    };
+
+    if(passAudioCtx.state==="suspended"){
+      passAudioCtx.resume().then(play).catch(()=>{});
+    }else{
+      play();
+    }
   }catch(e){}
 }
 
