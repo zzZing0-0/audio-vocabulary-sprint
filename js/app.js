@@ -141,9 +141,6 @@ document.getElementById("info").onclick=()=>{
  document.getElementById("overlay").style.display="flex";
 };
 
-document.getElementById("activeList").onclick=()=>{ window.location.href="active.html"; };
-document.getElementById("masteredList").onclick=()=>{ window.location.href="mastered.html"; };
-
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};
 document.getElementById("reset").onclick=()=>{

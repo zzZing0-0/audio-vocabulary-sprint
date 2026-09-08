@@ -244,3 +244,54 @@ main{
   .wordListRow{grid-template-columns:minmax(0,1fr) auto}
   .wordListRow .miniBtn{grid-column:1 / -1;justify-self:end}
 }
+
+
+/* ===== v3.8.1 main control cleanup ===== */
+.controls{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  max-width:720px;
+  margin:18px auto 0;
+}
+.controls > *{
+  grid-column:auto !important;
+}
+.controlBtn{
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #dedede;
+  border-radius:14px;
+  background:#fff;
+  color:#555;
+  font-size:14px;
+  font-weight:500;
+  line-height:1.2;
+  text-align:center;
+  cursor:pointer;
+}
+button.controlBtn{
+  appearance:none;
+  -webkit-appearance:none;
+}
+.controlBtn:hover{background:#f8f8f7}
+.controlBtn:active{transform:scale(.985)}
+#syncBtn{font-weight:500}
+.importBtn{cursor:pointer;user-select:none}
+@media(max-width:560px){
+  .controls{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  .controlBtn{
+    min-height:46px;
+    font-size:13px;
+    padding:9px 7px;
+  }
+}
