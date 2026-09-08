@@ -413,4 +413,6 @@ button.controlBtn{
   pointer-events:none;
   z-index:9999;
 }
-#answer .word{transition:opacity .08s ease;}
+#answer .word{transition:opacity .14s ease;}
+
+#answer .word.wordDissolving{will-change:opacity;}

@@ -70,7 +70,7 @@ function pass(){
 }
 
 function again(){
-  playAgainSound(); celebrateAgain();
+  playAgainSound();
   if(!state.current)return;
   saveCurrentNote();
   let w=state.current;
@@ -87,6 +87,12 @@ function revealThenNext(kind){
     badge.textContent=kind==="PASS"?"✓ PASS":"↻ AGAIN";
     badge.classList.add(kind==="PASS"?"passBadge":"againBadge");
   }
+
+  // Wait until the newly revealed word has actually been laid out.
+  if(kind==="AGAIN"){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>celebrateAgain()));
+  }
+
   setTimeout(()=>{
     const hint=document.getElementById("hint");
     if(hint) hint.textContent="听到后只判断：能否立刻想到单词和意思？";
