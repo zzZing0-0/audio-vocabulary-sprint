@@ -444,7 +444,110 @@ function playMasteredSound(){
     });
   }catch(e){}
 }
-function celebrateAgain(){ dissolveCurrentWord(); }
+function resetWordDissolve(){
+  const a=document.getElementById("answer");
+  if(a){
+    const w=a.querySelector(".word");
+    if(w){w.style.opacity="1";w.classList.remove("wordDissolving");}
+  }
+  const c=document.getElementById("wordDissolveFx");
+  if(c){const x=c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height);}
+}
+
+function dissolveCurrentWord(){
+  const answer=document.getElementById("answer");
+  const wordEl=answer&&answer.querySelector(".word");
+  const canvas=document.getElementById("wordDissolveFx");
+  if(!wordEl||!canvas||!wordEl.textContent.trim())return;
+
+  const wr=wordEl.getBoundingClientRect();
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+
+  canvas.width=Math.max(1,Math.round(window.innerWidth*dpr));
+  canvas.height=Math.max(1,Math.round(window.innerHeight*dpr));
+  canvas.style.width=window.innerWidth+"px";
+  canvas.style.height=window.innerHeight+"px";
+
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const w=Math.max(1,Math.ceil(wr.width));
+  const h=Math.max(1,Math.ceil(wr.height));
+  const off=document.createElement("canvas");
+  off.width=Math.ceil(w*dpr);
+  off.height=Math.ceil(h*dpr);
+
+  const o=off.getContext("2d");
+  o.scale(dpr,dpr);
+
+  const cs=getComputedStyle(wordEl);
+  o.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  o.fillStyle=cs.color||"#222";
+  o.textAlign="center";
+  o.textBaseline="middle";
+  o.fillText(wordEl.textContent,w/2,h/2);
+
+  const image=o.getImageData(0,0,off.width,off.height);
+  const data=image.data;
+  const particles=[];
+  const step=Math.max(2,Math.round(2.5*dpr));
+
+  for(let py=0;py<off.height;py+=step){
+    for(let px=0;px<off.width;px+=step){
+      const i=(py*off.width+px)*4;
+      if(data[i+3]>70&&Math.random()<.72){
+        particles.push({
+          x:wr.left+px/dpr,
+          y:wr.top+py/dpr,
+          vx:(Math.random()-.5)*1.55+.62,
+          vy:(Math.random()-.5)*.95-.18,
+          r:.9+Math.random()*1.35,
+          life:1,
+          fade:.016+Math.random()*.012
+        });
+      }
+    }
+  }
+
+  if(!particles.length)return;
+
+  // Let the original word remain for the first instant, then "break" it into the particles.
+  wordEl.classList.add("wordDissolving");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{wordEl.style.opacity="0";}));
+
+  const start=performance.now();
+  function frame(t){
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+    for(const p of particles){
+      p.x+=p.vx;
+      p.y+=p.vy;
+      p.vx*=.993;
+      p.vy-=.0015;
+      p.life-=p.fade;
+      if(p.life<=0)continue;
+
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle="rgb(55,60,67)";
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    if(t-start<900&&particles.some(p=>p.life>0)){
+      requestAnimationFrame(frame);
+    }else{
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function celebrateAgain(){
+  try{ dissolveCurrentWord(); }catch(e){ console.warn("AGAIN dissolve skipped:",e); }
+}
+
 function celebrateMastered(){
   const card=document.querySelector(".card"); if(!card) return;
   card.classList.remove("masteredGlow"); void card.offsetWidth; card.classList.add("masteredGlow");
