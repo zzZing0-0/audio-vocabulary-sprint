@@ -374,123 +374,60 @@ updateStats();
 
 
 let neutralFeedbackCtx=null;
+
 function getNeutralFeedbackCtx(){
-  const AudioCtx=window.AudioContext||window.webkitAudioContext;
-  if(!AudioCtx) return null;
-  if(!neutralFeedbackCtx) neutralFeedbackCtx=new AudioCtx();
-  if(neutralFeedbackCtx.state==="suspended") neutralFeedbackCtx.resume().catch(()=>{});
-  return neutralFeedbackCtx;
-}
-
-function resetWordDissolve(){
-  const a=document.getElementById("answer");
-  if(a){
-    const w=a.querySelector(".word");
-    if(w){w.style.opacity="1";w.classList.remove("wordDissolving");}
-  }
-  const c=document.getElementById("wordDissolveFx");
-  if(c){const x=c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height);}
-}
-function dissolveCurrentWord(){
-  const answer=document.getElementById("answer");
-  const wordEl=answer&&answer.querySelector(".word");
-  const canvas=document.getElementById("wordDissolveFx");
-  if(!wordEl||!canvas||!wordEl.textContent.trim())return;
-
-  const wr=wordEl.getBoundingClientRect();
-  const dpr=Math.max(1,window.devicePixelRatio||1);
-
-  canvas.width=Math.max(1,Math.round(window.innerWidth*dpr));
-  canvas.height=Math.max(1,Math.round(window.innerHeight*dpr));
-  canvas.style.width=window.innerWidth+"px";
-  canvas.style.height=window.innerHeight+"px";
-
-  const ctx=canvas.getContext("2d");
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-
-  const w=Math.max(1,Math.ceil(wr.width));
-  const h=Math.max(1,Math.ceil(wr.height));
-  const off=document.createElement("canvas");
-  off.width=Math.ceil(w*dpr);
-  off.height=Math.ceil(h*dpr);
-
-  const o=off.getContext("2d");
-  o.scale(dpr,dpr);
-
-  const cs=getComputedStyle(wordEl);
-  o.font=`${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-  o.fillStyle=cs.color||"#222";
-  o.textAlign="center";
-  o.textBaseline="middle";
-  o.fillText(wordEl.textContent,w/2,h/2);
-
-  const image=o.getImageData(0,0,off.width,off.height);
-  const data=image.data;
-  const particles=[];
-  const step=Math.max(2,Math.round(2.5*dpr));
-
-  for(let py=0;py<off.height;py+=step){
-    for(let px=0;px<off.width;px+=step){
-      const i=(py*off.width+px)*4;
-      if(data[i+3]>70&&Math.random()<.72){
-        particles.push({
-          x:wr.left+px/dpr,
-          y:wr.top+py/dpr,
-          vx:(Math.random()-.5)*1.55+.62,
-          vy:(Math.random()-.5)*.95-.18,
-          r:.9+Math.random()*1.35,
-          life:1,
-          fade:.016+Math.random()*.012
-        });
-      }
-    }
-  }
-
-  if(!particles.length)return;
-
-  // Let the original word remain for the first instant, then "break" it into the particles.
-  wordEl.classList.add("wordDissolving");
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{wordEl.style.opacity="0";}));
-
-  const start=performance.now();
-  function frame(t){
-    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-
-    for(const p of particles){
-      p.x+=p.vx;
-      p.y+=p.vy;
-      p.vx*=.993;
-      p.vy-=.0015;
-      p.life-=p.fade;
-      if(p.life<=0)continue;
-
-      ctx.globalAlpha=Math.max(0,p.life);
-      ctx.fillStyle="rgb(55,60,67)";
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
-    }
-    ctx.globalAlpha=1;
-
-    if(t-start<900&&particles.some(p=>p.life>0)){
-      requestAnimationFrame(frame);
-    }else{
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-    }
-  }
-  requestAnimationFrame(frame);
-}
-
-function playAgainSound(){
   try{
-    const ctx=getNeutralFeedbackCtx();if(!ctx)return;
-    if(ctx.state==="suspended")ctx.resume();
-    const now=ctx.currentTime+.01;
-    [[880,0,.055],[1320,.045,.07]].forEach(([f,d,dur])=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.setValueAtTime(f,now+d);
-      g.gain.setValueAtTime(.0001,now+d);g.gain.exponentialRampToValueAtTime(.055,now+d+.006);
-      g.gain.exponentialRampToValueAtTime(.0001,now+d+dur);o.connect(g);g.connect(ctx.destination);o.start(now+d);o.stop(now+d+dur+.015);
-    });
+    const Ctx=window.AudioContext||window.webkitAudioContext;
+    if(!Ctx)return null;
+    if(!neutralFeedbackCtx)neutralFeedbackCtx=new Ctx();
+    return neutralFeedbackCtx;
+  }catch(e){return null;}
+}
+
+async function unlockFeedbackAudio(){
+  const ctx=getNeutralFeedbackCtx();
+  if(!ctx)return null;
+  try{
+    if(ctx.state!=="running")await ctx.resume();
+    // A silent buffer inside a real user gesture reliably unlocks Web Audio on iOS/WebKit.
+    const b=ctx.createBuffer(1,1,22050);
+    const s=ctx.createBufferSource();
+    s.buffer=b;s.connect(ctx.destination);s.start();
+  }catch(e){}
+  return ctx;
+}
+
+function crystalTone(ctx,freq,start,dur,peak){
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.type="sine";
+  o.frequency.setValueAtTime(freq,start);
+  g.gain.setValueAtTime(.0001,start);
+  g.gain.exponentialRampToValueAtTime(peak,start+.008);
+  g.gain.exponentialRampToValueAtTime(Math.max(peak*.28,.0002),start+dur*.36);
+  g.gain.exponentialRampToValueAtTime(.0001,start+dur);
+  o.connect(g);g.connect(ctx.destination);
+  o.start(start);o.stop(start+dur+.03);
+}
+
+async function playAgainSound(){
+  try{
+    const ctx=await unlockFeedbackAudio();
+    if(!ctx||ctx.state!=="running")return;
+
+    const scale=[523.25,587.33,659.25,698.46,783.99,880,987.77];
+    const f=scale[Math.floor(Math.random()*scale.length)];
+    const now=ctx.currentTime+.025;
+
+    // Crystal-like main strike.
+    crystalTone(ctx,f,now,.42,.065);
+    crystalTone(ctx,f*2.01,now,.16,.018);
+    crystalTone(ctx,f*3.02,now+.01,.11,.010);
+
+    // A small randomized consonant musical tail.
+    const tails=[1.5,1.25,4/3,2];
+    const ratio=tails[Math.floor(Math.random()*tails.length)];
+    crystalTone(ctx,f*ratio,now+.12,.34,.025);
+    crystalTone(ctx,f*2,now+.19,.24,.012);
   }catch(e){}
 }
 function playMasteredSound(){
@@ -523,3 +460,12 @@ function styleDebtBadge(d){
   badge.classList.add(debtVisualClass(d));
   if(Number(d)>=7 && !badge.textContent.includes("🔥")) badge.textContent="🔥 "+badge.textContent;
 }
+
+
+function installFeedbackAudioUnlock(){
+  const unlock=()=>{unlockFeedbackAudio();};
+  ["pointerdown","touchstart","click"].forEach(type=>{
+    document.addEventListener(type,unlock,{once:true,passive:true});
+  });
+}
+installFeedbackAudioUnlock();
