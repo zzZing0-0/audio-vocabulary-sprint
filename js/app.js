@@ -384,7 +384,16 @@ function getNeutralFeedbackCtx(){
   }catch(e){return null;}
 }
 
+function setFeedbackAudioSession(){
+  try{
+    if("audioSession" in navigator && navigator.audioSession){
+      navigator.audioSession.type="playback";
+    }
+  }catch(e){}
+}
+
 async function unlockFeedbackAudio(){
+  setFeedbackAudioSession();
   const ctx=getNeutralFeedbackCtx();
   if(!ctx)return null;
   try{
@@ -565,6 +574,7 @@ function styleDebtBadge(d){
 }
 
 
+setFeedbackAudioSession();
 function installFeedbackAudioUnlock(){
   const unlock=()=>{unlockFeedbackAudio();};
   ["pointerdown","touchstart","click"].forEach(type=>{
