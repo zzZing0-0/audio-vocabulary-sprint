@@ -42,12 +42,15 @@ function reveal(){
   if(!state.current)return;
   revealed=true;
   let d=state.debts[state.current]||1;
+  const youdaoHref=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)
+    ? "https://m.youdao.com/dict?le=eng&q="+encodeURIComponent(state.current)
+    : "https://dict.youdao.com/w/eng/"+encodeURIComponent(state.current);
   document.getElementById("answer").innerHTML=
     '<div class="debtBadge">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
       '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="vocabLookup" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
-      '<a href="https://dict.youdao.com/w/eng/'+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">📘 有道英中</a>'+
+      '<a href="'+youdaoHref+'" target="vocabLookup" style="color:#666;text-decoration:none">📘 有道英中</a>'+
       '<a href="https://youglish.com/pronounce/'+encodeURIComponent(state.current)+'/english" target="vocabLookup" style="color:#666;text-decoration:none">🎧 YouGlish 语境</a>'+
       '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
@@ -158,6 +161,7 @@ document.getElementById("speak").onclick=()=>{
   if(!state.current){
     speechSynthesis.cancel();
     revealed=false;
+    if(state.queueDate!==localDateKey()) refill();
     if(!state.queue.length) refill();
     state.current=popNextEligible();
     if(!state.current){ refill(); state.current=popNextEligible(); }

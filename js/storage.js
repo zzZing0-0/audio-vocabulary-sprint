@@ -12,6 +12,7 @@ state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
+state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.12: rebuild queue on a new local day
 
 
 

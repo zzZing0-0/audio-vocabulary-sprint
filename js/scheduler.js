@@ -14,13 +14,27 @@ function eligible(){
 function refill(){
   let unseen=allWords().filter(w=>!state.seen[w]&&!state.mastered[w]);
   let debt=allWords().filter(w=>activeEligibleToday(w));
-  shuffle(unseen); shuffle(debt);
+  shuffle(unseen);
+
+  // Weighted random review order: higher-debt words tend to surface earlier,
+  // while still retaining randomness among Active words.
+  debt=debt
+    .map(w=>({
+      w,
+      key:-Math.log(Math.max(Math.random(),1e-9))/Math.max(1,Number(state.debts[w])||1)
+    }))
+    .sort((a,b)=>a.key-b.key)
+    .map(x=>x.w);
+
+  // Interleave retrieval practice instead of burying Active words under thousands of unseen.
+  // About 20% of a mixed session is review: 4 unseen + 1 Active.
   let q=[], ui=0, di=0;
   while(ui<unseen.length || di<debt.length){
-    for(let k=0;k<12 && ui<unseen.length;k++) q.push(unseen[ui++]);
+    for(let k=0;k<4 && ui<unseen.length;k++) q.push(unseen[ui++]);
     if(di<debt.length) q.push(debt[di++]);
   }
   state.queue=q;
+  state.queueDate=localDateKey();
 }
 
 function popNextEligible(){
@@ -38,6 +52,10 @@ function next(){
   speechSynthesis.cancel(); revealed=false;
   resetWordDissolve();
   document.getElementById("answer").innerHTML="";
+
+  // A queue built yesterday cannot contain words that only became review-eligible today.
+  // Rebuild immediately on the first transition of each new local calendar day.
+  if(state.queueDate!==localDateKey()) refill();
   if(!state.queue.length) refill();
   let prev=state.current, guard=0;
   while(state.queue.length && state.queue[0]===prev && guard++<5) state.queue.push(state.queue.shift());
