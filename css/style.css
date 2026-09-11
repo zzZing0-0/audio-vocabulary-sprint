@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.15: modal layers must cover the top-right undo control */
+/* v3.15.1: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.15 removed-word management ===== */
+/* ===== v3.15.1 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -495,4 +495,39 @@ button.controlBtn{
 .dangerLite{color:#9a5d5d!important}
 @media(min-width:560px){
   .listLinks{grid-template-columns:repeat(3,1fr)}
+}
+
+
+/* ===== v3.15.1 transient top-right notice ===== */
+.transientToast{
+  position:fixed;
+  top:calc(18px + env(safe-area-inset-top));
+  right:max(18px,env(safe-area-inset-right));
+  z-index:12000;
+  max-width:min(360px,calc(100vw - 36px));
+  padding:11px 14px;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:14px;
+  background:rgba(255,255,255,.96);
+  color:#555;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  font-size:13px;
+  line-height:1.4;
+  opacity:0;
+  transform:translateY(-8px);
+  pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.transientToast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+@media(max-width:560px){
+  .transientToast{
+    top:calc(12px + env(safe-area-inset-top));
+    right:max(12px,env(safe-area-inset-right));
+    max-width:calc(100vw - 24px);
+  }
 }

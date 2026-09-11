@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.15",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.15.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -186,6 +186,31 @@ function saveCurrentNote(){
   else delete state.notes[state.current];
   save();
 }
+let transientToastTimer=null;
+function showTransientToast(message){
+  let el=document.getElementById("transientToast");
+  if(!el){
+    el=document.createElement("div");
+    el.id="transientToast";
+    el.className="transientToast";
+    el.setAttribute("role","status");
+    el.setAttribute("aria-live","polite");
+    document.body.appendChild(el);
+  }
+  if(transientToastTimer){
+    clearTimeout(transientToastTimer);
+    transientToastTimer=null;
+  }
+  el.textContent=message;
+  el.classList.remove("show");
+  // Force a frame so repeated messages restart the transition/timer cleanly.
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
+  transientToastTimer=setTimeout(()=>{
+    el.classList.remove("show");
+    transientToastTimer=null;
+  },5000);
+}
+
 function removeCurrentWord(){
   const w=state.current;
   if(!w)return;
@@ -194,18 +219,20 @@ function removeCurrentWord(){
 
 它会进入「已移除」页面，可随时恢复；已有 debt / Mastered / Note 历史不会被删除。`))return;
 
+  // Removal is a first-class reversible action, just like PASS / AGAIN.
+  armUndo();
+
   state.removedWords=state.removedWords||{};
   state.removedWords[w]={removedAt:new Date().toISOString()};
   state.queue=(state.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
 
   speechSynthesis.cancel();
-  clearUndo();
   state.current=null;
   revealed=false;
   save();
 
-  const hint=document.getElementById("hint");
-  if(hint) hint.textContent=`已移出 “${w}”；可在「已移除」页面恢复。`;
+  updateStats();
+  showTransientToast(`已移出 “${w}” · 可点击撤回恢复`);
   next();
 }
 

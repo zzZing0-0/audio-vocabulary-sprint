@@ -17,6 +17,7 @@ function cloneLearningSnapshot(){
     seen:JSON.parse(JSON.stringify(state.seen||{})),
     highestDebt:JSON.parse(JSON.stringify(state.highestDebt||{})),
     lastReviewedDate:JSON.parse(JSON.stringify(state.lastReviewedDate||{})),
+    removedWords:JSON.parse(JSON.stringify(state.removedWords||{})),
     current:state.current,
     queue:Array.isArray(state.queue)?state.queue.slice():[],
     queueDate:state.queueDate
@@ -52,6 +53,7 @@ function undoLastJudgment(){
   state.seen=s.seen;
   state.highestDebt=s.highestDebt;
   state.lastReviewedDate=s.lastReviewedDate;
+  state.removedWords=s.removedWords||{};
   state.current=s.current;
   state.queue=s.queue;
   state.queueDate=s.queueDate;
@@ -67,7 +69,7 @@ function undoLastJudgment(){
       badge.classList.remove("passBadge","againBadge");
     }
     const hint=document.getElementById("hint");
-    if(hint)hint.textContent="上一步已撤回；请重新选择 PASS 或 AGAIN";
+    if(hint)hint.textContent="上一步已撤回；当前单词已恢复。";
     setTimeout(()=>speakCurrent(),80);
   }
 }
