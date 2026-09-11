@@ -20,12 +20,12 @@ function pronunciationHtml(word){
   // Prefer explicitly region-labelled IPA. Show generic fallback only when
   // neither regional label exists; never guess a UK/US label.
   const parts=[];
-  if(item.uk) parts.push('<span><b>UK</b> '+escapeHtml(item.uk)+'</span>');
-  if(item.us) parts.push('<span><b>US</b> '+escapeHtml(item.us)+'</span>');
-  if(!parts.length && item.fallback) parts.push('<span><b>IPA</b> '+escapeHtml(item.fallback)+'</span>');
+  if(item.uk) parts.push('<span class="ipaChip ipaUk" title="UK">'+escapeHtml(item.uk)+'</span>');
+  if(item.us) parts.push('<span class="ipaChip ipaUs" title="US">'+escapeHtml(item.us)+'</span>');
+  if(!parts.length && item.fallback) parts.push('<span class="ipaChip ipaGeneric" title="IPA">'+escapeHtml(item.fallback)+'</span>');
   if(!parts.length)return "";
 
-  return '<div class="ipaLine">'+parts.join('<span class="ipaSep">·</span>')+'</div>';
+  return '<div class="ipaLine">'+parts.join('')+'</div>';
 }
 
 function refreshCurrentPronunciation(){
@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.16",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.17",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -119,10 +119,10 @@ function reveal(){
       '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
-    '<div class="wordNoteWrap">'+
-      '<label for="wordNoteInput">📝 Note</label>'+
+    '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
+      '<summary>Note</summary>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
-    '</div>'+
+    '</details>'+
     '<button class="removeCurrentBtn" id="removeCurrentWord" type="button">移出词库</button>';
 
   try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
@@ -267,7 +267,11 @@ function updateStats(){
  document.getElementById("mastered").textContent=m;
  document.getElementById("active").textContent=a;
  document.getElementById("unseen").textContent=u;
- document.getElementById("bar").style.width=(m/Math.max(bank.length,1)*100)+"%";
+ const pct=m/Math.max(bank.length,1)*100;
+ const bar=document.getElementById("bar");
+ if(bar) bar.style.width=(Math.floor(pct/10)*10)+"%";
+ const flag=document.getElementById("progressFlag");
+ if(flag){flag.style.left=Math.max(0,Math.min(100,pct))+"%";flag.title=Math.round(pct)+"%";}
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function loadVoices(){voices=getPreferredEnglishVoices(); updateVoiceInfo();}
@@ -314,7 +318,7 @@ document.getElementById("info").onclick=()=>{
    '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
    '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / Mastered / Note 历史；可随时恢复。</p>'+
-   '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">🔩 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✓ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">🗑 查看已移除</a></div>'+
+   '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">⚠️ 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✅️ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">❌ 查看已移除</a></div>'+
    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
 };

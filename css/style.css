@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.16: modal layers must cover the top-right undo control */
+/* v3.17: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.16 removed-word management ===== */
+/* ===== v3.17 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.16 transient top-right notice ===== */
+/* ===== v3.17 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.16 simplified study controls ===== */
+/* ===== v3.17 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -584,3 +584,24 @@ button.controlBtn{
   .speakerNav{gap:12px}
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
+
+/* ===== v3.17 UI hierarchy refresh ===== */
+.stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
+.stats div{white-space:nowrap}
+.hint:empty{display:none}
+.ipaLine{margin-top:11px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.ipaChip{display:inline-flex;padding:5px 10px;border-radius:12px;color:#666;font-size:15px;line-height:1.45;font-family:"Charis SIL","Doulos SIL","Noto Sans","Segoe UI",sans-serif}
+.ipaUk{background:#fbd5e4}.ipaUs{background:#fbf6d5}.ipaGeneric{background:#d5f3e1}
+.noteDetails{margin:16px auto 0;max-width:520px;text-align:left}
+.noteDetails summary{list-style:none;cursor:pointer;color:#777;font-size:13px;user-select:none;width:max-content}
+.noteDetails summary::-webkit-details-marker{display:none}
+.noteDetails[open] summary{margin-bottom:7px}
+.revealControls{display:flex;justify-content:center}
+.revealAction{width:min(100%,420px);border:2px solid #dcc8f8!important;background:#fff!important;color:#555!important;box-shadow:none!important}
+.passAction{border:2px solid #d7e7e5!important;background:#fff!important;color:#526866!important}
+.againAction{border:2px solid #d3d3d1!important;background:#fff!important;color:#666!important}
+.progressWrap{margin-top:18px;padding-top:12px}
+.rainbowProgress{position:relative;overflow:visible;height:8px;background:#ecebea;border-radius:999px}
+.rainbowProgress .bar{height:100%;border-radius:999px;background:linear-gradient(90deg,#f6c8d9 0% 14.285%,#f5d2b8 14.285% 28.57%,#fbf0b8 28.57% 42.855%,#cfe9d9 42.855% 57.14%,#cfe6ef 57.14% 71.425%,#d5d7f5 71.425% 85.71%,#e4d0f5 85.71% 100%);transition:width .3s ease}
+.progressFlag{position:absolute;top:-24px;transform:translateX(-50%);font-size:18px;line-height:1;transition:left .3s ease}
+@media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}

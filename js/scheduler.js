@@ -68,8 +68,6 @@ function undoLastJudgment(){
       badge.textContent="↶ 已撤回";
       badge.classList.remove("passBadge","againBadge");
     }
-    const hint=document.getElementById("hint");
-    if(hint)hint.textContent="上一步已撤回；当前单词已恢复。";
     setTimeout(()=>speakCurrent(),80);
   }
 }
@@ -187,8 +185,6 @@ function revealThenNext(kind){
   if(judgmentTimer)clearTimeout(judgmentTimer);
   judgmentTimer=setTimeout(()=>{
     judgmentTimer=null;
-    const hint=document.getElementById("hint");
-    if(hint) hint.textContent="听到后只判断：能否立刻想到单词和意思？";
     next();
   },950);
 }
