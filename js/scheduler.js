@@ -178,6 +178,8 @@ function revealThenNext(kind){
     badge.textContent=kind==="PASS"?"通过":"再来一次";
     badge.classList.add(kind==="PASS"?"passBadge":"againBadge");
   }
+  const firstBadge=document.querySelector("#answer .firstBadge");
+  if(firstBadge)firstBadge.style.display="none";
 
   // Wait until the newly revealed word has actually been laid out.
   if(kind==="AGAIN"){

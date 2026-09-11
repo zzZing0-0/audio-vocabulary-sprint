@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.19",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.19.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -121,8 +121,12 @@ function reveal(){
   const youdaoHref=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)
     ? "https://m.youdao.com/dict?le=eng&q="+encodeURIComponent(state.current)
     : "https://dict.youdao.com/w/eng/"+encodeURIComponent(state.current);
+  const isFirst=!state.debts[state.current];
   document.getElementById("answer").innerHTML=
-    '<div class="debtBadge">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
+    '<div class="topLeftInfo">'+
+      '<div class="debtBadge">debt: '+d+'</div>'+
+      (isFirst?'<div class="firstBadge">首次出现</div>':'')+
+    '</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
     '<div id="pronunciationSlot">'+pronunciationHtml(state.current)+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
