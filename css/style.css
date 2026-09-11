@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.13.1.1: modal layers must cover the top-right undo control */
+/* v3.13.2.1: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,

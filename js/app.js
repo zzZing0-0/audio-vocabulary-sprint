@@ -589,6 +589,8 @@ function installFeedbackAudioUnlock(){
 installFeedbackAudioUnlock();
 
 
+
+
 function installMoreToolsOutsideClose(){
   const box=document.querySelector(".moreTools");
   const menu=document.querySelector(".moreToolsMenu");
@@ -597,11 +599,22 @@ function installMoreToolsOutsideClose(){
   document.addEventListener("pointerdown",(e)=>{
     if(!box.contains(e.target)){
       menu.classList.remove("open");
-      menu.hidden=true;
-      menu.style.display="";
+      menu.style.display="none";
       const trigger=box.querySelector("button");
       if(trigger)trigger.setAttribute("aria-expanded","false");
     }
   },true);
 }
 installMoreToolsOutsideClose();
+
+document.addEventListener("click",(e)=>{
+  const btn=e.target.closest(".moreTools button");
+  if(!btn)return;
+  const box=btn.closest(".moreTools");
+  const menu=box&&box.querySelector(".moreToolsMenu");
+  if(!menu)return;
+  const open=getComputedStyle(menu).display!=="none";
+  menu.style.display=open?"none":"block";
+  menu.classList.toggle("open",!open);
+  btn.setAttribute("aria-expanded",String(!open));
+});
