@@ -106,6 +106,7 @@ function popNextEligible(){
   const today=localDateKey();
   while(state.queue.length){
     const w=state.queue.shift();
+    if(isRemovedWord(w)) continue;
     if(state.mastered[w]) continue;
     if((state.debts[w]||0)>0 && state.lastReviewedDate[w]===today) continue;
     return w;

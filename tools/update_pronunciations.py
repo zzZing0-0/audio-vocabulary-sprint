@@ -39,7 +39,7 @@ BASE_DELAY = 0.65
 JITTER = 0.20
 TIMEOUT = 10
 MAX_RETRIES = 5
-UA = "AudioVocabularySprint-PronunciationBuilder/1.3 (personal language-learning project)"
+UA = "AudioVocabularySprint-PronunciationBuilder/1.4 (personal language-learning project)"
 
 TRANSIENT_HTTP = {429, 500, 502, 503, 504}
 
@@ -128,7 +128,15 @@ def load_cloud_custom_words(owner, repo, path, branch, token):
     if not isinstance(state, dict):
         raise SystemExit("GitHub progress.json has an unexpected format.")
 
-    return normalise_words(state.get("customWords", []))
+    custom = normalise_words(state.get("customWords", []))
+    removed_raw = state.get("removedWords", {})
+    if isinstance(removed_raw, dict):
+        removed = {str(w).lower() for w in removed_raw.keys()}
+    elif isinstance(removed_raw, list):
+        removed = {str(w).lower() for w in removed_raw}
+    else:
+        removed = set()
+    return custom, removed
 
 def load_db(path):
     if not path.exists():
@@ -307,12 +315,15 @@ def main():
         cloud_source = "skipped (--base-only)"
     else:
         token = github_token()
-        custom_vocab = load_cloud_custom_words(
+        custom_vocab, removed_cloud = load_cloud_custom_words(
             args.owner, args.repo, args.path, args.branch, token
         )
         cloud_source = f"github.com/{args.owner}/{args.repo}/{args.path}@{args.branch}"
 
-    vocab = normalise_words(base_vocab + custom_vocab)
+    if args.base_only:
+        removed_cloud = set()
+
+    vocab = [w for w in normalise_words(base_vocab + custom_vocab) if w.lower() not in removed_cloud]
     out = project/"data"/"pronunciations.json"
     db = load_db(out)
     existing = db["words"]
@@ -341,6 +352,7 @@ def main():
 
     print(f"Base vocabulary: {len(base_vocab)}")
     print(f"Custom words from cloud: {len(custom_vocab)}")
+    print(f"Removed words excluded: {len(removed_cloud)}")
     print(f"Combined vocabulary: {len(vocab)}")
     print(f"Progress source: {cloud_source}")
     print(f"Already stored: {len(existing)}")

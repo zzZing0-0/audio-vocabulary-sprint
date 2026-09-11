@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.14.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.15",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -100,7 +100,8 @@ function reveal(){
     '<div class="wordNoteWrap">'+
       '<label for="wordNoteInput">📝 Note</label>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
-    '</div>';
+    '</div>'+
+    '<button class="removeCurrentBtn" id="removeCurrentWord" type="button">移出词库</button>';
 
   try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
 }
@@ -185,14 +186,39 @@ function saveCurrentNote(){
   else delete state.notes[state.current];
   save();
 }
+function removeCurrentWord(){
+  const w=state.current;
+  if(!w)return;
+  saveCurrentNote();
+  if(!confirm(`把 “${w}” 移出学习词库？
+
+它会进入「已移除」页面，可随时恢复；已有 debt / Mastered / Note 历史不会被删除。`))return;
+
+  state.removedWords=state.removedWords||{};
+  state.removedWords[w]={removedAt:new Date().toISOString()};
+  state.queue=(state.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
+
+  speechSynthesis.cancel();
+  clearUndo();
+  state.current=null;
+  revealed=false;
+  save();
+
+  const hint=document.getElementById("hint");
+  if(hint) hint.textContent=`已移出 “${w}”；可在「已移除」页面恢复。`;
+  next();
+}
+
 function updateStats(){
- let m=Object.keys(state.mastered).length;
- let a=Object.values(state.debts).filter(x=>x>0).length;
- let u=allWords().filter(w=>!state.seen[w]).length;
+ const bank=allWords();
+ const bankKeys=new Set(bank.map(w=>w.toLowerCase()));
+ let m=Object.keys(state.mastered).filter(w=>bankKeys.has(w.toLowerCase())).length;
+ let a=Object.entries(state.debts).filter(([w,d])=>Number(d)>0&&bankKeys.has(w.toLowerCase())).length;
+ let u=bank.filter(w=>!state.seen[w]).length;
  document.getElementById("mastered").textContent=m;
  document.getElementById("active").textContent=a;
  document.getElementById("unseen").textContent=u;
- document.getElementById("bar").style.width=(m/Math.max(allWords().length,1)*100)+"%";
+ document.getElementById("bar").style.width=(m/Math.max(bank.length,1)*100)+"%";
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function loadVoices(){voices=getPreferredEnglishVoices(); updateVoiceInfo();}
@@ -219,6 +245,9 @@ document.getElementById("speak").onclick=()=>{
 document.getElementById("answer").addEventListener("change",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 });
+document.getElementById("answer").addEventListener("click",e=>{
+  if(e.target && e.target.id==="removeCurrentWord") removeCurrentWord();
+});
 document.getElementById("answer").addEventListener("blur",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 },true);
@@ -239,8 +268,8 @@ document.getElementById("info").onclick=()=>{
    '<p>每个新词首次出现时默认 debt = 1。PASS：debt −1；AGAIN：debt +1。debt 到 0 后进入已掌握。因此首次 PASS 直接清零；首次 AGAIN 会变成 debt = 2。</p>'+
    '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
-   '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p>'+
-   '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">🔩 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✓ 查看已掌握</a></div>'+
+   '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / Mastered / Note 历史；可随时恢复。</p>'+
+   '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">🔩 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✓ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">🗑 查看已移除</a></div>'+
    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
 };
@@ -250,7 +279,7 @@ document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closeP
 document.getElementById("reset").onclick=()=>{
  if(confirm("重置本机学习进度？\n\n这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。\n\n重置后如果再上传，会用重置后的空白进度覆盖云端。")){
    localStorage.removeItem(KEY);
-   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},current:null,queue:BASE_WORDS.slice(),voiceIndex:state.voiceIndex||0};
+   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
    shuffle(state.queue);
    localStorage.setItem("audio_vocab_sprint_just_reset","1");
    save();
@@ -318,8 +347,10 @@ async function importProgress(file){
       lastReviewedDate: incoming.lastReviewedDate || {},
       customWords: Array.isArray(incoming.customWords) ? incoming.customWords : [],
       notes: (incoming.notes && typeof incoming.notes === "object") ? incoming.notes : {},
+      removedWords: (incoming.removedWords && typeof incoming.removedWords === "object" && !Array.isArray(incoming.removedWords)) ? incoming.removedWords : {},
       current: incoming.current || null,
       queue: Array.isArray(incoming.queue) ? incoming.queue : [],
+      queueDate: (typeof incoming.queueDate === "string") ? incoming.queueDate : null,
       voiceIndex: incoming.voiceIndex || 0
     };
     for (const [w,d] of Object.entries(state.debts)) {

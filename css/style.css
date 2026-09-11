@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.14.1: modal layers must cover the top-right undo control */
+/* v3.15: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -476,4 +476,23 @@ button.controlBtn{
 .ipaSep{color:#bbb}
 @media(max-width:500px){
   .ipaLine{font-size:14px;gap:6px}
+}
+
+
+/* ===== v3.15 removed-word management ===== */
+.removeCurrentBtn{
+  display:block;
+  margin:12px auto 0;
+  border:0;
+  background:transparent;
+  color:#999;
+  font-size:12px;
+  cursor:pointer;
+  padding:7px 10px;
+}
+.removeCurrentBtn:hover{color:#666}
+.listRowActions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.dangerLite{color:#9a5d5d!important}
+@media(min-width:560px){
+  .listLinks{grid-template-columns:repeat(3,1fr)}
 }
