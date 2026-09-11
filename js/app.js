@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.18.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.19",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -312,7 +312,7 @@ function removeCurrentWord(){
 
   requireSecondClick(
     "remove:"+w,
-    `将 “${w}” 移出学习词库；学习历史和笔记会保留`,
+    `将 “${w}” 删除出学习词库；学习历史和笔记会保留`,
     ()=>{
       armUndo();
       state.removedWords=state.removedWords||{};
@@ -326,7 +326,7 @@ function removeCurrentWord(){
 
       updateStats();
       updateAnswerControls();
-      showTransientToast(`已移出 “${w}”，可点击撤回恢复`);
+      showTransientToast(`已删除 “${w}”，可点击撤回恢复`);
       next();
     }
   );

@@ -96,7 +96,7 @@ function removeListWord(w,rerender){
   if(!w)return;
   listRequireSecondClick(
     "remove-list:"+w,
-    `将 “${w}” 移出学习词库；学习历史和 Note 会保留`,
+    `将 “${w}” 删除出学习词库；学习历史和笔记会保留`,
     ()=>{
       listState.removedWords=listState.removedWords||{};
       listState.removedWords[w]={removedAt:new Date().toISOString()};
@@ -118,7 +118,7 @@ function renderActive(){
   root.innerHTML=rows.length?rows.map(([w,d])=>{
     const peak=listState.highestDebt[w]||d;
     const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';
-    return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">debt '+d+' · peak '+peak+'</div><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">移出词库</button>'+note+'</div>';
+    return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">debt '+d+' · peak '+peak+'</div><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button>'+note+'</div>';
   }).join(''):'<p>暂无钉子户 🎉</p>';
   root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderActive));
 }
@@ -166,7 +166,7 @@ function renderMastered(){
   document.getElementById("count").textContent=rows.length;
   root.innerHTML=rows.length?rows.map(([w,peak])=>{
     const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';
-    return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">peak '+peak+'</div><div class="listRowActions"><button class="miniBtn" data-word="'+encodeURIComponent(w)+'">重新加入</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">移出词库</button></div>'+note+'</div>';
+    return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">peak '+peak+'</div><div class="listRowActions"><button class="miniBtn" data-word="'+encodeURIComponent(w)+'">重新学习</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button></div>'+note+'</div>';
   }).join(''):'<p>还没有已掌握单词。</p>';
   root.querySelectorAll('[data-word]').forEach(btn=>btn.onclick=()=>reAddWord(decodeURIComponent(btn.dataset.word)));
   root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderMastered));
