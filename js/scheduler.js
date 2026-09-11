@@ -120,6 +120,7 @@ function next(){
   speechSynthesis.cancel(); revealed=false;
   resetWordDissolve();
   document.getElementById("answer").innerHTML="";
+  updateAnswerControls();
 
   // A queue built yesterday cannot contain words that only became review-eligible today.
   // Rebuild immediately on the first transition of each new local calendar day.
@@ -131,9 +132,11 @@ function next(){
   if(!state.current){ refill(); state.current=popNextEligible(); }
   if(!state.current){
     document.getElementById("answer").innerHTML='<div class="word">🎉 今天可复习的词已完成</div>';
+    updateAnswerControls();
     save(); return;
   }
   state.seen[state.current]=true; save();
+  updateAnswerControls();
   setTimeout(speakCurrent,120);
 }
 

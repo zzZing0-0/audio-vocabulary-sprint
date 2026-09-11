@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.15.1: modal layers must cover the top-right undo control */
+/* v3.16: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.15.1 removed-word management ===== */
+/* ===== v3.16 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.15.1 transient top-right notice ===== */
+/* ===== v3.16 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -530,4 +530,57 @@ button.controlBtn{
     right:max(12px,env(safe-area-inset-right));
     max-width:calc(100vw - 24px);
   }
+}
+
+
+/* ===== v3.16 simplified study controls ===== */
+.speakerNav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+.voiceArrow{
+  width:44px;
+  height:56px;
+  border:0;
+  background:transparent;
+  color:#9a9a9a;
+  font-size:42px;
+  font-weight:300;
+  line-height:1;
+  cursor:pointer;
+  border-radius:14px;
+  touch-action:manipulation;
+}
+.voiceArrow:hover{color:#555;background:#f6f6f4}
+.voiceArrow:active{transform:scale(.94)}
+.revealControls{
+  margin-top:25px;
+}
+.revealControls[hidden],
+.actions[hidden]{
+  display:none!important;
+}
+.revealAction{
+  width:100%;
+  background:#fff;
+}
+.revealAction:disabled{
+  opacity:.42;
+  cursor:default;
+}
+@media(min-width:760px){
+  .speakerNav{gap:24px}
+  .voiceArrow{width:52px;height:64px;font-size:48px}
+  .revealControls{
+    max-width:720px;
+    width:100%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+@media(max-width:500px){
+  .speakerNav{gap:12px}
+  .voiceArrow{width:40px;height:52px;font-size:38px}
 }

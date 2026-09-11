@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.15.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.16",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -71,6 +71,27 @@ function updateVoiceInfo(){
   el.textContent=v ? "Voice: "+v.name : "";
 }
 
+function updateAnswerControls(){
+  const revealBox=document.getElementById("revealControls");
+  const judgeBox=document.getElementById("judgmentActions");
+  const revealBtn=document.getElementById("reveal");
+
+  const hasWord=!!state.current;
+  if(revealBox) revealBox.hidden=revealed;
+  if(judgeBox) judgeBox.hidden=!revealed;
+  if(revealBtn) revealBtn.disabled=!hasWord;
+}
+
+function changeVoice(step){
+  if(!voices.length)return;
+  const n=voices.length;
+  state.voiceIndex=((Number(state.voiceIndex)||0)+step+n)%n;
+  save();
+  updateVoiceInfo();
+  if(state.current)speakCurrent();
+}
+
+
 function speakText(text){
   speechSynthesis.cancel();
   let u=new SpeechSynthesisUtterance(text);
@@ -82,6 +103,7 @@ function speakCurrent(){ if(state.current) speakText(state.current); }
 function reveal(){
   if(!state.current)return;
   revealed=true;
+  updateAnswerControls();
   let d=state.debts[state.current]||1;
   const youdaoHref=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)
     ? "https://m.youdao.com/dict?le=eng&q="+encodeURIComponent(state.current)
@@ -263,6 +285,7 @@ document.getElementById("speak").onclick=()=>{
     if(state.current){
       state.seen[state.current]=true;
       save();
+      updateAnswerControls();
       speakCurrent();
     }
   }else{
@@ -278,17 +301,12 @@ document.getElementById("answer").addEventListener("click",e=>{
 document.getElementById("answer").addEventListener("blur",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 },true);
-document.getElementById("reveal").onclick=reveal;
+document.getElementById("reveal").onclick=()=>{if(state.current)reveal();};
 document.getElementById("undoBtn").onclick=undoLastJudgment;
-document.getElementById("pass").onclick=()=>{if(!started){started=true;next()}else pass()};
-document.getElementById("again").onclick=()=>{if(!started){started=true;next()}else again()};
-document.getElementById("voice").onclick=()=>{
- if(!voices.length)return;
- state.voiceIndex=(state.voiceIndex+1)%voices.length;
- save();
- updateVoiceInfo();
- if(state.current) speakCurrent();
-};
+document.getElementById("pass").onclick=()=>{if(revealed)pass();};
+document.getElementById("again").onclick=()=>{if(revealed)again();};
+document.getElementById("voicePrev").onclick=()=>changeVoice(-1);
+document.getElementById("voiceNext").onclick=()=>changeVoice(1);
 document.getElementById("info").onclick=()=>{
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
@@ -314,6 +332,7 @@ document.getElementById("reset").onclick=()=>{
    revealed=false; started=false;
    document.getElementById("answer").innerHTML="";
    document.getElementById("hint").textContent="本机进度已重置。点击喇叭开始。";
+   updateAnswerControls();
    alert("本机已重置。\n⚠️ 此时上传 GitHub 会覆盖云端进度。");
  }
 };
@@ -388,6 +407,7 @@ async function importProgress(file){
     revealed=false; started=false;
     document.getElementById("answer").innerHTML="";
     document.getElementById("hint").textContent="进度已导入。点击喇叭继续。";
+    updateAnswerControls();
     alert("进度导入成功");
   }catch(e){
     alert("导入失败：这不是有效的进度文件。");
@@ -476,6 +496,7 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
 
 
 updateStats();
+updateAnswerControls();
 
 
 let neutralFeedbackCtx=null;

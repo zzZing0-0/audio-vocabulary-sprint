@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint v3.15.1
+# Audio Vocabulary Sprint v3.16
 
 ## Structure
 - `index.html` — page structure
@@ -109,14 +109,14 @@ python3 tools/update_pronunciations.py --base-only
 
 Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/missing-page entries.
 
-## v3.15.1
+## v3.16
 - Fixed IPA maintenance so `customWords` come directly from cloud `progress.json`.
 - Removed the need for a local private-data repo or local `progress.json`.
 - Normal daily study remains: study → GitHub Sync upload → done.
 - Terminal maintenance is only needed when newly imported vocabulary needs IPA.
 
 
-## v3.15.1 Removed words
+## v3.16 Removed words
 - Reveal now includes `移出词库`.
 - Removed words are stored in `state.removedWords` and sync inside GitHub `progress.json`.
 - Removal excludes a word from the effective learning bank and future queues without deleting its debt, Mastered, peak, review-date, or Note history.
@@ -126,8 +126,17 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - IPA maintenance reads cloud `removedWords` and excludes them from the combined vocabulary, so newly removed custom words are not fetched unnecessarily.
 
 
-## v3.15.1
+## v3.16
 - `移出词库` is now included in the one-step Undo system.
 - Undo restores `removedWords`, queue/current word, seen/debt/Mastered/peak/review state from the pre-removal snapshot.
 - Removal feedback no longer overwrites the listening hint for the next word.
 - Added a top-right transient notice that disappears automatically after 5 seconds.
+
+
+## v3.16 Simplified study UI
+- Voice switching moved beside the speaker: `‹` = previous voice, `›` = next voice.
+- Tapping the speaker repeats the current pronunciation.
+- Removed the separate `切换语音` study button.
+- Before Reveal, the study area shows only `显示答案`.
+- After Reveal, `显示答案` disappears and only `PASS` / `AGAIN` remain.
+- PASS / AGAIN cannot be submitted before Reveal.
