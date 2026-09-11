@@ -9,6 +9,7 @@ function activeEligibleToday(w){
 
 let lastJudgmentSnapshot=null;
 let judgmentTimer=null;
+let judgmentLocked=false;
 let debtAnimationTimers=[];
 
 function clearDebtAnimationTimers(){
@@ -89,6 +90,7 @@ function undoLastJudgment(){
 
   speechSynthesis.cancel();
   clearDebtAnimationTimers();
+  judgmentLocked=false;
   resetWordDissolve();
 
   const s=lastJudgmentSnapshot;
@@ -156,6 +158,7 @@ function popNextEligible(){
 function next(){
   speechSynthesis.cancel();
   clearDebtAnimationTimers();
+  judgmentLocked=false;
   revealed=false;
   resetWordDissolve();
   document.getElementById("answer").innerHTML="";
@@ -180,7 +183,9 @@ function next(){
 }
 
 function pass(){
-  if(!state.current)return;
+  if(!state.current || judgmentLocked)return;
+  judgmentLocked=true;
+  updateAnswerControls();
   saveCurrentNote();
   armUndo();
   celebratePass(); playPassSound();
@@ -200,8 +205,10 @@ function pass(){
 }
 
 function again(){
+  if(!state.current || judgmentLocked)return;
+  judgmentLocked=true;
+  updateAnswerControls();
   playAgainSound();
-  if(!state.current)return;
   saveCurrentNote();
   armUndo();
   let w=state.current;
