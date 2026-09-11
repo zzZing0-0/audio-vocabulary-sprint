@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.22",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.22.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -86,8 +86,8 @@ function updateAnswerControls(){
   if(revealBox) revealBox.hidden=revealed;
   if(judgeBox) judgeBox.hidden=!revealed;
   if(revealBtn) revealBtn.disabled=!hasWord;
-  if(passBtn) passBtn.disabled=!hasWord || !revealed || (judgmentLocked&&judgmentKind!=="PASS");
-  if(againBtn) againBtn.disabled=!hasWord || !revealed || (judgmentLocked&&judgmentKind!=="AGAIN");
+  if(passBtn) passBtn.disabled=!hasWord || !revealed || judgmentFinalizing || (judgmentLocked&&judgmentKind!=="PASS");
+  if(againBtn) againBtn.disabled=!hasWord || !revealed || judgmentFinalizing || (judgmentLocked&&judgmentKind!=="AGAIN");
   if(removeBtn) removeBtn.hidden=!(hasWord&&revealed);
   if(removeBtn) removeBtn.disabled=!!judgmentLocked;
 
@@ -684,6 +684,8 @@ function resetWordDissolve(){
   if(c){const x=c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height);}
 }
 
+const AGAIN_DISSOLVE_MS=1250;
+
 function dissolveCurrentWord(){
   const answer=document.getElementById("answer");
   const wordEl=answer&&answer.querySelector(".word");
@@ -720,20 +722,22 @@ function dissolveCurrentWord(){
   const image=o.getImageData(0,0,off.width,off.height);
   const data=image.data;
   const particles=[];
-  const step=Math.max(2,Math.round(2.5*dpr));
+  const step=Math.max(1,Math.round(1.75*dpr));
 
   for(let py=0;py<off.height;py+=step){
     for(let px=0;px<off.width;px+=step){
       const i=(py*off.width+px)*4;
-      if(data[i+3]>70&&Math.random()<.72){
+      if(data[i+3]>55&&Math.random()<.86){
+        const angle=Math.random()*Math.PI*2;
+        const speed=.55+Math.random()*2.25;
         particles.push({
           x:wr.left+px/dpr,
           y:wr.top+py/dpr,
-          vx:(Math.random()-.5)*1.55+.62,
-          vy:(Math.random()-.5)*.95-.18,
-          r:.9+Math.random()*1.35,
+          vx:Math.cos(angle)*speed+.28,
+          vy:Math.sin(angle)*speed-.18,
+          r:.38+Math.random()*.82,
           life:1,
-          fade:.016+Math.random()*.012
+          fade:.009+Math.random()*.008
         });
       }
     }
@@ -752,8 +756,8 @@ function dissolveCurrentWord(){
     for(const p of particles){
       p.x+=p.vx;
       p.y+=p.vy;
-      p.vx*=.993;
-      p.vy-=.0015;
+      p.vx*=.996;
+      p.vy-=.001;
       p.life-=p.fade;
       if(p.life<=0)continue;
 
@@ -765,7 +769,7 @@ function dissolveCurrentWord(){
     }
     ctx.globalAlpha=1;
 
-    if(t-start<900&&particles.some(p=>p.life>0)){
+    if(t-start<AGAIN_DISSOLVE_MS&&particles.some(p=>p.life>0)){
       requestAnimationFrame(frame);
     }else{
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
@@ -775,7 +779,13 @@ function dissolveCurrentWord(){
 }
 
 function celebrateAgain(){
-  try{ dissolveCurrentWord(); }catch(e){ console.warn("AGAIN dissolve skipped:",e); }
+  try{
+    dissolveCurrentWord();
+    return AGAIN_DISSOLVE_MS;
+  }catch(e){
+    console.warn("AGAIN dissolve skipped:",e);
+    return 0;
+  }
 }
 
 function celebrateMastered(){

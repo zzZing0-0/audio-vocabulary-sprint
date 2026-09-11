@@ -10,6 +10,7 @@ function activeEligibleToday(w){
 let lastJudgmentSnapshot=null;
 let judgmentTimer=null;
 let judgmentLocked=false;
+let judgmentFinalizing=false;
 let judgmentKind=null;
 let judgmentFromDebt=null;
 let judgmentToDebt=null;
@@ -26,6 +27,7 @@ function clearJudgmentBurst(){
     judgmentTimer=null;
   }
   judgmentLocked=false;
+  judgmentFinalizing=false;
   judgmentKind=null;
   judgmentFromDebt=null;
   judgmentToDebt=null;
@@ -35,14 +37,26 @@ function scheduleJudgmentExit(){
   if(judgmentTimer)clearTimeout(judgmentTimer);
   judgmentTimer=setTimeout(()=>{
     judgmentTimer=null;
-    // Particle dissolve is deliberately deferred until the user stops tapping.
-    if(judgmentKind==="AGAIN")celebrateAgain();
-    next();
+
+    // Once the user stops tapping, freeze judgment controls.
+    // AGAIN then gets its full dissolve animation before the next word appears.
+    judgmentFinalizing=true;
+    updateAnswerControls();
+
+    if(judgmentKind==="AGAIN"){
+      const dissolveMs=celebrateAgain();
+      judgmentTimer=setTimeout(()=>{
+        judgmentTimer=null;
+        next();
+      },Math.max(0,dissolveMs)+90);
+    }else{
+      next();
+    }
   },900);
 }
 
 function replayJudgmentFeedback(kind){
-  if(!judgmentLocked || kind!==judgmentKind)return false;
+  if(!judgmentLocked || judgmentFinalizing || kind!==judgmentKind)return false;
 
   // Extra taps are intentionally satisfying but never mutate debt again.
   if(kind==="AGAIN")playAgainSound();
