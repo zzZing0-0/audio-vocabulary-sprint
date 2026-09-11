@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.20: modal layers must cover the top-right undo control */
+/* v3.21: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 removed-word management ===== */
+/* ===== v3.21 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 transient top-right notice ===== */
+/* ===== v3.21 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 simplified study controls ===== */
+/* ===== v3.21 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.20 UI hierarchy refresh ===== */
+/* ===== v3.21 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.20 UI polish ===== */
+/* ===== v3.21 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 top-right actions + unified notices ===== */
+/* ===== v3.21 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 color + countdown polish ===== */
+/* ===== v3.21 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -771,7 +771,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 behavior polish ===== */
+/* ===== v3.21 behavior polish ===== */
 .topRightActions .undoBtn[hidden]{display:none!important;}
 
 /* Keep visible top-right actions compact with no reserved empty slot. */
@@ -791,7 +791,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 Chinese labels + primary action hover glow ===== */
+/* ===== v3.21 Chinese labels + primary action hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   .revealAction,
   .passAction,
@@ -828,7 +828,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 fix: 查看答案 hover glow ===== */
+/* ===== v3.21 fix: 查看答案 hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   button.action.revealAction:hover:not(:disabled){
     border-color:#dcc8f8!important;
@@ -842,7 +842,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 compact labels + traffic-light stats ===== */
+/* ===== v3.21 compact labels + traffic-light stats ===== */
 .stats div{
   display:flex;
   align-items:center;
@@ -865,7 +865,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 final-night UI alignment ===== */
+/* ===== v3.21 final-night UI alignment ===== */
 /* Header status: left-aligned dots on one vertical guide. */
 .stats{
   align-items:flex-start;
@@ -951,7 +951,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.20 IPA rendering + debt arithmetic feedback ===== */
+/* ===== v3.21 IPA rendering + debt arithmetic feedback ===== */
 
 /* Safari can render combining IPA marks poorly when a chip falls through mixed
    font/bidi shaping. Keep the stored IPA unchanged and make shaping explicit. */
@@ -1032,5 +1032,82 @@ button.controlBtn{
   }
   .debtBadge.debtImpact{
     animation:none;
+  }
+}
+
+
+/* ===== v3.21 larger pre-reveal pronunciation controls ===== */
+
+/* Keep the post-reveal layout at the existing compact size, but animate
+   the three pronunciation controls between the two study states. */
+.speakerNav{
+  transition:gap .26s cubic-bezier(.22,.8,.28,1);
+}
+.speaker,
+.voiceArrow{
+  transition:
+    width .26s cubic-bezier(.22,.8,.28,1),
+    height .26s cubic-bezier(.22,.8,.28,1),
+    border-radius .26s cubic-bezier(.22,.8,.28,1),
+    font-size .26s cubic-bezier(.22,.8,.28,1),
+    background-color .18s ease,
+    color .18s ease,
+    transform .18s ease;
+}
+
+/* Before 查看答案: pronunciation is the only task, so make its controls
+   intentionally larger and easier to hit. */
+.card.preReveal .speakerNav{
+  gap:28px;
+}
+.card.preReveal .speaker{
+  width:150px;
+  height:150px;
+  border-radius:75px;
+  font-size:52px;
+}
+.card.preReveal .voiceArrow{
+  width:64px;
+  height:76px;
+  font-size:52px;
+}
+
+/* Mobile gets the strongest enlargement for comfortable one-handed use. */
+@media(max-width:500px){
+  .card.preReveal .speakerNav{
+    gap:18px;
+  }
+  .card.preReveal .speaker{
+    width:148px;
+    height:148px;
+    border-radius:74px;
+    font-size:54px;
+  }
+  .card.preReveal .voiceArrow{
+    width:62px;
+    height:72px;
+    font-size:48px;
+    border-radius:18px;
+  }
+
+  /* After reveal these return to the existing compact mobile layout. */
+  .card:not(.preReveal) .speakerNav{gap:12px}
+  .card:not(.preReveal) .speaker{
+    width:112px;
+    height:112px;
+    border-radius:56px;
+  }
+  .card:not(.preReveal) .voiceArrow{
+    width:40px;
+    height:52px;
+    font-size:38px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .speakerNav,
+  .speaker,
+  .voiceArrow{
+    transition:none;
   }
 }

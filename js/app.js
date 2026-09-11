@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.20",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.21",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -87,6 +87,9 @@ function updateAnswerControls(){
   if(removeBtn) removeBtn.hidden=!(hasWord&&revealed);
 
   if(undoBtn) undoBtn.hidden=!undoAvailable;
+
+  const card=document.querySelector(".card");
+  if(card) card.classList.toggle("preReveal",!revealed);
 
   const stack=document.querySelector(".topRightActions");
   if(stack){
