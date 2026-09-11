@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.23",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.24",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -355,15 +355,17 @@ function updateStats(){
  document.getElementById("mastered").textContent=m;
  document.getElementById("active").textContent=a;
  document.getElementById("unseen").textContent=u;
- const pct=m/Math.max(bank.length,1)*100;
- const boundedPct=Math.max(0,Math.min(100,pct));
- const bar=document.getElementById("bar");
- if(bar){
-   bar.style.width="100%";
-   bar.style.clipPath=`inset(0 ${100-boundedPct}% 0 0 round 999px)`;
- }
- const flag=document.getElementById("progressFlag");
- if(flag){flag.style.left=boundedPct+"%";flag.title=Math.round(pct)+"%";}
+ const total=Math.max(bank.length,1);
+ const masteredPct=Math.max(0,Math.min(100,m/total*100));
+ const activePct=Math.max(0,Math.min(100,a/total*100));
+ const unseenPct=Math.max(0,100-masteredPct-activePct);
+
+ const masteredSeg=document.getElementById("progressMastered");
+ const activeSeg=document.getElementById("progressActive");
+ const unseenSeg=document.getElementById("progressUnseen");
+ if(masteredSeg) masteredSeg.style.width=masteredPct+"%";
+ if(activeSeg) activeSeg.style.width=activePct+"%";
+ if(unseenSeg) unseenSeg.style.width=unseenPct+"%";
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function loadVoices(){voices=getPreferredEnglishVoices(); updateVoiceInfo();}
@@ -752,7 +754,7 @@ function buildWordDissolveTemplate(wordEl){
   const data=image.data;
   const points=[];
 
-  // Slightly coarser than v3.23 because the same cached shape can now burst repeatedly.
+  // Slightly coarser than v3.24 because the same cached shape can now burst repeatedly.
   // The final visual remains fine-grained because each point becomes a very small particle.
   const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){
