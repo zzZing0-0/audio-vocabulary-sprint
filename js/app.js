@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.22.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.22.2",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -674,42 +674,69 @@ function playMasteredSound(){
     });
   }catch(e){}
 }
+let wordDissolveParticles=[];
+let wordDissolveRaf=0;
+let wordDissolveTemplate=null;
+let wordDissolveCanvasSize={w:0,h:0,dpr:0};
+const AGAIN_DISSOLVE_MS=1050;
+
 function resetWordDissolve(){
+  wordDissolveParticles=[];
+  wordDissolveTemplate=null;
+  if(wordDissolveRaf){
+    cancelAnimationFrame(wordDissolveRaf);
+    wordDissolveRaf=0;
+  }
+
   const a=document.getElementById("answer");
   if(a){
     const w=a.querySelector(".word");
     if(w){w.style.opacity="1";w.classList.remove("wordDissolving");}
   }
+
   const c=document.getElementById("wordDissolveFx");
-  if(c){const x=c.getContext("2d");if(x)x.clearRect(0,0,c.width,c.height);}
+  if(c){
+    const x=c.getContext("2d");
+    if(x)x.clearRect(0,0,c.width,c.height);
+  }
 }
 
-const AGAIN_DISSOLVE_MS=1250;
+function ensureWordDissolveCanvas(canvas){
+  // Cap render DPR on high-density phones: visually indistinguishable here,
+  // but substantially cheaper during rapid repeated bursts.
+  const dpr=Math.min(2,Math.max(1,window.devicePixelRatio||1));
+  const cssW=window.innerWidth;
+  const cssH=window.innerHeight;
+  const pxW=Math.max(1,Math.round(cssW*dpr));
+  const pxH=Math.max(1,Math.round(cssH*dpr));
 
-function dissolveCurrentWord(){
-  const answer=document.getElementById("answer");
-  const wordEl=answer&&answer.querySelector(".word");
-  const canvas=document.getElementById("wordDissolveFx");
-  if(!wordEl||!canvas||!wordEl.textContent.trim())return;
-
-  const wr=wordEl.getBoundingClientRect();
-  const dpr=Math.max(1,window.devicePixelRatio||1);
-
-  canvas.width=Math.max(1,Math.round(window.innerWidth*dpr));
-  canvas.height=Math.max(1,Math.round(window.innerHeight*dpr));
-  canvas.style.width=window.innerWidth+"px";
-  canvas.style.height=window.innerHeight+"px";
+  if(
+    wordDissolveCanvasSize.w!==pxW ||
+    wordDissolveCanvasSize.h!==pxH ||
+    wordDissolveCanvasSize.dpr!==dpr
+  ){
+    canvas.width=pxW;
+    canvas.height=pxH;
+    canvas.style.width=cssW+"px";
+    canvas.style.height=cssH+"px";
+    wordDissolveCanvasSize={w:pxW,h:pxH,dpr};
+  }
 
   const ctx=canvas.getContext("2d");
   ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,dpr,cssW,cssH};
+}
 
+function buildWordDissolveTemplate(wordEl){
+  const wr=wordEl.getBoundingClientRect();
+  const dpr=Math.min(2,Math.max(1,window.devicePixelRatio||1));
   const w=Math.max(1,Math.ceil(wr.width));
   const h=Math.max(1,Math.ceil(wr.height));
+
   const off=document.createElement("canvas");
   off.width=Math.ceil(w*dpr);
   off.height=Math.ceil(h*dpr);
-
-  const o=off.getContext("2d");
+  const o=off.getContext("2d",{willReadFrequently:true});
   o.scale(dpr,dpr);
 
   const cs=getComputedStyle(wordEl);
@@ -721,67 +748,132 @@ function dissolveCurrentWord(){
 
   const image=o.getImageData(0,0,off.width,off.height);
   const data=image.data;
-  const particles=[];
-  const step=Math.max(1,Math.round(1.75*dpr));
+  const points=[];
 
+  // Slightly coarser than v3.22.2 because the same cached shape can now burst repeatedly.
+  // The final visual remains fine-grained because each point becomes a very small particle.
+  const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){
     for(let px=0;px<off.width;px+=step){
       const i=(py*off.width+px)*4;
-      if(data[i+3]>55&&Math.random()<.86){
-        const angle=Math.random()*Math.PI*2;
-        const speed=.55+Math.random()*2.25;
-        particles.push({
-          x:wr.left+px/dpr,
-          y:wr.top+py/dpr,
-          vx:Math.cos(angle)*speed+.28,
-          vy:Math.sin(angle)*speed-.18,
-          r:.38+Math.random()*.82,
-          life:1,
-          fade:.009+Math.random()*.008
-        });
+      if(data[i+3]>55){
+        points.push({x:px/dpr,y:py/dpr});
       }
     }
   }
 
-  if(!particles.length)return;
+  wordDissolveTemplate={
+    word:wordEl.textContent,
+    left:wr.left,
+    top:wr.top,
+    points
+  };
+  return wordDissolveTemplate;
+}
 
-  // Let the original word remain for the first instant, then "break" it into the particles.
-  wordEl.classList.add("wordDissolving");
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{wordEl.style.opacity="0";}));
+function isWordDissolveActive(){
+  return wordDissolveParticles.some(p=>p.life>0);
+}
 
-  const start=performance.now();
-  function frame(t){
-    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+function runWordDissolveLoop(){
+  if(wordDissolveRaf)return;
 
-    for(const p of particles){
+  const canvas=document.getElementById("wordDissolveFx");
+  if(!canvas)return;
+  const {ctx,cssW,cssH}=ensureWordDissolveCanvas(canvas);
+
+  function frame(){
+    wordDissolveRaf=0;
+    ctx.clearRect(0,0,cssW,cssH);
+
+    let write=0;
+    for(let i=0;i<wordDissolveParticles.length;i++){
+      const p=wordDissolveParticles[i];
       p.x+=p.vx;
       p.y+=p.vy;
-      p.vx*=.996;
+      p.vx*=.995;
       p.vy-=.001;
       p.life-=p.fade;
       if(p.life<=0)continue;
 
+      wordDissolveParticles[write++]=p;
       ctx.globalAlpha=Math.max(0,p.life);
       ctx.fillStyle="rgb(55,60,67)";
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fill();
     }
+    wordDissolveParticles.length=write;
     ctx.globalAlpha=1;
 
-    if(t-start<AGAIN_DISSOLVE_MS&&particles.some(p=>p.life>0)){
-      requestAnimationFrame(frame);
+    if(wordDissolveParticles.length){
+      wordDissolveRaf=requestAnimationFrame(frame);
     }else{
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      ctx.clearRect(0,0,cssW,cssH);
     }
   }
-  requestAnimationFrame(frame);
+
+  wordDissolveRaf=requestAnimationFrame(frame);
+}
+
+function dissolveCurrentWord(){
+  const answer=document.getElementById("answer");
+  const wordEl=answer&&answer.querySelector(".word");
+  const canvas=document.getElementById("wordDissolveFx");
+  if(!wordEl||!canvas||!wordEl.textContent.trim())return 0;
+
+  ensureWordDissolveCanvas(canvas);
+
+  let template=wordDissolveTemplate;
+  if(!template || template.word!==wordEl.textContent){
+    template=buildWordDissolveTemplate(wordEl);
+  }
+  if(!template || !template.points.length)return 0;
+
+  // Hide the real word immediately on the first tap. Later taps reuse its cached
+  // silhouette, so every rapid tap can launch a fresh particle burst instantly.
+  wordEl.classList.add("wordDissolving");
+  wordEl.style.opacity="0";
+
+  const mobile=window.matchMedia&&window.matchMedia("(max-width: 500px)").matches;
+  const perBurstCap=mobile?560:820;
+  const totalCap=mobile?1800:2800;
+  const points=template.points;
+  const stride=Math.max(1,Math.floor(points.length/perBurstCap));
+  const offset=Math.floor(Math.random()*stride);
+  let added=0;
+
+  for(let i=offset;i<points.length && added<perBurstCap;i+=stride){
+    if(Math.random()>.86)continue;
+    const pt=points[i];
+    const angle=Math.random()*Math.PI*2;
+    const speed=.7+Math.random()*2.45;
+
+    wordDissolveParticles.push({
+      x:template.left+pt.x,
+      y:template.top+pt.y,
+      vx:Math.cos(angle)*speed+.24,
+      vy:Math.sin(angle)*speed-.18,
+      r:.34+Math.random()*.72,
+      life:1,
+      fade:.010+Math.random()*.009
+    });
+    added++;
+  }
+
+  // Bound accumulated work during "stress-clicking": keep the newest particles,
+  // which are also the most visually salient ones.
+  if(wordDissolveParticles.length>totalCap){
+    wordDissolveParticles.splice(0,wordDissolveParticles.length-totalCap);
+  }
+
+  runWordDissolveLoop();
+  return AGAIN_DISSOLVE_MS;
 }
 
 function celebrateAgain(){
   try{
-    dissolveCurrentWord();
-    return AGAIN_DISSOLVE_MS;
+    return dissolveCurrentWord();
   }catch(e){
     console.warn("AGAIN dissolve skipped:",e);
     return 0;

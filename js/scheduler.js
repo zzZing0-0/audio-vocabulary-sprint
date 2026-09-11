@@ -37,30 +37,37 @@ function scheduleJudgmentExit(){
   if(judgmentTimer)clearTimeout(judgmentTimer);
   judgmentTimer=setTimeout(()=>{
     judgmentTimer=null;
-
-    // Once the user stops tapping, freeze judgment controls.
-    // AGAIN then gets its full dissolve animation before the next word appears.
     judgmentFinalizing=true;
     updateAnswerControls();
 
     if(judgmentKind==="AGAIN"){
-      const dissolveMs=celebrateAgain();
-      judgmentTimer=setTimeout(()=>{
-        judgmentTimer=null;
-        next();
-      },Math.max(0,dissolveMs)+90);
+      // The particle effect has already started on the tap itself.
+      // Only advance after the final burst has completely faded.
+      const waitForParticles=()=>{
+        if(isWordDissolveActive()){
+          judgmentTimer=setTimeout(waitForParticles,70);
+        }else{
+          judgmentTimer=null;
+          next();
+        }
+      };
+      waitForParticles();
     }else{
       next();
     }
-  },900);
+  },520);
 }
 
 function replayJudgmentFeedback(kind){
   if(!judgmentLocked || judgmentFinalizing || kind!==judgmentKind)return false;
 
   // Extra taps are intentionally satisfying but never mutate debt again.
-  if(kind==="AGAIN")playAgainSound();
-  else playPassSound();
+  if(kind==="AGAIN"){
+    playAgainSound();
+    celebrateAgain();
+  }else{
+    playPassSound();
+  }
 
   animateDebtEcho(kind,judgmentToDebt);
   scheduleJudgmentExit();
@@ -301,6 +308,7 @@ function again(){
   judgmentKind="AGAIN";
   updateAnswerControls();
   playAgainSound();
+  celebrateAgain();
   saveCurrentNote();
   armUndo();
 
