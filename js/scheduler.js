@@ -7,6 +7,71 @@ function activeEligibleToday(w){
   return (state.debts[w]||0)>0 && !state.mastered[w] && state.lastReviewedDate[w]!==localDateKey();
 }
 
+let lastJudgmentSnapshot=null;
+let judgmentTimer=null;
+
+function cloneLearningSnapshot(){
+  return {
+    debts:JSON.parse(JSON.stringify(state.debts||{})),
+    mastered:JSON.parse(JSON.stringify(state.mastered||{})),
+    seen:JSON.parse(JSON.stringify(state.seen||{})),
+    highestDebt:JSON.parse(JSON.stringify(state.highestDebt||{})),
+    lastReviewedDate:JSON.parse(JSON.stringify(state.lastReviewedDate||{})),
+    current:state.current,
+    queue:Array.isArray(state.queue)?state.queue.slice():[],
+    queueDate:state.queueDate
+  };
+}
+
+function armUndo(){
+  lastJudgmentSnapshot=cloneLearningSnapshot();
+  const b=document.getElementById("undoBtn");
+  if(b)b.disabled=false;
+}
+
+function clearUndo(){
+  lastJudgmentSnapshot=null;
+  const b=document.getElementById("undoBtn");
+  if(b)b.disabled=true;
+}
+
+function undoLastJudgment(){
+  if(!lastJudgmentSnapshot)return;
+
+  if(judgmentTimer){
+    clearTimeout(judgmentTimer);
+    judgmentTimer=null;
+  }
+
+  speechSynthesis.cancel();
+  resetWordDissolve();
+
+  const s=lastJudgmentSnapshot;
+  state.debts=s.debts;
+  state.mastered=s.mastered;
+  state.seen=s.seen;
+  state.highestDebt=s.highestDebt;
+  state.lastReviewedDate=s.lastReviewedDate;
+  state.current=s.current;
+  state.queue=s.queue;
+  state.queueDate=s.queueDate;
+
+  clearUndo();
+  save();
+
+  if(state.current){
+    reveal();
+    const badge=document.querySelector("#answer .debtBadge");
+    if(badge){
+      badge.textContent="↶ 已撤回";
+      badge.classList.remove("passBadge","againBadge");
+    }
+    const hint=document.getElementById("hint");
+    if(hint)hint.textContent="上一步已撤回；请重新选择 PASS 或 AGAIN";
+    setTimeout(()=>speakCurrent(),80);
+  }
+}
+
 function eligible(){
   return allWords().filter(w=>!state.mastered[w] && (!(state.debts[w]>0) || activeEligibleToday(w)));
 }
@@ -72,6 +137,7 @@ function next(){
 function pass(){
   if(!state.current)return;
   saveCurrentNote();
+  armUndo();
   celebratePass(); playPassSound();
   let w=state.current, d=state.debts[w]||1;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, d);
@@ -91,6 +157,7 @@ function again(){
   playAgainSound();
   if(!state.current)return;
   saveCurrentNote();
+  armUndo();
   let w=state.current;
   state.debts[w]=(state.debts[w]||1)+1;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, state.debts[w]);
@@ -111,7 +178,9 @@ function revealThenNext(kind){
     requestAnimationFrame(()=>requestAnimationFrame(()=>celebrateAgain()));
   }
 
-  setTimeout(()=>{
+  if(judgmentTimer)clearTimeout(judgmentTimer);
+  judgmentTimer=setTimeout(()=>{
+    judgmentTimer=null;
     const hint=document.getElementById("hint");
     if(hint) hint.textContent="听到后只判断：能否立刻想到单词和意思？";
     next();

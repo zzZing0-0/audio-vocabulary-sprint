@@ -181,6 +181,7 @@ document.getElementById("answer").addEventListener("blur",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 },true);
 document.getElementById("reveal").onclick=reveal;
+document.getElementById("undoBtn").onclick=undoLastJudgment;
 document.getElementById("pass").onclick=()=>{if(!started){started=true;next()}else pass()};
 document.getElementById("again").onclick=()=>{if(!started){started=true;next()}else again()};
 document.getElementById("voice").onclick=()=>{

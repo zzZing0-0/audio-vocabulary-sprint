@@ -1,0 +1,9124 @@
+{
+  "_meta": {
+    "entries": 1302,
+    "format": 1,
+    "note": "UK/US labels stored only when explicitly supported; fallback is unlabelled.",
+    "source": "English Wiktionary"
+  },
+  "words": {
+    "abbreviation": {
+      "fallback": "/əˌbɹiː.viˈeɪ.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˌbɹi.viˈeɪ.ʃn̩/"
+    },
+    "abolish": {
+      "fallback": "/əˈbɒl.ɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "absent": {
+      "fallback": "/æbˈsɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈæb.sn̩t/"
+    },
+    "absorb": {
+      "fallback": "/əbˈzɔːb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "abstract": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "absurd": {
+      "fallback": "/əbˈsɜːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "abundant": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈbʌn.dənt/"
+    },
+    "abuse": {
+      "fallback": "/əˈbjuːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "academy": {
+      "fallback": "/əˈkæd.ə.mi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "accelerate": {
+      "fallback": "/əkˈsɛl.əˌɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "access": {
+      "fallback": "/ˈæksɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "acclaim": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈkleɪm/"
+    },
+    "accommodate": {
+      "fallback": "/əˈkɑməˌdeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈkɒməˌdeɪt/"
+    },
+    "accomplish": {
+      "fallback": "/əˈkʌm.plɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈkɒm.plɪʃ/"
+    },
+    "account": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈkaʊnt/"
+    },
+    "accumulate": {
+      "fallback": "/əˈkjuːmjʊˌleɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "accuse": {
+      "fallback": "/əˈkjuːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "achieve": {
+      "fallback": "/əˈt͡ʃiːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "acknowledge": {
+      "fallback": "/əkˈnɒl.ɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əkˈnɑ.lɪd͡ʒ/"
+    },
+    "acquire": {
+      "fallback": "/əˈkwaɪɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "activate": {
+      "fallback": "/ˈæktɪˌveɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "adapt": {
+      "fallback": "/əˈdæpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "adjust": {
+      "fallback": "/əˈd͡ʒʌst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "admit": {
+      "fallback": "/ədˈmɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "adolescent": {
+      "fallback": "/ˌæd.əˈlɛs.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "adopt": {
+      "fallback": "/əˈdɒpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "advance": {
+      "fallback": "/ədˈvɑːns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ədˈvɐːns/"
+    },
+    "advantage": {
+      "fallback": "/ədˈvɑːn.tɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "adversary": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈæd.və.sɛɹi/",
+      "us": "/ˈæd.vəɹˌsɛɹi/"
+    },
+    "adverse": {
+      "fallback": "/ˈæd.və(ɹ)s/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "advertise": {
+      "fallback": "/ˈædvəˌtaɪ̯z/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "advise": {
+      "fallback": "/ədˈvaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "advocate": {
+      "fallback": "/ˈæd.və.kət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "aesthetic": {
+      "fallback": "/iːsˈθɛ.tɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪsˈθɛ.tɪk/",
+      "us": null
+    },
+    "affirm": {
+      "fallback": "/əˈfɜːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈfɝm/"
+    },
+    "affluent": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈæf.lu.ənt/",
+      "us": "/ˈæfluːənt/"
+    },
+    "afford": {
+      "fallback": "/əˈfoɹd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "aftermath": {
+      "fallback": "/ˈæf.tɚˌmæθ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɑːf.təˌmæθ/",
+      "us": null
+    },
+    "aggregate": {
+      "fallback": "/ˈæɡ.ɹɪ.ɡət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "aggressive": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈɡɹɛs.ɪv/"
+    },
+    "agitate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈæ.d͡ʒɪ.teɪt/"
+    },
+    "aid": {
+      "fallback": "/eɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "album": {
+      "fallback": "/ˈælbəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alcohol": {
+      "fallback": "/ˈæl.kə.hɒl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɑl.kə.hɔl/"
+    },
+    "ale": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/eɪl/",
+      "us": null
+    },
+    "alert": {
+      "fallback": "/əˈlɜːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alien": {
+      "fallback": "/ˈeɪ.li.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alike": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əˈlaɪk/",
+      "us": null
+    },
+    "allergic": {
+      "fallback": "/əˈlɜː.dʒɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alloy": {
+      "fallback": "/ˈæ.lɔɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "allude": {
+      "fallback": "/əˈljuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "almighty": {
+      "fallback": "/ɔːlˈmaɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alter": {
+      "fallback": "/ˈɒl.tə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "alternate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɒlˈtɜː(ɹ).nət/",
+      "us": "/ˈɔl.tɚ.nət/"
+    },
+    "alternative": {
+      "fallback": "/ɒlˈtɜː.nə.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɔlˈtɝ.nə.tɪv/"
+    },
+    "altitude": {
+      "fallback": "/ˈælt.ɪˌtjuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "amaze": {
+      "fallback": "/əˈmeɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ambiguous": {
+      "fallback": "/æmˈbɪɡ.ju.əs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "amend": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əˈmɛnd/",
+      "us": null
+    },
+    "amount": {
+      "fallback": "/əˈmaʊnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "amplify": {
+      "fallback": "/ˈæm.plə.faɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "animate": {
+      "fallback": "/ˈæn.ɪ.mət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "annual": {
+      "fallback": "/ˈænɪu̯.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈæn.ju.əl/",
+      "us": "/ˈæn.ju.əl/"
+    },
+    "antagonism": {
+      "fallback": "/ænˈtæɡənɪzəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "antenna": {
+      "fallback": "/ænˈtɛn.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "antibiotic": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌæn.ti.baɪˈɒt.ɪk/",
+      "us": "/ˌæn.taɪ.baɪˈɑ.tɪk/"
+    },
+    "anticipate": {
+      "fallback": "/ænˈtɪs.ɪ.peɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "appal": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "appall": {
+      "fallback": "/əˈpɔːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "apparent": {
+      "fallback": "/əˈpæɹənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "appeal": {
+      "fallback": "/əˈpiːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "appendix": {
+      "fallback": "/əˈpɛn.dɪks/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "apply": {
+      "fallback": "/əˈplaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[əˈplaɪ]"
+    },
+    "appraise": {
+      "fallback": "/əˈpɹeɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "appreciate": {
+      "fallback": "/əˈpɹiː.ʃi.eɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈəˈpɹiː.ʃi.æɪt/"
+    },
+    "apprentice": {
+      "fallback": "/əˈpɹɛntɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "approach": {
+      "fallback": "/əˈpɹəʊt͡ʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "appropriate": {
+      "fallback": "/əˈpɹəʊ.pɹi.eɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈpɹoʊ.pɹi.eɪt/"
+    },
+    "approximate": {
+      "fallback": "/əˈpɹɒk.sɪ.mət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈpɹɑk.sə.mət/"
+    },
+    "arbitrate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɑːbɪtɹeɪt/",
+      "us": null
+    },
+    "arc": {
+      "fallback": "/ɑːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "arena": {
+      "fallback": "/əˈɹiːnə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "argue": {
+      "fallback": "/ˈɑː.ɡjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "arise": {
+      "fallback": "/əˈɹaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "arrange": {
+      "fallback": "/əˈɹeɪnd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "array": {
+      "fallback": "/əˈɹeɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "arrest": {
+      "fallback": "/əˈɹɛst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "articulate": {
+      "fallback": "/ɑː(ɹ)ˈtɪk.jʊ.lət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "artifact": {
+      "fallback": "/ˈɑːtɪfækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "artificial": {
+      "fallback": "/ˌɑː.tɪˈfɪʃ.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ascend": {
+      "fallback": "/əˈsɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ascertain": {
+      "fallback": "/ˌæsəˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ascribe": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əˈskɹaɪb/",
+      "us": null
+    },
+    "aspect": {
+      "fallback": "/ˈæspɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "assemble": {
+      "fallback": "/əˈsɛm.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "assess": {
+      "fallback": "/əˈsɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "asset": {
+      "fallback": "/ˈæset/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈæsɛt/",
+      "us": "/ˈæsɛt/"
+    },
+    "assist": {
+      "fallback": "/əˈsɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "assume": {
+      "fallback": "/əˈsjuːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "astonish": {
+      "fallback": "/əˈstɒnɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "atmosphere": {
+      "fallback": "/ˈætməsˌfɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈætməsˌfɪɹ/"
+    },
+    "attach": {
+      "fallback": "/əˈtæt͡ʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "attack": {
+      "fallback": "/əˈtæk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "attain": {
+      "fallback": "/əˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "attempt": {
+      "fallback": "/əˈtɛmpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "attitude": {
+      "fallback": "/ˈætɪt͡ʃuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈætɪˌtud/"
+    },
+    "attract": {
+      "fallback": "/əˈtɹækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "attribute": {
+      "fallback": "/ˈæt.ɹɪ.bjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "auction": {
+      "fallback": "/ˈɑkʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɔːkʃən/",
+      "us": "/ˈɔkʃən/"
+    },
+    "audience": {
+      "fallback": "/ˈɔːdi.əns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɔ.di.əns/"
+    },
+    "audit": {
+      "fallback": "/ˈɔːdɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɔdɪt/"
+    },
+    "auditorium": {
+      "fallback": "/ɔː.dɪˈtɔː.ɹi.əm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "augment": {
+      "fallback": "/ɔːɡˈmɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɔɡˈmɛnt/"
+    },
+    "author": {
+      "fallback": "/ˈɔː.θə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɔ.θɚ/"
+    },
+    "avail": {
+      "fallback": "/əˈveɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "available": {
+      "fallback": "/əˈveɪ.lə.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "avert": {
+      "fallback": "/əˈvɝt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "avoid": {
+      "fallback": "/əˈvɔɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "award": {
+      "fallback": "/əˈwɔːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈwɔɹd/"
+    },
+    "aware": {
+      "fallback": "/əˈwɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bachelor": {
+      "fallback": "/ˈbæt͡ʃ.ə.lə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "badge": {
+      "fallback": "/bæd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "barren": {
+      "fallback": "/ˈbæɹən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "barrier": {
+      "fallback": "/ˈbæɹi.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈbæɹi.ɚ/"
+    },
+    "basis": {
+      "fallback": "/ˈbæɪ.sɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "battery": {
+      "fallback": "/ˈbaʈ.(ə)ri/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈbæt.(ə)ɹi/",
+      "us": "/ˈbæt.əɹi/"
+    },
+    "beckon": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈbɛkən/",
+      "us": null
+    },
+    "beforehand": {
+      "fallback": "/bɪˈfɔːhænd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/bɪˈfoɹhænd/"
+    },
+    "behave": {
+      "fallback": "/bᵻˈheɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "benevolent": {
+      "fallback": "/bəˈnɛvələnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "betray": {
+      "fallback": "/bɪˈtɹeɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bibliography": {
+      "fallback": "/bɪbliˈɒɡɹəfi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bilateral": {
+      "fallback": "/baɪˈlætəɹəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "biography": {
+      "fallback": "/baɪˈɒɡɹəfi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/baɪˈɑɡɹəfi/"
+    },
+    "bizarre": {
+      "fallback": "/bɪˈzɑː(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "blackmail": {
+      "fallback": "/ˈblækˌmeɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "blast": {
+      "fallback": "/blɑːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "blow": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/bləʊ/",
+      "us": null
+    },
+    "boast": {
+      "fallback": "/bəʊst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bolster": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈbɒlstə/",
+      "us": "/ˈboʊlstɚ/"
+    },
+    "boom": {
+      "fallback": "/buːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/bum/"
+    },
+    "boost": {
+      "fallback": "/buːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bore": {
+      "fallback": "/bɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/boɹ/"
+    },
+    "boycott": {
+      "fallback": "/ˈbɔɪkɒt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈbɔɪkɑt/"
+    },
+    "brake": {
+      "fallback": "/bɹeɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "breakdown": {
+      "fallback": "/ˈbɹeɪkdaʊn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "breed": {
+      "fallback": "/ˈbɹiːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "brilliant": {
+      "fallback": "/ˈbɹɪl.jənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "browse": {
+      "fallback": "/bɹaʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "brutal": {
+      "fallback": "/ˈbɹuːtəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈbɹu.təl/"
+    },
+    "buck": {
+      "fallback": "/ˈbʌk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈbɜk/"
+    },
+    "budget": {
+      "fallback": "/ˈbʌd͡ʒ.ɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "buffer": {
+      "fallback": "/ˈbʌfə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "bully": {
+      "fallback": "/ˈbɵlɪj/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈbʊli/"
+    },
+    "bump": {
+      "fallback": "/bʌmp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "butt": {
+      "fallback": "/bʌt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cable": {
+      "fallback": "/ˈkeɪ.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cafeteria": {
+      "fallback": "/ˌka.fə.ˈtɪə̯.ɹi.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cancel": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "cane": {
+      "fallback": "/keɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "canvas": {
+      "fallback": "/ˈkæn.vəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "capable": {
+      "fallback": "/ˈkeɪ.pə.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "capacity": {
+      "fallback": "/kəˈpæsɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "caption": {
+      "fallback": "/ˈkæp.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "captive": {
+      "fallback": "/ˈkæptɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "capture": {
+      "fallback": "/ˈkɛp.(t)ʃɘː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkæp.(t)ʃəː/"
+    },
+    "carton": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɑːtən/",
+      "us": "/ˈkɑɹtn̩/"
+    },
+    "carve": {
+      "fallback": "/kɑːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kɑɹv/"
+    },
+    "casino": {
+      "fallback": "/kəˈsiːnəʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "catalog": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "catalogue": {
+      "fallback": "/ˈkæt.əˌlɒɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "catastrophe": {
+      "fallback": "/kəˈtæstɹəfi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "category": {
+      "fallback": "/ˈkæt.ɪ.ɡ(ə.)ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cater": {
+      "fallback": "/ˈkeʈə(ɾ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkeɪtə/",
+      "us": "/ˈkeɪɾɚ/"
+    },
+    "cause": {
+      "fallback": "/kɔːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kɔz/"
+    },
+    "caution": {
+      "fallback": "/ˈkɔːʃ(ə)n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɔʃ(ə)n/"
+    },
+    "celebrate": {
+      "fallback": "/ˈsɛl.ɪ.bɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "celebrity": {
+      "fallback": "/sɪˈlɛb.ɹɪ.ti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cement": {
+      "fallback": "/səˈmɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈsi.mɛnt/"
+    },
+    "censor": {
+      "fallback": "/ˈsɛnsə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "census": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɛnsəs/",
+      "us": null
+    },
+    "ceramic": {
+      "fallback": "/sɪˈɹæmɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/səˈɹæmɪk/",
+      "us": "/səˈɹæmɪk/"
+    },
+    "certificate": {
+      "fallback": "/səˈtɪf.ɪˌkeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/səˈtɪf.ɪ.kɪt/",
+      "us": null
+    },
+    "certify": {
+      "fallback": "/ˈsɜː.tɪ.faɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "challenge": {
+      "fallback": "/ˈt͡ʃæl.ɪnd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "champagne": {
+      "fallback": "/ʃæmˈpeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "champion": {
+      "fallback": "/ˈt͡ʃæm.pi.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈt͡ʃæmpjən/"
+    },
+    "chancellor": {
+      "fallback": "/ˈtʃɑːnsələ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "channel": {
+      "fallback": "/ˈt͡ʃænəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈt͡ʃeə̯nəl/"
+    },
+    "charge": {
+      "fallback": "/ˈt͡ʃɑːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "charity": {
+      "fallback": "/ˈtʃæɹɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈt͡ʃæɹəti/"
+    },
+    "charter": {
+      "fallback": "/ˈt͡ʃɑːtə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cheer": {
+      "fallback": "/t͡ʃɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "chord": {
+      "fallback": "/kɔɹd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kɔːd/",
+      "us": null
+    },
+    "chore": {
+      "fallback": "/t͡ʃɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "chronicle": {
+      "fallback": "/ˈkɹɒnɪkəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "chunk": {
+      "fallback": "/t͡ʃʌŋk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "circulate": {
+      "fallback": "/ˈsɜː.kjʊˌleɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "circus": {
+      "fallback": "/ˈsɜːkəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/seːkəs/"
+    },
+    "cite": {
+      "fallback": "/saɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "claim": {
+      "fallback": "/kleɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "clarify": {
+      "fallback": "/ˈklæɹ.ɪ.fɑɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈklæɹ.ɪ.faɪ/",
+      "us": "/ˈklɛɹ.ɪ.faɪ/"
+    },
+    "clarity": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈklæɹ.ɪ.ti/",
+      "us": "/ˈklæɹ.ɪ.ti/"
+    },
+    "clash": {
+      "fallback": "/ˈklæʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "classic": {
+      "fallback": "/ˈklæsɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "classify": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈklæs.ɪ.faɪ/",
+      "us": "/ˈklæs.əˌfaɪ/"
+    },
+    "clearance": {
+      "fallback": "/ˈklɪə̯.ɹəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "clearing": {
+      "fallback": "/ˈklɪɹɪŋ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈklɪəɹɪŋ/",
+      "us": null
+    },
+    "cliché": {
+      "fallback": "/kliˈʃeɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkliː.ʃeɪ/",
+      "us": null
+    },
+    "client": {
+      "fallback": "/ˈklaɪ.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "climate": {
+      "fallback": "/ˈklaɪ.mɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "climax": {
+      "fallback": "/ˈklaɪ.mæks/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cloak": {
+      "fallback": "/kləʊk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "clone": {
+      "fallback": "/kloʊn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "closet": {
+      "fallback": "/ˈklɒzɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈklɑzɪt/"
+    },
+    "clown": {
+      "fallback": "/ˈklaʊ̯n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈklæʊ̯n/"
+    },
+    "clue": {
+      "fallback": "/kluː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "coach": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kəʊtʃ/",
+      "us": "/koʊt͡ʃ/"
+    },
+    "coalition": {
+      "fallback": "/kəʊ.əˈlɪʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cocktail": {
+      "fallback": "/ˈkɒk.teɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cognitive": {
+      "fallback": "/ˈkɑɡ.nɪ.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɒɡ.nɪ.tɪv/"
+    },
+    "coincide": {
+      "fallback": "/ˌkəʊɪnˈsaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "collapse": {
+      "fallback": "/kəˈlæps/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "colleague": {
+      "fallback": "/ˈkɑliɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒliːɡ/",
+      "us": null
+    },
+    "collide": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kəˈlaɪd/",
+      "us": null
+    },
+    "colonel": {
+      "fallback": "/ˈkʌɾnəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɜːnəl/",
+      "us": "/ˈkeːnəl/"
+    },
+    "colony": {
+      "fallback": "/ˈkɔlənɪj/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒl.ə.ni/",
+      "us": "/ˈkɔl.ə.ni/"
+    },
+    "column": {
+      "fallback": "/ˈkɒləm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "combat": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "combine": {
+      "fallback": "/ˈkɑm.baɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kəmˈbaɪn/",
+      "us": null
+    },
+    "comfort": {
+      "fallback": "/ˈkʌm.fət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "comic": {
+      "fallback": "/ˈkɒmɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑmɪk/"
+    },
+    "commemorate": {
+      "fallback": "/kəˈmɛməˌɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "commence": {
+      "fallback": "/kəˈmɛns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "commend": {
+      "fallback": "/kəˈmɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "comment": {
+      "fallback": "/ˈkɒmɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɔment/"
+    },
+    "commit": {
+      "fallback": "/kəˈmɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "committee": {
+      "fallback": "/kəˈmɪt.i/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "communicate": {
+      "fallback": "/kəˈmjuːnɪkeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "community": {
+      "fallback": "/kəˈmjuːnɪ.ti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "commute": {
+      "fallback": "/kəˈmjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "compare": {
+      "fallback": "/kəmˈpɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kəmˈpɛɚ/"
+    },
+    "compartment": {
+      "fallback": "/kəmˈpɑɹtmənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "compete": {
+      "fallback": "/kəmˈpiːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "competent": {
+      "fallback": "/ˈkɒmpətənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "compile": {
+      "fallback": "/kəmˈpaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "complain": {
+      "fallback": "/kəmˈpleɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "complement": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒmpləmənt/",
+      "us": "/ˈkɑmpləmənt/"
+    },
+    "complex": {
+      "fallback": "/ˈkɒmplɛks/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "complicate": {
+      "fallback": "/ˈkɑmplɪkeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "compliment": {
+      "fallback": "/ˈkɒmplɪmənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑmpləmənt/"
+    },
+    "comply": {
+      "fallback": "/kəmˈplaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "component": {
+      "fallback": "/kəmˈpəʊ.nənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "composite": {
+      "fallback": "/kəmˈpɑzɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɒmpəzɪt/"
+    },
+    "comprehend": {
+      "fallback": "/kɒmpɹɪˈhɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "comprehensive": {
+      "fallback": "/ˌkɒm.pɹɪˈhɛn.sɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌkɑm.pɹəˈhɛn.sɪv/"
+    },
+    "compromise": {
+      "fallback": "/ˈkɒmpɹəˌmaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑmpɹəˌmaɪz/"
+    },
+    "conceal": {
+      "fallback": "/kənˈsiːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "concentrate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒn.sən.tɹeɪt/",
+      "us": "/ˈkɑn.sən.tɹeɪt/"
+    },
+    "concept": {
+      "fallback": "/ˈkɒn.sɛpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "concern": {
+      "fallback": "/kənˈsɝn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "concert": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "concession": {
+      "fallback": "/kənˈsɛʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conclude": {
+      "fallback": "/kənˈkluːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conduct": {
+      "fallback": "/ˈkɒndʌkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conference": {
+      "fallback": "/ˈkɒn.f(ə.)ɹəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑn.f(ə.)ɹəns/"
+    },
+    "confess": {
+      "fallback": "/kənˈfɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "confide": {
+      "fallback": "/kənˈfaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "confidence": {
+      "fallback": "/ˈkɑn.fɪ.dəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɒn.fɪ.dəns/"
+    },
+    "confine": {
+      "fallback": "/kənˈfaɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "confirm": {
+      "fallback": "/kənˈfɜːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conflict": {
+      "fallback": "/ˈkɒn.flɪkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conform": {
+      "fallback": "/kənˈfɔːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kənˈfɔɹm/"
+    },
+    "confront": {
+      "fallback": "/kənˈfɹʌnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "congregate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒŋɡɹəɡeɪt/",
+      "us": null
+    },
+    "congress": {
+      "fallback": "/ˈkɒŋˌɡɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑŋɡɹəs/"
+    },
+    "conjunction": {
+      "fallback": "/kənˈd͡ʒʌŋk.ʃn̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "connect": {
+      "fallback": "/kəˈnɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conscientious": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌkɒn.ʃiˈɛn.ʃəs/",
+      "us": "/ˌkɑn.ʃiˈɛn.ʃəs/"
+    },
+    "consequence": {
+      "fallback": "/ˈkɒn.sɪ.kwəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑn.sɪ.kwəns/"
+    },
+    "conservative": {
+      "fallback": "/kənˈsɜːvətɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conserve": {
+      "fallback": "/ˈkɒnsɜː(ɹ)v/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "consider": {
+      "fallback": "/kənˈsɪd.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "considerable": {
+      "fallback": "/kənˈsɪdəɹəbl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "consist": {
+      "fallback": "/kənˈsɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒn.sɪst/",
+      "us": null
+    },
+    "consistent": {
+      "fallback": "/kənˈsɪs.tənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conspicuous": {
+      "fallback": "/kənˈspɪk.ju.əs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "conspire": {
+      "fallback": "/kənˈspaɪə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "constituent": {
+      "fallback": "/kənˈstɪtjuənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "constitute": {
+      "fallback": "/ˈkɒnstɪtjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɒnstɪt(j)uːt/"
+    },
+    "constitution": {
+      "fallback": "/ˌkɒn.stɪˈtjuː.ʃ(ə)n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "constrain": {
+      "fallback": "/kənˈstɹeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "construct": {
+      "fallback": "/ˈkɒn.stɹʌkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "consult": {
+      "fallback": "/ˈkɒnsʌlt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "consume": {
+      "fallback": "/kənˈsum/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kənˈsjuːm/",
+      "us": null
+    },
+    "contact": {
+      "fallback": "/ˈkɑntækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "contagious": {
+      "fallback": "/kənˈteɪ.d͡ʒəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "contaminate": {
+      "fallback": "/kənˈtæmɪneɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "contend": {
+      "fallback": "/kənˈtɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "contest": {
+      "fallback": "/ˈkɔntɛst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒn.tɛst/",
+      "us": null
+    },
+    "context": {
+      "fallback": "/ˈkɒn.tɛkst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑn.tɛkst/"
+    },
+    "contrary": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒntɹəɹi/",
+      "us": "/ˈkɑntɹɛɹi/"
+    },
+    "contrast": {
+      "fallback": "/ˈkɒntɹɑːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "contribute": {
+      "fallback": "/kənˈt(ʃ)ɹɪb.juːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "controversy": {
+      "fallback": "/kənˈtɹɒv.ə.si/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɑn.tɹəˌvɝ.si/"
+    },
+    "convene": {
+      "fallback": "/kənˈviːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "convention": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kənˈvɛn.ʃən/",
+      "us": null
+    },
+    "converge": {
+      "fallback": "/kənˈvɜːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "convert": {
+      "fallback": "/ˈkɒn.vət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "convey": {
+      "fallback": "/kənˈveɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "convoy": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkɒn.vɔɪ/",
+      "us": null
+    },
+    "cooperate": {
+      "fallback": "/kəˈwɔpəɹɛjt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kəʊˈɒp.ə.ɹeɪt/",
+      "us": "/koʊˈɑ.pəˌɹeɪt/"
+    },
+    "cope": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkəʊp/",
+      "us": "/ˈkoʊp/"
+    },
+    "cosmetic": {
+      "fallback": "/kɔzˈmet.ɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/kɒzˈmɛtɪk/",
+      "us": "/kɑzˈmɛt.ɪk/"
+    },
+    "council": {
+      "fallback": "/ˈkaʊn.səl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "count": {
+      "fallback": "/kaʊnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "counter": {
+      "fallback": "/ˈkaʊn.tə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkaʊn.tɚ/"
+    },
+    "counteract": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "counterfeit": {
+      "fallback": "/ˈkaʊn.tɚˌfɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "counterpart": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈkaʊntəˌpɑːt/",
+      "us": "/ˈkaʊntɚˌpɑɹt/"
+    },
+    "coup": {
+      "fallback": "/kuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "coupon": {
+      "fallback": "/ˈkuːˌpɒn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkuːˌpɑn/"
+    },
+    "court": {
+      "fallback": "/ˈkɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkɔɹt/"
+    },
+    "cover": {
+      "fallback": "/ˈkʌvə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkʌvɚ/"
+    },
+    "craft": {
+      "fallback": "/ˈkɹɑːft/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "crash": {
+      "fallback": "/ˈkɹæʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "create": {
+      "fallback": "/kɹiːˈeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "credential": {
+      "fallback": "/kɹɪˈdɛnʃəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "credit": {
+      "fallback": "/ˈkɹɛdɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "criterion": {
+      "fallback": "/kɹɪˈtɪəɹi.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "crucial": {
+      "fallback": "/ˈkɹuː.ʃəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cruel": {
+      "fallback": "/ˈkɹuːəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cruise": {
+      "fallback": "/kɹuːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cub": {
+      "fallback": "/kʌb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cultivate": {
+      "fallback": "/ˈkʌltɪveɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cumulative": {
+      "fallback": "/ˈkjuːmjʊlətɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cunning": {
+      "fallback": "/ˈkʌnɪŋ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "curb": {
+      "fallback": "/kɜːb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kɝb/"
+    },
+    "currency": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkʌɹ.ən.si/"
+    },
+    "current": {
+      "fallback": "/ˈkʌɹənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "curtail": {
+      "fallback": "/kɜːˈteɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/kɚˈteɪl/"
+    },
+    "cute": {
+      "fallback": "/kjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "cylinder": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɪlɪndə(ɹ)/",
+      "us": "/ˈsɪləndɚ/"
+    },
+    "dean": {
+      "fallback": "/diːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "debate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈbeɪt/",
+      "us": "/dɪˈbeɪt/"
+    },
+    "debut": {
+      "fallback": "/ˈdeːbjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɛbjuː/",
+      "us": "/deɪˈbjuː/"
+    },
+    "deceive": {
+      "fallback": "/dɪˈsiːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "decimal": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɛs.ɪ.məl/",
+      "us": "/ˈdɛs.ɪ.məl/"
+    },
+    "declare": {
+      "fallback": "/dɪˈklɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɪˈklɛɚ/"
+    },
+    "decline": {
+      "fallback": "/dɪˈklaɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "decrease": {
+      "fallback": "/dɪˈkɹiːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "decree": {
+      "fallback": "/dɪˈkɹiː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dedicate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɛdɪˌkeɪt/",
+      "us": null
+    },
+    "deduct": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈdʌkt/",
+      "us": null
+    },
+    "deem": {
+      "fallback": "/diːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deficit": {
+      "fallback": "/ˈdɛfɪsɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "define": {
+      "fallback": "/dɪˈfaɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "delay": {
+      "fallback": "/dɪˈleɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "delete": {
+      "fallback": "/dɪˈliːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deliberate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "delicate": {
+      "fallback": "/ˈdɛl.ɪ.kət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "delude": {
+      "fallback": "/dɪˈljuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɪˈluːd/"
+    },
+    "demand": {
+      "fallback": "/dɪˈmɑːnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɪˈmænd/"
+    },
+    "demographic": {
+      "fallback": "/ˌdɛm.əˈɡɹæf.ɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "demonstrate": {
+      "fallback": "/ˈdɛm.ənˌstɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "denote": {
+      "fallback": "/dɪˈnəʊt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dentist": {
+      "fallback": "/ˈdɛntɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deny": {
+      "fallback": "/dɪˈnaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "depart": {
+      "fallback": "/dɪˈpɑːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "depict": {
+      "fallback": "/dɪˈpɪkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deploy": {
+      "fallback": "/dɪˈplɔɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deposit": {
+      "fallback": "/dɪˈpɒz.ɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "depot": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɛpəʊ/",
+      "us": "/ˈdiːpoʊ/"
+    },
+    "depress": {
+      "fallback": "/dɪˈpɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "deputy": {
+      "fallback": "/ˈdɛpjəti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "derive": {
+      "fallback": "/dɪˈɹaɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "descend": {
+      "fallback": "/dɪˈsɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "describe": {
+      "fallback": "/dɪˈskɹaɪb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[dɪˈskɹaɪ̯b]"
+    },
+    "deserve": {
+      "fallback": "/dɪˈzɜːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɪˈzɝv/"
+    },
+    "design": {
+      "fallback": "/dɪˈzaɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "desire": {
+      "fallback": "/dɪˈzaɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "despite": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈspaɪt/",
+      "us": null
+    },
+    "destination": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɛstɪˈneɪʃən/"
+    },
+    "destiny": {
+      "fallback": "/ˈdɛs.tɪ.ni/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "detail": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdiː.teɪl/",
+      "us": "/ˈdi.teɪl/"
+    },
+    "detect": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈtɛkt/",
+      "us": null
+    },
+    "deter": {
+      "fallback": "/dɪˈtɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dɪˈteː/"
+    },
+    "devastate": {
+      "fallback": "/ˈdev.ə.stæɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɛv.ə.steɪt/",
+      "us": null
+    },
+    "device": {
+      "fallback": "/dɪˈvaɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "devote": {
+      "fallback": "/dɪˈvəʊt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "devour": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈvaʊə(ɹ)/",
+      "us": "/dɪˈvaʊɚ/"
+    },
+    "diagnose": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdʌɪ.əɡˌnəʊz/",
+      "us": "/ˈdaɪ.əɡˌnoʊs/"
+    },
+    "diesel": {
+      "fallback": "/ˈdiːzəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈdisəl/"
+    },
+    "differentiate": {
+      "fallback": "/dɪf.əˈɹɛn.ʃi.eɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "diffuse": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈfjuːz/",
+      "us": "/dɪˈfjuz/"
+    },
+    "dilute": {
+      "fallback": "/daɪˈljuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dim": {
+      "fallback": "/dɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "diminish": {
+      "fallback": "/dɪˈmɪnɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dioxide": {
+      "fallback": "/daɪˈɑksaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/daɪˈɒksaɪd/"
+    },
+    "diploma": {
+      "fallback": "/dɪˈpləʊmə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disaster": {
+      "fallback": "/dɪˈzæs.tɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈzɑːs.təː/",
+      "us": null
+    },
+    "discern": {
+      "fallback": "/dɪˈsɜːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈzɜːn/",
+      "us": "/dɪˈzɝn/"
+    },
+    "discharge": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "discipline": {
+      "fallback": "/ˈdɪsɪplɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disclose": {
+      "fallback": "/dɪsˈkləʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "discount": {
+      "fallback": "/dɪˈskaʊnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "discourage": {
+      "fallback": "/dɪsˈkʌɹɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "discreet": {
+      "fallback": "/dɪˈskɹiːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "discriminate": {
+      "fallback": "/dɪˈskɹɪm.ɪ.neɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disguise": {
+      "fallback": "/dɪsˈɡaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dismay": {
+      "fallback": "/dɪsˈmeɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disperse": {
+      "fallback": "/dɪˈspɜːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "display": {
+      "fallback": "/dɪsˈpleɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dispose": {
+      "fallback": "/dɪsˈpoʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dispute": {
+      "fallback": "/dɪˈspjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disregard": {
+      "fallback": "/dɪsɹɪˈɡɑːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "disrupt": {
+      "fallback": "/dɪsˈɹʌpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dissertation": {
+      "fallback": "/ˌdɪsəˈteɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌdɪsɚˈteɪʃən/"
+    },
+    "dissolve": {
+      "fallback": "/dɪˈzɒlv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "distance": {
+      "fallback": "/ˈdɪst(ə)n(t)s/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "distinct": {
+      "fallback": "/dɪˈstɪŋkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "distinguish": {
+      "fallback": "/dɪˈstɪŋ.ɡwɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "distract": {
+      "fallback": "/dɪˈstɹækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "distribute": {
+      "fallback": "/dɪˈstɹɪbjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "diverse": {
+      "fallback": "/daɪˈvɜːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "divert": {
+      "fallback": "/daɪˈvɜːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "divide": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/dɪˈvaɪd/",
+      "us": null
+    },
+    "dizzy": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɪzi/",
+      "us": null
+    },
+    "dodge": {
+      "fallback": "/dɒd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "domain": {
+      "fallback": "/ˌdəʊˈmeɪ̯n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "domestic": {
+      "fallback": "/dəˈmes.tɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/dəˈmɛs.tɪk/"
+    },
+    "dominate": {
+      "fallback": "/ˈdɑ.məˌneɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdɒm.ɪ.neɪt/",
+      "us": "/ˈdɒm.ɪ.neɪt/"
+    },
+    "doom": {
+      "fallback": "/duːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "downward": {
+      "fallback": "/ˈduːnwɐd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈdaʊnwəd/",
+      "us": "/ˈdaʊnwɚd/"
+    },
+    "drama": {
+      "fallback": "/ˈdɹɑːmə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dual": {
+      "fallback": "/ˈd͡ʒuː.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "due": {
+      "fallback": "/djuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "duplicate": {
+      "fallback": "/ˈd(j)uː.plɪ.kət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "dwell": {
+      "fallback": "/dwɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "eager": {
+      "fallback": "/ˈiɡɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪɡɚ/"
+    },
+    "eccentric": {
+      "fallback": "/ɪkˈsɛntɹɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ecosystem": {
+      "fallback": "/ˈiːkəʊˌsɪstəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈikoʊˌsɪstəm/"
+    },
+    "edit": {
+      "fallback": "/ˈɛdɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "editorial": {
+      "fallback": "/ˌɛdɪˈtɔːɹɪəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "educate": {
+      "fallback": "/ˈɛd͡ʒ.ʊˌkeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "effect": {
+      "fallback": "/ɪˈfɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "efficient": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈfɪʃənt/"
+    },
+    "effort": {
+      "fallback": "/ˈɛf.ət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɛf.ɚt/"
+    },
+    "ego": {
+      "fallback": "/ˈiɡo/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "elaborate": {
+      "fallback": "/ɪˈlæb.(ə.)ɹət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "elapse": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪˈlæps/",
+      "us": null
+    },
+    "element": {
+      "fallback": "/ˈɛlɪmənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "elevate": {
+      "fallback": "/ˈɛləveɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "eligible": {
+      "fallback": "/ˈɛl.ɪ.d͡ʒɪ.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "eliminate": {
+      "fallback": "/əˈlɪm.ə.neɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪˈlɪm.ɪ.neɪt/",
+      "us": "/ɪˈlɪm.ɪ.neɪt/"
+    },
+    "elite": {
+      "fallback": "/ɪˈliːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "eloquent": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɛl.əˌkwənt/",
+      "us": null
+    },
+    "embark": {
+      "fallback": "/ɪmˈbɑːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "embody": {
+      "fallback": "/ɪmˈbɒdi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪmˈbɑdi/"
+    },
+    "embrace": {
+      "fallback": "/ɛmˈbɹes/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "embroidery": {
+      "fallback": "/ɪmˈbɹɔɪdəɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "emerge": {
+      "fallback": "/ɪˈmɜːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "emigrate": {
+      "fallback": "/ˈɪmɪɡɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɛmɪɡɹeɪt/"
+    },
+    "emotion": {
+      "fallback": "/ɪˈməʊ.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈmoʊ.ʃən/"
+    },
+    "empirical": {
+      "fallback": "/ɪmˈpɪɹɪkəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "enable": {
+      "fallback": "/ɪˈneɪ.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "enact": {
+      "fallback": "/ɪˈnækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "enclose": {
+      "fallback": "/ənˈkloʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪnˈkləʊz/",
+      "us": "/ɪnˈkloʊz/"
+    },
+    "encounter": {
+      "fallback": "/ɪnˈkaʊntə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "encourage": {
+      "fallback": "/ɪnˈkʌɹ.ɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "encyclopaedia": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪnˌsaɪ.kləˈpi(ː).di.ə/",
+      "us": null
+    },
+    "encyclopedia": {
+      "fallback": "/ɪnˌsaɪkləˈpiːdi.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪnˌsaɪkləˈpidi.ə/"
+    },
+    "endanger": {
+      "fallback": "/ɛnˈdeɪndʒə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɛnˈdeɪnd͡ʒɚ/"
+    },
+    "endeavor": {
+      "fallback": "/ɪnˈdɛv.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɛnˈdɛv.ɚ/"
+    },
+    "endeavour": {
+      "fallback": "/ɪnˈdɛv.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "endorse": {
+      "fallback": "/ɪnˈdɔːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "engage": {
+      "fallback": "/ɪnˈɡeɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "engine": {
+      "fallback": "/ˈɪnd͡ʒɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɛnd͡ʒɪn/",
+      "us": null
+    },
+    "enhance": {
+      "fallback": "/ɪnˈhɑːns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪnˈhæns/"
+    },
+    "enlighten": {
+      "fallback": "/ɪnˈlaɪtən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "enlist": {
+      "fallback": "/ɛnˈlɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "enormous": {
+      "fallback": "/ɪˈnoː.məs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪˈnɔː.məs/",
+      "us": "/ɪˈnoɹ.məs/"
+    },
+    "enquire": {
+      "fallback": "/ɛnˈkwaɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ensue": {
+      "fallback": "/enˈsjʉː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪnˈsjuː/",
+      "us": "/ɪnˈsuː/"
+    },
+    "entail": {
+      "fallback": "/ɛnˈteɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "entertain": {
+      "fallback": "/ˌɛntəˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "entitle": {
+      "fallback": "/ənˈtaɪtəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ənˈtaɪ.təl/",
+      "us": null
+    },
+    "entity": {
+      "fallback": "/ˈɛn.tɪt.i/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "entrust": {
+      "fallback": "/ɪnˈtɹʌst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "envelop": {
+      "fallback": "/ɛnˈvɛləp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "epic": {
+      "fallback": "/ˈɛp.ɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "epidemic": {
+      "fallback": "/ˌɛpɪˈdɛmɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "eradicate": {
+      "fallback": "/ɪˈɹæd.ɪ.keɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈræd.əˌkeɪt/"
+    },
+    "errand": {
+      "fallback": "/ˈɛɹənd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "erupt": {
+      "fallback": "/ɪˈɹʌpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "escalate": {
+      "fallback": "/ˈɛs.kə.leɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "essence": {
+      "fallback": "/ˈɛsəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "estate": {
+      "fallback": "/ɪˈsteɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "esthetic": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "estimate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɛs.tɪ.mət/",
+      "us": "/ˈɛs.tə.mət/"
+    },
+    "ethic": {
+      "fallback": "/ˈɛθ.ɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "evade": {
+      "fallback": "/ɪˈveɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "evaluate": {
+      "fallback": "/ɪˈvaljʊeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈvæl.juˌeɪt/"
+    },
+    "evaporate": {
+      "fallback": "/ɪˈvæp.ə.ɹæɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪˈvæp.ə.ɹeɪt/",
+      "us": null
+    },
+    "evidence": {
+      "fallback": "/ˈev.ɪ.dəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɛv.ɪ.dəns/",
+      "us": "[ˈɛv.ɪ.ɾɪns]"
+    },
+    "evolution": {
+      "fallback": "/ˌiːvəˈluːʃ(ə)n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exceed": {
+      "fallback": "/ɪkˈsiːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exception": {
+      "fallback": "/əkˈsɛpʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "excerpt": {
+      "fallback": "/ˈɛɡzɜː(p)t/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "excess": {
+      "fallback": "/ˈɛksɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exchange": {
+      "fallback": "/ɛksˈt͡ʃeɪnd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exclaim": {
+      "fallback": "/ɛkˈskleɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exert": {
+      "fallback": "/ɪɡˈzɝt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exhaust": {
+      "fallback": "/ɪɡˈzɔːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪɡˈzɑst/"
+    },
+    "exhibit": {
+      "fallback": "/ɪɡˈzɪbɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exotic": {
+      "fallback": "/ɪɡˈzɑtɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪɡˈzɒtɪk/"
+    },
+    "expand": {
+      "fallback": "/ɪkˈspænd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "expense": {
+      "fallback": "/ɪkˈspɛns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "expertise": {
+      "fallback": "/ˌɛkspɜːˈtiːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "explicit": {
+      "fallback": "/ɪkˈsplɪs.ɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "exploit": {
+      "fallback": "/ˈɛksplɔɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "explore": {
+      "fallback": "/ɪkˈsplɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "export": {
+      "fallback": "/ˈɛks.pɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "expose": {
+      "fallback": "/ɪkˈspəʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪkˈspoʊz/"
+    },
+    "exquisite": {
+      "fallback": "/ɪkˈskwɪzɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "extend": {
+      "fallback": "/ɛkˈstɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "extent": {
+      "fallback": "/ɪkˈstɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "extinct": {
+      "fallback": "/ɪkˈstɪŋkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "extinguish": {
+      "fallback": "/ɪkˈstɪŋ.ɡwɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "extreme": {
+      "fallback": "/ɪkˈstɹiːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fabricate": {
+      "fallback": "/ˈfæb.ɹɪ.keɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fabulous": {
+      "fallback": "/ˈfæbjʊləs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "facet": {
+      "fallback": "/ˈfas.ɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfæs.ɪt/"
+    },
+    "facility": {
+      "fallback": "/fəˈsɪlɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "faculty": {
+      "fallback": "/ˈfæk.əl.ti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fair": {
+      "fallback": "/ˈfɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fake": {
+      "fallback": "/feɪ̯k/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fascinate": {
+      "fallback": "/ˈfæsɪneɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fatigue": {
+      "fallback": "/fəˈtiːɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "feasible": {
+      "fallback": "/ˈfiː.zɪ.bəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "feat": {
+      "fallback": "/fiːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "feature": {
+      "fallback": "/ˈfiː.t͡ʃəː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fellow": {
+      "fallback": "/ˈfe.ləʉ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈfɛ.ləʊ/",
+      "us": null
+    },
+    "feminine": {
+      "fallback": "/ˈfɛmɪnɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ferry": {
+      "fallback": "/ˈfeɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɛɹi/"
+    },
+    "fertile": {
+      "fallback": "/ˈfɜːtaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɝːtəl/"
+    },
+    "fiction": {
+      "fallback": "/ˈfɪkʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "figure": {
+      "fallback": "/ˈfɪɡə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɪɡɚ/"
+    },
+    "finance": {
+      "fallback": "/fɪˈnæns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fiscal": {
+      "fallback": "/ˈfɪskəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "flip": {
+      "fallback": "/flɪp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "flirt": {
+      "fallback": "/flɜːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/flɚt/"
+    },
+    "flourish": {
+      "fallback": "/ˈflɐɹ.ɪ̟ʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈflʌɹ.ɪʃ/"
+    },
+    "foam": {
+      "fallback": "/ˈfəʊ̯m/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "focus": {
+      "fallback": "/ˈfəʊ̯.kəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "force": {
+      "fallback": "/fɔːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "forecast": {
+      "fallback": "/ˈfɔːkɑːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "foreign": {
+      "fallback": "/ˈfɒɹɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɔɹɪn/"
+    },
+    "foremost": {
+      "fallback": "/ˈfɔː.məʊst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "foresee": {
+      "fallback": "/fɔɹˈsi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/fɔːˈsiː/",
+      "us": null
+    },
+    "foretell": {
+      "fallback": "/fɔɹˈtɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[fɔɹˈtɛɫ]"
+    },
+    "forge": {
+      "fallback": "/fɔːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/fɔɹd͡ʒ/"
+    },
+    "formal": {
+      "fallback": "/ˈfɔː.məl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "former": {
+      "fallback": "/ˈfɔɹmɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "formula": {
+      "fallback": "/ˈfɔː.mjʊ.lə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fortify": {
+      "fallback": "/ˈfɔːtɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fortune": {
+      "fallback": "/ˈfɔːtjuːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "forward": {
+      "fallback": "/ˈfɔːwəd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfoːwəd/"
+    },
+    "foster": {
+      "fallback": "/ˈfɒstə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɔstɚ/"
+    },
+    "fraction": {
+      "fallback": "/ˈfɹæk.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "frame": {
+      "fallback": "/ˈfɹeɪ̯m/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fraud": {
+      "fallback": "/ˈfɹɔːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈfɹɔd/"
+    },
+    "freight": {
+      "fallback": "/fɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "frequent": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/fɹɪˈkwɛnt/",
+      "us": "/ˈfɹiː.kwənt/"
+    },
+    "friction": {
+      "fallback": "/ˈfɹɪkʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fright": {
+      "fallback": "/fɹaɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/fɹʌit/"
+    },
+    "frustrate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/fɹʌˈstɹeɪt/",
+      "us": "/ˈfɹʌsˌtɹeɪt/"
+    },
+    "fuel": {
+      "fallback": "/ˈfjuːəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[ˈfjuwəɫ]"
+    },
+    "fulfil": {
+      "fallback": "/fʊlˈfɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fulfill": {
+      "fallback": "/fʊlˈfɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fund": {
+      "fallback": "/ˈfʌnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fundamental": {
+      "fallback": "/ˌfʌn.dəˈmɛn.təl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fuse": {
+      "fallback": "/fjuːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "fuss": {
+      "fallback": "/fʌs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gadget": {
+      "fallback": "/ɡæd͡ʒ.ɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "garage": {
+      "fallback": "/ˈɡæ.ɹɪdʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɡəˈɹɑʒ/"
+    },
+    "garbage": {
+      "fallback": "/ˈɡɑː.bɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɡɑɹ.bɪd͡ʒ/"
+    },
+    "garlic": {
+      "fallback": "/ˈɡɑɹlɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɡɑːlɪk/",
+      "us": null
+    },
+    "gather": {
+      "fallback": "/ˈɡæðə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gauge": {
+      "fallback": "/ˈɡeɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gaze": {
+      "fallback": "/ɡeɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gear": {
+      "fallback": "/ɡɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gender": {
+      "fallback": "/ˈd͡ʒɛndə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈd͡ʒɛndɚ/"
+    },
+    "generate": {
+      "fallback": "/ˈd͡ʒɛn.ə.ɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "generation": {
+      "fallback": "/ˌd͡ʒɛnəˈɹeɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "generous": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈd͡ʒɛn(ə)ɹəs/",
+      "us": null
+    },
+    "genre": {
+      "fallback": "/ˈd͡ʒɑnɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈ(d)ʒɒnɹə/",
+      "us": "/ˈ(d)ʒɑnɹə/"
+    },
+    "genuine": {
+      "fallback": "/ˈd͡ʒɛn.ju.ɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "germ": {
+      "fallback": "/d͡ʒɜːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "glance": {
+      "fallback": "/ɡlɑːns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "glide": {
+      "fallback": "/ˈɡlaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "glimpse": {
+      "fallback": "/ˈɡlɪm(p)s/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gloom": {
+      "fallback": "/ɡluːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "goodness": {
+      "fallback": "/ˈɡʊdnəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "govern": {
+      "fallback": "/ˈɡʌv.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "grand": {
+      "fallback": "/ˈɡɹænd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "grant": {
+      "fallback": "/ɡɹɑːnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɡɹɐːnt/"
+    },
+    "grid": {
+      "fallback": "/ɡɹɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "grind": {
+      "fallback": "/ˈɡɹaɪnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "gross": {
+      "fallback": "/ɡɹɔs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɡɹəʊs/",
+      "us": "/ɡɹoʊs/"
+    },
+    "guarantee": {
+      "fallback": "/ˌɡæɹ.ənˈtiː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌɡɛɹ.ənˈtiː/"
+    },
+    "hamper": {
+      "fallback": "/ˈhæm.pə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "handicap": {
+      "fallback": "/ˈhændikæp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "handicraft": {
+      "fallback": "/ˈhændɪkɹæft/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "handle": {
+      "fallback": "/ˈhæn.d(ə)l/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "harass": {
+      "fallback": "/həˈɹæs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "harsh": {
+      "fallback": "/ˈhɑːʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hazard": {
+      "fallback": "/ˈhæzəd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "heal": {
+      "fallback": "/ˈhiːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "heave": {
+      "fallback": "/ˈhiːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hectic": {
+      "fallback": "/ˈhɛktɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "herald": {
+      "fallback": "/ˈhɛɹəld/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "herb": {
+      "fallback": "/hɜːb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hide": {
+      "fallback": "/haɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hierarchy": {
+      "fallback": "/ˈhaɪ.ə.ɹɑː(ɹ).ki/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hinder": {
+      "fallback": "/ˈhɪndəː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈhaːn.dɚ/"
+    },
+    "hive": {
+      "fallback": "/haɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hockey": {
+      "fallback": "/ˈhɒ.ki/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "hoist": {
+      "fallback": "/hɔɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "humane": {
+      "fallback": "/hjuːˈmeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "humid": {
+      "fallback": "/ˈhjuːmɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "humiliate": {
+      "fallback": "/hjuːˈmɪliˌeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ideal": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/aɪˈdɪəl/",
+      "us": "/aɪˈdi(ə)l/"
+    },
+    "identical": {
+      "fallback": "/ɪˈdɛntɪkl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "identify": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/aɪˈdɛn.tɪ.faɪ/",
+      "us": "/aɪˈdɛn.(t)ə.faɪ/"
+    },
+    "identity": {
+      "fallback": "/aɪˈdɛntɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ignore": {
+      "fallback": "/ɪɡˈnɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "illegal": {
+      "fallback": "/ɪˈli.ɡəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪˈliːɡəl/",
+      "us": null
+    },
+    "illicit": {
+      "fallback": "/ɪˈlɪsɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "illiterate": {
+      "fallback": "/ɪˈlɪtəɹət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "illuminate": {
+      "fallback": "/ɪˈl(j)umɪneɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "illustrate": {
+      "fallback": "/ɪˈlasˌtɹæɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɪl.jʊˌstɹeɪt/",
+      "us": "/ˈɪl.əˌstɹeɪt/"
+    },
+    "imitate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪmɪteɪt/"
+    },
+    "immediate": {
+      "fallback": "/ɪˈmiː.dɪət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈmi.di.ɪt/"
+    },
+    "immigrate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪmɪɡɹeɪt/"
+    },
+    "imminent": {
+      "fallback": "/ˈɪmɪnənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "immune": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈmjuːn/"
+    },
+    "impact": {
+      "fallback": "/ˈɪmpækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "impair": {
+      "fallback": "/ɪmˈpɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪmˈpɛɹ/"
+    },
+    "impart": {
+      "fallback": "/ɪmˈpɑːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "implement": {
+      "fallback": "/ˈɪmpləmənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "implicit": {
+      "fallback": "/ɪmˈplɪsɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "imply": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪmˈplaɪ/"
+    },
+    "import": {
+      "fallback": "/ˈɪm.pɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "impress": {
+      "fallback": "/ɪmˈpɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "imprison": {
+      "fallback": "/ɪmˈpɹɪzən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "impromptu": {
+      "fallback": "/ɪmˈpɹɒmp.t(j)u/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪmˈpɹɒmp.tju/",
+      "us": "/ɪmˈpɹɑmp.t(j)u/"
+    },
+    "impulse": {
+      "fallback": "/ˈɪmpʌls/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inaugurate": {
+      "fallback": "/ɪˈnɔːɡjʊ.ɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪˈnɔ.ɡjəˌɹeɪt/"
+    },
+    "incident": {
+      "fallback": "/ˈɪnsɪdənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "include": {
+      "fallback": "/ɪnˈkluːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "incorporate": {
+      "fallback": "/ɪŋˈkɔː.pə.ɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "incredible": {
+      "fallback": "/ɪŋˈkɹɛdəbəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪŋˈkɹɛdɪbəl/",
+      "us": null
+    },
+    "indefinite": {
+      "fallback": "/ɪnˈdɛfɪnɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "indicate": {
+      "fallback": "/ˈɪndɪˌkeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "indigenous": {
+      "fallback": "/ɪnˈdɪdʒɪnəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "indispensable": {
+      "fallback": "/ˌɪndɪˈspɛnsəbəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "individual": {
+      "fallback": "/ɪndɪˈvɪd͡ʒʊəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "indoor": {
+      "fallback": "/ˈɪndɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪndoɹ/"
+    },
+    "inertia": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪnˈɜː.ʃə/",
+      "us": "/ɪnˈɝ.ʃə/"
+    },
+    "infant": {
+      "fallback": "/ˈɪn.fənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "infect": {
+      "fallback": "/ɪnˈfɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inflict": {
+      "fallback": "/ɪnˈflɪkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "influence": {
+      "fallback": "/ˈɪn.flu.əns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪnˈflu.əns/"
+    },
+    "ingenious": {
+      "fallback": "/ɪnˈd͡ʒiːnjəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ingredient": {
+      "fallback": "/ɪnˈɡɹiːdi.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inhibit": {
+      "fallback": "/ɪnˈhɪbɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "initial": {
+      "fallback": "/ɪˈnɪʃ.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "initiate": {
+      "fallback": "/ɪˈnɪʃ.i.eɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inject": {
+      "fallback": "/ɪnˈd͡ʒɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "innocent": {
+      "fallback": "/ˈɪnəsənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "innovate": {
+      "fallback": "/ˈɪn.ə.veɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inquire": {
+      "fallback": "/ɪnˈkwaɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "insight": {
+      "fallback": "/ˈɪnsaɪ̯t/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "insist": {
+      "fallback": "/ɪnˈsɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "instance": {
+      "fallback": "/ˈɪnstəns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "instant": {
+      "fallback": "/ˈɪnstənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "instead": {
+      "fallback": "/ɪnˈstɛd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "institute": {
+      "fallback": "/ˈɪnstɪtjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "institution": {
+      "fallback": "/ˌɪn.stɪˈtʃuː.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "instruct": {
+      "fallback": "/ɪnˈstɹakt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪnˈstɹʌkt/",
+      "us": null
+    },
+    "insulate": {
+      "fallback": "[ˈɪns(j)ʊle(ɪ)t]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɪnsjʊleɪt/",
+      "us": "/ˈɪnsʊleɪt/"
+    },
+    "intellect": {
+      "fallback": "/ˈɪntəlɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intend": {
+      "fallback": "/ɪnˈtɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intense": {
+      "fallback": "/ɪnˈtɛns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intercourse": {
+      "fallback": "/ˈɪn.təˌkɔːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪn.tɚˌkɔɹs/"
+    },
+    "interfere": {
+      "fallback": "/ˌɪn.tɚˈfɪɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌɪn.təˈfɪə(ɹ)/",
+      "us": null
+    },
+    "interior": {
+      "fallback": "/ɪnˈtɪə.ɹɪ.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intermediate": {
+      "fallback": "/ɪn.tə(ɹ)ˈmi.diˌeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɪn.tə(ɹ)ˈmi.di.ət/",
+      "us": "/ˌɪn.tɚˈmi.di.ət/"
+    },
+    "internal": {
+      "fallback": "/ɪnˈtɜː.nəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "interpret": {
+      "fallback": "/ɪnˈtɜː.pɹɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɪnˈtɝ.pɹɪt/"
+    },
+    "interrogate": {
+      "fallback": "/ɪnˈtɛɹəɡeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intervene": {
+      "fallback": "/ˌɪntəˈviːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "interview": {
+      "fallback": "/ˈɪn.tə.vjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪn.tə.vjʉː/"
+    },
+    "intricate": {
+      "fallback": "/ˈɪn.tɹɪ.kət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intrigue": {
+      "fallback": "/ˈɪntɹiːɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "intuition": {
+      "fallback": "/ˌɪn.tjuːˈɪʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inventory": {
+      "fallback": "/ˈɪn.vən.tɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "invert": {
+      "fallback": "/ɪnˈvɜːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "invest": {
+      "fallback": "/ɪnˈvɛst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "investigate": {
+      "fallback": "/ɪnˈvɛs.tə.ɡeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "invisible": {
+      "fallback": "/ɪnˈvɪzəb(ə)l/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "involve": {
+      "fallback": "/ɪnˈvɒlv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "inward": {
+      "fallback": "/ˈɪnwɚd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɪnwəd/",
+      "us": null
+    },
+    "irritate": {
+      "fallback": "/ˈɪɹ.ɪˌteɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "isolate": {
+      "fallback": "/ˈaɪ.sə.leɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "issue": {
+      "fallback": "/ˈɪʃuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɪʃʉː/"
+    },
+    "jack": {
+      "fallback": "/ˈd͡ʒæk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "jeopardise": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "jeopardize": {
+      "fallback": "/ˈd͡ʒɛp.ə.dʌɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "judicial": {
+      "fallback": "/d͡ʒuˈdɪʃəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "junction": {
+      "fallback": "/ˈd͡ʒʌŋkʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "junior": {
+      "fallback": "/ˈd͡ʒuːniə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "justify": {
+      "fallback": "/ˈd͡ʒʌstɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "juvenile": {
+      "fallback": "/ˈd͡ʒuːvənaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "keen": {
+      "fallback": "/kiːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "kit": {
+      "fallback": "/ˈkɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "knight": {
+      "fallback": "/ˈnaɪ̯t/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "knob": {
+      "fallback": "/nɒb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "label": {
+      "fallback": "[ˈlɛj.b(ə)ɫ]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈleɪ.bəl/",
+      "us": null
+    },
+    "lack": {
+      "fallback": "/læk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lad": {
+      "fallback": "/læd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lag": {
+      "fallback": "/læɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/leɪɡ/"
+    },
+    "launch": {
+      "fallback": "/lɔːnt͡ʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/lɔnt͡ʃ/"
+    },
+    "lawsuit": {
+      "fallback": "/ˈlɔːˌs(j)uːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lean": {
+      "fallback": "/ˈliːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lease": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/liːs/",
+      "us": null
+    },
+    "legal": {
+      "fallback": "/ˈliː.ɡəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈli.ɡəl/"
+    },
+    "legend": {
+      "fallback": "/ˈlɛd͡ʒ.ənd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "leisure": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈlɛʒə(ɹ)/"
+    },
+    "lenient": {
+      "fallback": "/ˈliːni.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lever": {
+      "fallback": "/ˈlɛv.ɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "levy": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈlɛ.vi/",
+      "us": null
+    },
+    "liberate": {
+      "fallback": "/ˈlɪbəɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lieutenant": {
+      "fallback": "/lɛfˈtɛnənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/lɛfˈtɛn.ənt/",
+      "us": "/l(j)uˈtɛn.ənt/"
+    },
+    "linguistic": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/lɪŋˈɡwɪstɪk/",
+      "us": null
+    },
+    "literal": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "literary": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈlɪt.(ə.)ɹə.ɹi/",
+      "us": "/ˈlɪt.əˌɹɛɹ.i/"
+    },
+    "litter": {
+      "fallback": "/ˈlɪt.ɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "local": {
+      "fallback": "/ˈləʊ.kl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "locate": {
+      "fallback": "/lɵˈkeʈ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/lə(ʊ)ˈkeɪt/",
+      "us": "/ˈloʊˌkeɪt/"
+    },
+    "locomotive": {
+      "fallback": "/ˌləʊkəˈməʊtɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lottery": {
+      "fallback": "/ˈlɒtəɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lounge": {
+      "fallback": "/ˈlaʊ̯nd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈlæʊ̯nd͡ʒ/"
+    },
+    "lucrative": {
+      "fallback": "/ˈluː.kɹə.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "lyric": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈlɪɹɪk/",
+      "us": null
+    },
+    "magnify": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈmaɡnɪfaɪ/",
+      "us": "/ˈmæɡnɪfaɪ/"
+    },
+    "magnitude": {
+      "fallback": "/ˈmæɡnɪtjuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "maintain": {
+      "fallback": "/meɪnˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "malice": {
+      "fallback": "/ˈmælɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mall": {
+      "fallback": "/mɑl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/mɔːl/",
+      "us": "/mɔːl/"
+    },
+    "manage": {
+      "fallback": "/ˈmɛən.əd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmæn.ɪd͡ʒ/"
+    },
+    "manifest": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈmæn.ɪ.fɛst/",
+      "us": null
+    },
+    "mar": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/mɑː(ɹ)/",
+      "us": "/mɑɹ/"
+    },
+    "marine": {
+      "fallback": "/məˈɹiːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "maritime": {
+      "fallback": "/ˈmɛɹ.ɪˌtaɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmæɹ.ɪˌtaɪm/"
+    },
+    "marshal": {
+      "fallback": "/ˈmɑːʃəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmɑɹʃəl/"
+    },
+    "marvel": {
+      "fallback": "/ˈmɑːvəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "masculine": {
+      "fallback": "/ˈmæskjʊlɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mask": {
+      "fallback": "/mɑːsk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mass": {
+      "fallback": "/mas/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/mæs/",
+      "us": "/mæs/"
+    },
+    "masterpiece": {
+      "fallback": "/ˈmæstɚˌpis/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "material": {
+      "fallback": "/məˈtɪə.ɹi.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/məˈtɪɹ.i.əl/"
+    },
+    "maternal": {
+      "fallback": "/məˈtɜːnəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mature": {
+      "fallback": "/məˈtjʊə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "maximum": {
+      "fallback": "/ˈmæksɪməm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "means": {
+      "fallback": "/miːnz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "meantime": {
+      "fallback": "/ˈmiːntaɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "meanwhile": {
+      "fallback": "/ˈmiːnwaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "melody": {
+      "fallback": "/ˈmɛl.ə.di/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "memorial": {
+      "fallback": "/məˈmɔːɹi.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "memory": {
+      "fallback": "/ˈmɛm.ə.ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "menace": {
+      "fallback": "/ˈmɛnɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mental": {
+      "fallback": "/ˈmɛn.təl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "merchandise": {
+      "fallback": "/ˈmɜː.t͡ʃənˌdaɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "merge": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/mɜːd͡ʒ/",
+      "us": "/mɝd͡ʒ/"
+    },
+    "merit": {
+      "fallback": "/ˈmɛɹɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "metaphor": {
+      "fallback": "/ˈmɛt.ə.fə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmɛt.ə.fɚ/"
+    },
+    "meticulous": {
+      "fallback": "/məˈtɪ.kjə.ləs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "midst": {
+      "fallback": "/mɪdst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "migrate": {
+      "fallback": "/maɪˈɡɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "military": {
+      "fallback": "/ˈmɪlɪt(ə)ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mindset": {
+      "fallback": "/ˈmaɪn(d)ˌsɛt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mingle": {
+      "fallback": "/ˈmɪŋ.ɡəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "minimum": {
+      "fallback": "/ˈmɪnɪməm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "minor": {
+      "fallback": "/ˈmaɪ.nəɹ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "minus": {
+      "fallback": "/ˈmaɪ.nəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mission": {
+      "fallback": "/ˈmɪʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mobile": {
+      "fallback": "/ˈməʊ.baɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmoʊ.bəl/"
+    },
+    "mobilise": {
+      "fallback": "/ˈməʊbɪlaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mobilize": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈməʊbɪlʌɪz/"
+    },
+    "mock": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/mɒk/",
+      "us": "/mɑk/"
+    },
+    "moderate": {
+      "fallback": "/ˈmɑdəɹət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "modest": {
+      "fallback": "/ˈmɑdəst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "modify": {
+      "fallback": "/ˈmɒd.ɪ.faɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "molecule": {
+      "fallback": "/ˈmɒl.ɪ.kjuːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmɒl.ɪ.kjul/"
+    },
+    "momentum": {
+      "fallback": "/ˌmə(ʊ)ˈmɛntəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "monarch": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈmɒnək/",
+      "us": "/ˈmɑnɚk/"
+    },
+    "monarchy": {
+      "fallback": "/ˈmɒnəki/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "monopoly": {
+      "fallback": "/məˈnɒpəli/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "monotony": {
+      "fallback": "/məˈnɒtəni/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/məˈnɑtəni/"
+    },
+    "moral": {
+      "fallback": "/ˈmɔɹ.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈmɒɹ.əl/",
+      "us": "/ˈmoɹ.əl/"
+    },
+    "mortgage": {
+      "fallback": "/ˈmɔːɡɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈmoɹ.ɡɪd͡ʒ/"
+    },
+    "motion": {
+      "fallback": "/ˈməʊ.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "motivate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈməʊ.tɪ.veɪt/",
+      "us": "/ˈmoʊ.tɪ.veɪt/"
+    },
+    "motive": {
+      "fallback": "/ˈməʊtɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "mount": {
+      "fallback": "/maʊnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "multitude": {
+      "fallback": "/ˈmʌltɪtjuːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "municipal": {
+      "fallback": "/mjuˈnɪsɪpəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "navigate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈnæv.ɪ.ɡeɪt/",
+      "us": "/ˈnæv.ɪ.ɡeɪt/"
+    },
+    "negate": {
+      "fallback": "/nɪˈɡeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "neglect": {
+      "fallback": "/nɪˈɡlɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "network": {
+      "fallback": "/ˈnɛt.wɝk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈnɛt.wɜːk/",
+      "us": null
+    },
+    "neutral": {
+      "fallback": "/ˈnjuː.tɹəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "nickname": {
+      "fallback": "/ˈnɪkneɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "nil": {
+      "fallback": "/nɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "nitrogen": {
+      "fallback": "/ˈnaɪ.tɹə.d͡ʒən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "nonetheless": {
+      "fallback": "/ˌnʌnðəˈlɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "norm": {
+      "fallback": "/nɔːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "noteworthy": {
+      "fallback": "/ˈnəʊtˌwɜːði/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "notify": {
+      "fallback": "/ˈnoʊtɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "notion": {
+      "fallback": "/ˈnəʊʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈnoʊʃən/"
+    },
+    "notorious": {
+      "fallback": "/nə(ʊ)ˈtɔː.ɹɪ.əs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "notwithstanding": {
+      "fallback": "/ˌnɒtwɪðˈstændɪŋ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌnɑtwɪθˈstændɪŋ/"
+    },
+    "novel": {
+      "fallback": "[ˈnɒvɫ̩]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈnɒvəl/"
+    },
+    "numb": {
+      "fallback": "/nʌm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "numerical": {
+      "fallback": "/n(j)uːˈmɛɹ.ɪ.kəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "numerous": {
+      "fallback": "/ˈnjuːməɹəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈnuməɹəs/"
+    },
+    "obey": {
+      "fallback": "/əʊˈbeɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "object": {
+      "fallback": "/ˈɒb.d͡ʒɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "objective": {
+      "fallback": "/ɒbˈd͡ʒɛk.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "observatory": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əbˈzɜːvət(ə)ɹi/",
+      "us": "/əbˈzɝvətɔɹi/"
+    },
+    "observe": {
+      "fallback": "/əbˈzɜːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "obstacle": {
+      "fallback": "/ˈɒbstəkəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "obtain": {
+      "fallback": "/əbˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "obvious": {
+      "fallback": "/ˈɒ.vɪəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɑb.vi.əs/"
+    },
+    "occasion": {
+      "fallback": "/əˈkeɪ̯ʒən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "occupation": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌɒkjʊˈpeɪʃən/",
+      "us": "/ˌɑkjʊˈpeɪʃən/"
+    },
+    "occur": {
+      "fallback": "/əˈkɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/əˈkeː/"
+    },
+    "odd": {
+      "fallback": "/ɒd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "omit": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əʊˈmɪt/",
+      "us": "/oʊˈmɪt/"
+    },
+    "opaque": {
+      "fallback": "/əʊˈpeɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "oppress": {
+      "fallback": "/əˈpɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "opt": {
+      "fallback": "/ɒpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "optic": {
+      "fallback": "/ˈɒp.tɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "orchestra": {
+      "fallback": "/ˈɔː.kɪs.tɹə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "orient": {
+      "fallback": "/ˈɔː.ɹɪ.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "origin": {
+      "fallback": "/ˈɒɹ.ɪ.d͡ʒɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "orthodox": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɔːθədɒks/",
+      "us": "/ˈɔɹθədɑks/"
+    },
+    "otherwise": {
+      "fallback": "/ˈʌð.ɚˌwaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈʌð.əˌwaɪz/",
+      "us": null
+    },
+    "outbreak": {
+      "fallback": "/ˈaʊtbɹeɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "outcome": {
+      "fallback": "/ˈaʊtkʌm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "outdated": {
+      "fallback": "/aʊtˈdeɪtɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "outfit": {
+      "fallback": "/ˈaʊtfɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "outlook": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "outstanding": {
+      "fallback": "/ˌʌʊtˈstæn.dɪŋ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌaʊtˈstæn.dɪŋ/",
+      "us": null
+    },
+    "overall": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌəʊ.vəˈɹɔːl/",
+      "us": "/ˌoʊ.vɚˈɔl/"
+    },
+    "overlook": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_pronunciation_section",
+      "uk": null,
+      "us": null
+    },
+    "overt": {
+      "fallback": "/ə(ʊ)ˈvɜːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "owe": {
+      "fallback": "/oʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/əʊ/",
+      "us": null
+    },
+    "oxide": {
+      "fallback": "/ˈɑksaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɒksaɪd/"
+    },
+    "oxygen": {
+      "fallback": "/ˈɒksɪd͡ʒən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pact": {
+      "fallback": "/pækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "panel": {
+      "fallback": "/ˈpænəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "parameter": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pəˈɹæm.ɪ.tə/",
+      "us": "/pəˈɹæm.ə.tɚ/"
+    },
+    "participate": {
+      "fallback": "/pɑːˈtɪs.ɪ.peɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "particle": {
+      "fallback": "/ˈpɑːtɪkl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "particular": {
+      "fallback": "/pəˈtɪk.jʊ.lə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɑrˈtɪk.jə.lɚ/"
+    },
+    "partition": {
+      "fallback": "/pɑːˈtɪ.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "passerby": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "passive": {
+      "fallback": "/ˈpæs.ɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pastime": {
+      "fallback": "/ˈpɑːs.taɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈpæs.taɪm/",
+      "us": null
+    },
+    "patent": {
+      "fallback": "/ˈpeɪtənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pathetic": {
+      "fallback": "/pəˈθɛtɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "patron": {
+      "fallback": "/ˈpeɪ.tɹən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pattern": {
+      "fallback": "/ˈpæ̞t(ə)n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "peculiar": {
+      "fallback": "/pɪˈkjʉː.li.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pɪˈkjuː.li.ə/",
+      "us": "/pɪˈkjul.jɚ/"
+    },
+    "pedal": {
+      "fallback": "/ˈpɛdəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "peddle": {
+      "fallback": "/ˈpɛdəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pedestrian": {
+      "fallback": "/pəˈdɛstɹiən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "peep": {
+      "fallback": "/piːp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pip/"
+    },
+    "peer": {
+      "fallback": "/pɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "perceive": {
+      "fallback": "/pəˈsiːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "perfect": {
+      "fallback": "/ˈpɜː.fɪkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "perform": {
+      "fallback": "/pəˈfɔːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "permeate": {
+      "fallback": "/ˈpɜːmiˌeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈpɝmiˌeɪ̯t/"
+    },
+    "persevere": {
+      "fallback": "/ˌpɜːsəˈvɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌpɝ.səˈviɹ/"
+    },
+    "persist": {
+      "fallback": "/pɚˈsɪst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "personnel": {
+      "fallback": "/pɵː.sɘˈnɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pɜː.səˈnɛl/",
+      "us": "/pɝ.səˈnɛl/"
+    },
+    "perspective": {
+      "fallback": "/pɚˈspɛk.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "persuade": {
+      "fallback": "/pə(ɹ)ˈsweɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "petition": {
+      "fallback": "/pəˈtɪʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "petrochemical": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "phenomenon": {
+      "fallback": "/fəˈnɒm.ɪ.nən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "physical": {
+      "fallback": "/ˈfɪz.ɪ.kəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "physician": {
+      "fallback": "/fəˈzɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pirate": {
+      "fallback": "/ˈpaɪɹət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "plague": {
+      "fallback": "/pleɪɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/plɛɡ/"
+    },
+    "plastic": {
+      "fallback": "/ˈplæstɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "plunge": {
+      "fallback": "/plʌnd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "poise": {
+      "fallback": "/pɔɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "poison": {
+      "fallback": "/ˈpɔɪ.zən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "polish": {
+      "fallback": "/ˈpɒl.ɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pollute": {
+      "fallback": "/pəˈluːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "porcelain": {
+      "fallback": "/ˈpɔːsəlɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "portion": {
+      "fallback": "/ˈpɔːʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈpoɹʃən/"
+    },
+    "portray": {
+      "fallback": "/pɔːˈtɹeɪ̯/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "pose": {
+      "fallback": "/pəʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/poʊz/"
+    },
+    "position": {
+      "fallback": "/pəˈzɪʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "positive": {
+      "fallback": "/ˈpɑzɪtɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "potential": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pəˈtɛnʃəl/",
+      "us": "/po(ʊ)ˈtɛnʃəl/"
+    },
+    "pottery": {
+      "fallback": "/ˈpɔtəɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈpɒtəɹi/",
+      "us": "/ˈpɑtəɹi/"
+    },
+    "practical": {
+      "fallback": "/ˈpɹæk.tɪ.kəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "preach": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pɹiːt͡ʃ/",
+      "us": "/pɹit͡ʃ/"
+    },
+    "predict": {
+      "fallback": "/pɹɪˈdɪkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "preferable": {
+      "fallback": "/ˈpɹɛf.(ə.)ɹə.b(ə)l/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "preliminary": {
+      "fallback": "/pɹɪˈlɪmɪn(ə)ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "premium": {
+      "fallback": "/ˈpɹiː.miː.əm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "preserve": {
+      "fallback": "/pɹəˈzɜːv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "preside": {
+      "fallback": "/pɹɪˈzaɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "press": {
+      "fallback": "/pɹes/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹɛs/"
+    },
+    "prestige": {
+      "fallback": "/pɹɛsˈtiːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "presume": {
+      "fallback": "/pɹɘˈzjʉːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pɹɪˈzjuːm/",
+      "us": "/pɹɪˈz(j)um/"
+    },
+    "prevent": {
+      "fallback": "/pɹɪˈvɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "previous": {
+      "fallback": "/ˈpɹi.vi.əs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "primary": {
+      "fallback": "/ˈpɹaɪ.m(ə.)ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "prime": {
+      "fallback": "/pɹaɪ̯m/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "primitive": {
+      "fallback": "/ˈpɹɪmɪtɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "principal": {
+      "fallback": "/ˈpɹɪn.sɪ.pəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "principle": {
+      "fallback": "/ˈpɹɪn.sɪ.pəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "prior": {
+      "fallback": "/ˈpɹaɪ.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "private": {
+      "fallback": "/ˈpɹaɪ.vɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "privilege": {
+      "fallback": "/ˈpɹɪv.(ɪ.)lɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "probe": {
+      "fallback": "/pɹoʊb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pɹəʊb/",
+      "us": null
+    },
+    "proceed": {
+      "fallback": "/pɹəˈsiːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "proclaim": {
+      "fallback": "/pɹəʊˈkleɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹoʊˈkleɪm/"
+    },
+    "profession": {
+      "fallback": "/pɹəˈfɛʃ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "proficient": {
+      "fallback": "/pɹəˈfɪʃ.ənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹoʊˈfɪʃ.ənt/"
+    },
+    "progress": {
+      "fallback": "/ˈpɹəʊ.ɡɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "project": {
+      "fallback": "/ˈpɹɒd͡ʒ.ɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈpɹɐʊ.d͡ʒekt/"
+    },
+    "prominent": {
+      "fallback": "/ˈpɹɑmɪnənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "promote": {
+      "fallback": "/pɹəˈmoʊt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "prompt": {
+      "fallback": "/pɹɒmpt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹɑmpt/"
+    },
+    "proof": {
+      "fallback": "/pɹuːf/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "proofread": {
+      "fallback": "/ˈpɹuːfɹiːd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "propagate": {
+      "fallback": "/ˈpɹɒpəˌɡeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "propel": {
+      "fallback": "/pɹəˈpɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "property": {
+      "fallback": "[ˈpɹɔ̟p.ə.ɾi]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈpɹɒp.ə.ti/",
+      "us": "/ˈpɹɑ.pɚ.ti/"
+    },
+    "proportion": {
+      "fallback": "/pɹəˈpɔːʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹəˈpɔɹʃən/"
+    },
+    "propose": {
+      "fallback": "/pɹəˈpəʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/pɹəˈpoʊz/"
+    },
+    "prose": {
+      "fallback": "/ˈpɹəʊz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "prosecute": {
+      "fallback": "/ˈpɹɒsɪkjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "prosper": {
+      "fallback": "/ˈpɹɒspə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈpɹɒspɚ/"
+    },
+    "protest": {
+      "fallback": "/ˈpɹəʊ.tɛst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "protocol": {
+      "fallback": "/ˈpɹəʊtəˌkɒl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "purchase": {
+      "fallback": "/ˈpɜːtʃɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈpeːtʃəs/"
+    },
+    "pursue": {
+      "fallback": "/pəˈsjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/pəˈʃuː/",
+      "us": null
+    },
+    "qualify": {
+      "fallback": "/ˈkwɑ.lɪ.faɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkwɒl.ɪ.faɪ/"
+    },
+    "quantify": {
+      "fallback": "/ˈkwɑn.tɪˌfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈkwɒn.tɪˌfaɪ/"
+    },
+    "quantity": {
+      "fallback": "/ˈkwɒn.tɪ.ti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "quest": {
+      "fallback": "/kwɛst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "radical": {
+      "fallback": "/ˈɹædɪkəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "raise": {
+      "fallback": "/ɹeɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rally": {
+      "fallback": "/ˈɹalɪj/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɹæli/"
+    },
+    "range": {
+      "fallback": "/ˈɹeɪnd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rank": {
+      "fallback": "/ˈɹæŋk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɹeɪ̯ŋk/"
+    },
+    "rare": {
+      "fallback": "/ɹɛə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rate": {
+      "fallback": "/ɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ratio": {
+      "fallback": "/ˈɹeɪ.ʃi.əʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "react": {
+      "fallback": "/ɹiːˈækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "realistic": {
+      "fallback": "/ˌɹɪəˈlɪs.tɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rear": {
+      "fallback": "/ˈɹɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recession": {
+      "fallback": "/ɹɪˈsɛʃn̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recipe": {
+      "fallback": "/ˈɹɛs.ɪ.pi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reciprocal": {
+      "fallback": "/ɹɪˈsɪpɹək(ə)l/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reckon": {
+      "fallback": "/ˈɹɛkən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recognise": {
+      "fallback": "/ˈɹɛkənaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recognize": {
+      "fallback": "/ˈɹɛk.əɡ.naɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recommend": {
+      "fallback": "/ˌɹɛkəˈmɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reconcile": {
+      "fallback": "/ˈɹɛkənsaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recreation": {
+      "fallback": "/(ˌ)ɹɛkɹiˈeɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recruit": {
+      "fallback": "/ɹɪˈkɹut/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈkɹuːt/",
+      "us": null
+    },
+    "rectify": {
+      "fallback": "/ˈɹɛktəˌfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "recur": {
+      "fallback": "/ɹɪˈkɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈkeː/"
+    },
+    "recycle": {
+      "fallback": "/ɹəˈsaɪkəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌɹiːˈsaɪkəl/",
+      "us": null
+    },
+    "reduce": {
+      "fallback": "/ɹɪˈd͡ʒuːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "redundant": {
+      "fallback": "/ɹɪˈdɐn.dənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈdʌn.dənt/",
+      "us": null
+    },
+    "refer": {
+      "fallback": "/ɹɪˈfɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈfeː/"
+    },
+    "reflect": {
+      "fallback": "/ɹɪˈflɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reform": {
+      "fallback": "/ˌɹiːˈfɔɹm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "refrain": {
+      "fallback": "/ɹɪˈfɹeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "refute": {
+      "fallback": "/ɹɪˈfjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "regime": {
+      "fallback": "/ɹəˈʒiːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "regiment": {
+      "fallback": "/ˈɹɛd͡ʒɪmənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "region": {
+      "fallback": "/ˈɹiːd͡ʒən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "register": {
+      "fallback": "/ˈɹɛd͡ʒ.ɪ.stə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "regulate": {
+      "fallback": "/ˈɹɛɡ.jʊ.leɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reign": {
+      "fallback": "/ɹæɪ̯n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹeɪ̯n/"
+    },
+    "rein": {
+      "fallback": "/ɹeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reject": {
+      "fallback": "/ɹɪˈd͡ʒɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rejoice": {
+      "fallback": "/ɹɪˈd͡ʒɔɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "relate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈleɪt/"
+    },
+    "relative": {
+      "fallback": "/ˈɹɛl.ə.tɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "relax": {
+      "fallback": "/ɹɪˈlæks/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "release": {
+      "fallback": "/ɹəˈliːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "religion": {
+      "fallback": "/ɹɪˈlɪd͡ʒ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "relish": {
+      "fallback": "/ˈɹɛlɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reluctant": {
+      "fallback": "/ɹɪˈlʌktənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rely": {
+      "fallback": "/ɹɪˈlaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "remark": {
+      "fallback": "/ɹɪˈmɑːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈmɑɹk/"
+    },
+    "remedy": {
+      "fallback": "/ˈɹɛmədi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "render": {
+      "fallback": "/ˈɹɛn.də/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "renew": {
+      "fallback": "/ɹɪˈnjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "renovate": {
+      "fallback": "/ˈɹɛn.nə(ʊ).veɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "renown": {
+      "fallback": "/ɹɪˈnaʊn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "repel": {
+      "fallback": "/ɹɪˈpɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "repertoire": {
+      "fallback": "/ˈɹɛp.ə.twɑː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈɹɛp.əɹ.twɑɹ/"
+    },
+    "replace": {
+      "fallback": "/ɹɪˈpleɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "represent": {
+      "fallback": "/ˌɹɛpɹɪˈzɛnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "repress": {
+      "fallback": "/ɹəˈpɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reproduce": {
+      "fallback": "/ˌɹiː.pɹəˈdjuːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌɹi.pɹəˈdus/"
+    },
+    "reputation": {
+      "fallback": "/ˌɹɛpjʊˈteɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "repute": {
+      "fallback": "/ɹɪˈpjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "require": {
+      "fallback": "/ɹɪˈkwaɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reserve": {
+      "fallback": "/ɹɪˈzɝv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "resolve": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈzɒlv/",
+      "us": "/ɹɪˈzɑlv/"
+    },
+    "resort": {
+      "fallback": "/ɹɪˈzɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "respond": {
+      "fallback": "/ɹɪˈspɒnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "responsible": {
+      "fallback": "[ɹɪˈspɒn.sə.bɫ̩]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈspɒn.sə.bəl/"
+    },
+    "restore": {
+      "fallback": "/ɹɪˈstɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "restrain": {
+      "fallback": "/ɹɪˈstɹeɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "retail": {
+      "fallback": "/ˈɹiˌteɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "retain": {
+      "fallback": "/ɹɪˈteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "retort": {
+      "fallback": "/ɹɪˈtɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹɪˈtɔɹt/"
+    },
+    "reveal": {
+      "fallback": "/ɹɪˈviːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "revenue": {
+      "fallback": "/ˈɹɛvənjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "reverse": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈvɜːs/",
+      "us": "/ɹɪˈvɝs/"
+    },
+    "revise": {
+      "fallback": "/ɹɪˈvɑez/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈvaɪz/",
+      "us": null
+    },
+    "reward": {
+      "fallback": "/ɹɪˈwɔɹd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɪˈwɔːd/",
+      "us": null
+    },
+    "rhetoric": {
+      "fallback": "/ˈɹɛtəɹɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rhythm": {
+      "fallback": "/ˈɹɪð.əm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rid": {
+      "fallback": "/ɹɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rig": {
+      "fallback": "/ɹɪɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rigid": {
+      "fallback": "/ˈɹəd͡ʒ.əd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɹɪd͡ʒ.ɪd/",
+      "us": null
+    },
+    "rigor": {
+      "fallback": "/ˈɹɪɡə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rigour": {
+      "fallback": "/ˈɹɪɡə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ritual": {
+      "fallback": "/ˈɹɪt͡ʃ.u.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rival": {
+      "fallback": "/ˈɹaɪvəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rod": {
+      "fallback": "/ɹɔd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ɹɒd/",
+      "us": "/ɹɑd/"
+    },
+    "route": {
+      "fallback": "/ɹuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "routine": {
+      "fallback": "/ɹuːˈtiːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ruin": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɹuː.ɪn/",
+      "us": null
+    },
+    "rule": {
+      "fallback": "/ɹuːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rural": {
+      "fallback": "/ˈɹʊəɹəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "rust": {
+      "fallback": "/ɹʊst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ɹʌst/"
+    },
+    "sacred": {
+      "fallback": "/ˈseɪkɹɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sake": {
+      "fallback": "/ˈseɪ̯k/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "salon": {
+      "fallback": "/ˈsælɒn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sample": {
+      "fallback": "/ˈsɑːm.pəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "satisfy": {
+      "fallback": "/ˈsætɪsfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "saturate": {
+      "fallback": "/ˈsatjʊɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "savage": {
+      "fallback": "/ˈsævɪd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scale": {
+      "fallback": "/skeɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scan": {
+      "fallback": "/skæn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scarce": {
+      "fallback": "/ˈskɛəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scatter": {
+      "fallback": "/ˈskætə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scenario": {
+      "fallback": "/sɪˈnɑːɹi.əʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/sɪˈnɛəɹioʊ/"
+    },
+    "schedule": {
+      "fallback": "/ˈʃɛd͡ʒuːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈʃed͡ʒ.ʉːl/"
+    },
+    "scheme": {
+      "fallback": "/skiːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scope": {
+      "fallback": "/skəʊp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "score": {
+      "fallback": "/skɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scorn": {
+      "fallback": "/skɔːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scramble": {
+      "fallback": "/ˈskɹæmbl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "scrutiny": {
+      "fallback": "/ˈskɹuː.tɪ.ni/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sculpture": {
+      "fallback": "/ˈskʌlpt͡ʃɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "section": {
+      "fallback": "/ˈsɛkʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sector": {
+      "fallback": "/ˈsɛk.təɹ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "secular": {
+      "fallback": "/ˈsɛkjʊlə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "segment": {
+      "fallback": "/ˈsɛɡ.mənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/sɛɡˈmɛnt/",
+      "us": null
+    },
+    "segregate": {
+      "fallback": "/ˈsɛɡɹəɡət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "semester": {
+      "fallback": "/sɪˈmɛstə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "senior": {
+      "fallback": "/ˈsiːnjə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sense": {
+      "fallback": "/sɛns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sergeant": {
+      "fallback": "/ˈsɑɹ(ə)nt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɑː.d͡ʒənt/",
+      "us": "/ˈsɑɹ.d͡ʒənt/"
+    },
+    "set": {
+      "fallback": "/sɛt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "settle": {
+      "fallback": "/ˈsɛ.təl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "severe": {
+      "fallback": "/sɪˈviːɹ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/sɪˈvɪə/",
+      "us": "/sɪˈvɪɹ/"
+    },
+    "shame": {
+      "fallback": "/ˈʃeɪ̯m/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shark": {
+      "fallback": "/ʃɑːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ʃɑɹk/"
+    },
+    "shave": {
+      "fallback": "/ˈʃeɪ̯v/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shelter": {
+      "fallback": "/ˈʃɛltə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈʃɛltɚ/"
+    },
+    "shield": {
+      "fallback": "/ˈʃiːld/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shift": {
+      "fallback": "/ˈʃɪft/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shorthand": {
+      "fallback": "/ˈʃɔːthænd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shove": {
+      "fallback": "/ʃʌv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shrink": {
+      "fallback": "/ˈʃɹɪŋk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "shrub": {
+      "fallback": "/ˈʃɹʌb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "signal": {
+      "fallback": "/ˈsɪɡnəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "significant": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/sɪɡˈnɪf.ɪ.kənt/",
+      "us": "/sɪɡˈnɪf.ə.kənt/"
+    },
+    "signify": {
+      "fallback": "/ˈsɪɡnɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "silicon": {
+      "fallback": "/ˈsɪləkɒn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɪlɪkən/",
+      "us": null
+    },
+    "simulate": {
+      "fallback": "/ˈsɪm.jʊˌlæɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɪm.jʊˌleɪt/",
+      "us": "/ˈsɪm.jəˌleɪt/"
+    },
+    "sip": {
+      "fallback": "/sɪp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "situate": {
+      "fallback": "/ˈsɪt͡ʃ.u.eɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "situation": {
+      "fallback": "/ˌsɪt.juːˈeɪ.ʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "skim": {
+      "fallback": "/skɪm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "slack": {
+      "fallback": "/slæk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "slam": {
+      "fallback": "[ˈslæm]",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈslæm/"
+    },
+    "slave": {
+      "fallback": "/sleɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "slide": {
+      "fallback": "/ˈslaɪ̯d/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "slight": {
+      "fallback": "/slaɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[sl̥ɐɪt]"
+    },
+    "slip": {
+      "fallback": "/ˈslɪp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "smart": {
+      "fallback": "/smɑːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/smɑɹt/"
+    },
+    "soar": {
+      "fallback": "/sɔː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/soɹ/"
+    },
+    "sober": {
+      "fallback": "/ˈsəʊ.bə(ɹ)/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈsoʊ.bɚ/"
+    },
+    "solid": {
+      "fallback": "/ˈsɒl.ɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "solve": {
+      "fallback": "/sɔlv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/sɒlv/",
+      "us": "/sɑlv/"
+    },
+    "sophisticated": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "no_ipa",
+      "uk": null,
+      "us": null
+    },
+    "species": {
+      "fallback": "/ˈspiːʃiːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "specific": {
+      "fallback": "/spɪˈsɪf.ɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "spectrum": {
+      "fallback": "/ˈspɛktɹəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "speculate": {
+      "fallback": "/ˈspɛk.jʊˌleɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sphere": {
+      "fallback": "/sfɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "spice": {
+      "fallback": "/spaɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "spot": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/spɒt/",
+      "us": "/spɑt/"
+    },
+    "spread": {
+      "fallback": "/spɹɛd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "spur": {
+      "fallback": "/spɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/spɝ/"
+    },
+    "stain": {
+      "fallback": "/steɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stale": {
+      "fallback": "/steɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stall": {
+      "fallback": "/stɔːl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/stɔl/"
+    },
+    "standard": {
+      "fallback": "/ˈstændəd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "standpoint": {
+      "fallback": "/ˈstændpɔɪnt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "statistic": {
+      "fallback": "/stəˈtɪs.tɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stem": {
+      "fallback": "/stɛm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/stɪm/"
+    },
+    "stereotype": {
+      "fallback": "/ˈstɛɹ.i.əˌtaɪp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈstɛ.ɹi.əˌtaɪp/",
+      "us": null
+    },
+    "stern": {
+      "fallback": "/stɜːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stigma": {
+      "fallback": "/ˈstɪɡmə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stimulate": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈstɪm.jʊ.leɪt/",
+      "us": "/ˈstɪm.jəˌleɪt/"
+    },
+    "stipulate": {
+      "fallback": "/ˈstɪpjuˌleɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "stir": {
+      "fallback": "/stɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/steː/"
+    },
+    "strategy": {
+      "fallback": "/ˈstɹæt.ɪ.d͡ʒɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "streak": {
+      "fallback": "/stɹiːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "strive": {
+      "fallback": "/ˈstɹaɪv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "structure": {
+      "fallback": "/ˈstɹʌk(t)ʃə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈstɹʌkt͡ʃɚ/"
+    },
+    "stun": {
+      "fallback": "/stʌn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "subject": {
+      "fallback": "/ˈsʌb.d͡ʒɛkt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "submarine": {
+      "fallback": "/sʌb.məˈɹiːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/sʌb.məˈɹin/"
+    },
+    "submit": {
+      "fallback": "/səbˈmɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "substance": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈsʌbstəns/"
+    },
+    "substitute": {
+      "fallback": "/ˈsʌb.stɪ.tʃuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "subtle": {
+      "fallback": "/ˈsʌtl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "subtract": {
+      "fallback": "/səbˈtɹækt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sue": {
+      "fallback": "/sjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "suite": {
+      "fallback": "/swiːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "sum": {
+      "fallback": "/sʌm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "summary": {
+      "fallback": "/ˈsʌm.ə.ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "summit": {
+      "fallback": "/ˈsʌmɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "summon": {
+      "fallback": "/ˈsʌmən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "superficial": {
+      "fallback": "/ˌsuːpəˈfɪʃəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "superior": {
+      "fallback": "/suːˈpɪə.ɹi.ə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "supervise": {
+      "fallback": "/ˈsuː.pə.vaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "suppress": {
+      "fallback": "/səˈpɹɛs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "supreme": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˌs(j)uːˈpɹiːm/",
+      "us": "/ˌsuˈpɹim/"
+    },
+    "surge": {
+      "fallback": "/sɝd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/sɜːd͡ʒ/",
+      "us": null
+    },
+    "surplus": {
+      "fallback": "/ˈsɝˌplʌs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "surveillance": {
+      "fallback": "/səˈveɪ.ləns/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/sɚˈveɪ.ləns/"
+    },
+    "survey": {
+      "fallback": "/ˈsɝˌveɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈsɜːveɪ/",
+      "us": null
+    },
+    "survive": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/səˈvaɪv/",
+      "us": "/sɚˈvaɪv/"
+    },
+    "sustain": {
+      "fallback": "/səˈsteɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "swell": {
+      "fallback": "/swɛl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "switch": {
+      "fallback": "/swɪt͡ʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "symptom": {
+      "fallback": "/ˈsɪm(p)təm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "syndicate": {
+      "fallback": "/ˈsɪndɪkət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "syndrome": {
+      "fallback": "/ˈsɪndɹəʊm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "synthetic": {
+      "fallback": "/sɪnˈθɛtɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "system": {
+      "fallback": "/ˈsɪstəm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "taboo": {
+      "fallback": "/təˈbuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tackle": {
+      "fallback": "/ˈtækəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tactic": {
+      "fallback": "/ˈtæktɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tag": {
+      "fallback": "/tæɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/teɪɡ/"
+    },
+    "tape": {
+      "fallback": "/teɪ̯p/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tariff": {
+      "fallback": "/ˈtæɹɪf/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tease": {
+      "fallback": "/tiːz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "temper": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɛmpə/",
+      "us": "/ˈtɛmpɚ/"
+    },
+    "tempo": {
+      "fallback": "/ˈtɛm.poʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɛm.pəʊ/",
+      "us": null
+    },
+    "tenant": {
+      "fallback": "/ˈtɛ.nənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tend": {
+      "fallback": "/ˈtɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "territory": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɛɹɪt(ə)ɹi/",
+      "us": "/ˈtɛɹɪˌtɔɹi/"
+    },
+    "tertiary": {
+      "fallback": "/ˈtɜː.ʃi.ə.ɹiː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "testify": {
+      "fallback": "/ˈtɛstɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "testimony": {
+      "fallback": "/ˈtɛstɪmoʊni/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "theme": {
+      "fallback": "/θiːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "theory": {
+      "fallback": "/ˈθɪə.ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈθɪ.ɹi/"
+    },
+    "thesis": {
+      "fallback": "/ˈθiːsɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "thorn": {
+      "fallback": "/θɔːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "thorough": {
+      "fallback": "/ˈθʌɹə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "threat": {
+      "fallback": "/θɹɛt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "thrill": {
+      "fallback": "/θɹɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "[θɾ̪̊ɪɫ]"
+    },
+    "thrive": {
+      "fallback": "/θɹajv/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "throne": {
+      "fallback": "/θɹəʊ̯n/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/θɹoʊ̯n/"
+    },
+    "throughout": {
+      "fallback": "/θɹuːˈaʊt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tilt": {
+      "fallback": "/tɪlt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "token": {
+      "fallback": "/ˈtoʊkən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtəʊkən/",
+      "us": null
+    },
+    "toxic": {
+      "fallback": "/ˈtɑk.sɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɒk.sɪk/",
+      "us": null
+    },
+    "trademark": {
+      "fallback": "/ˈtɹeɪdmɑːk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "trait": {
+      "fallback": "/tɹeɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transaction": {
+      "fallback": "/tɹænˈzækʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transcend": {
+      "fallback": "/tɹæn(t)ˈsɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transfer": {
+      "fallback": "/tɹɑːnsˈfɜː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transform": {
+      "fallback": "/tɹænsˈfɔːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transit": {
+      "fallback": "/ˈtɹæn.zət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɹæn.zɪt/",
+      "us": null
+    },
+    "transition": {
+      "fallback": "/-sɪʃ-/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/tɹænˈzɪʃ.ən/",
+      "us": null
+    },
+    "translate": {
+      "fallback": "/tɹɑːnzˈleɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transmit": {
+      "fallback": "/tɹænsˈmɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "transparent": {
+      "fallback": "/tɹænz-/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/tɹænsˈpæɹənt/"
+    },
+    "transport": {
+      "fallback": "/tɹænsˈpɔːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "treasury": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈtɹɛʒ.ə.ɹi/",
+      "us": "/ˈtɹɛʒ.ɚ.i/"
+    },
+    "treaty": {
+      "fallback": "/ˈtɹiːti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tremendous": {
+      "fallback": "/tɹɪˈmɛndəs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "trend": {
+      "fallback": "/tɹɛnd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "trial": {
+      "fallback": "/ˈtɹaɪəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tribute": {
+      "fallback": "/ˈtɹɪbjuːt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "trifle": {
+      "fallback": "/ˈtɹaɪfəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "triple": {
+      "fallback": "/ˈtɹɪp.əl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "trophy": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈtɹoʊfi/"
+    },
+    "tropic": {
+      "fallback": "/ˈtɹɒpɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tuck": {
+      "fallback": "/tʌk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tuition": {
+      "fallback": "/tjuːˈɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "tutor": {
+      "fallback": "/ˈtjuːtəː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "ultimate": {
+      "fallback": "/ˈʌltɪmət/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "uncover": {
+      "fallback": "/ʌnˈkʌvɚ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "undergo": {
+      "fallback": "/ˌʌndɚˈɡoʊ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "undermine": {
+      "fallback": "/ˌʌn.dəˈmaɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "undertake": {
+      "fallback": "/ˌʌndəˈteɪk/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "unfold": {
+      "fallback": "/ʌnˈfoʊld/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "unveil": {
+      "fallback": "/ʌnˈveɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "update": {
+      "fallback": "/ˈʌp.deɪt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "upgrade": {
+      "fallback": "/əpˈɡɹeɪd/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "urban": {
+      "fallback": "/ˈɜː.bən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "urge": {
+      "fallback": "/ɜːd͡ʒ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/eːd͡ʒ/"
+    },
+    "urgent": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈɜː.d͡ʒənt/",
+      "us": "/ˈɝ.d͡ʒənt/"
+    },
+    "utilise": {
+      "fallback": "/ˈjuːtɪlaɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "utility": {
+      "fallback": "/juːˈtɪlɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "utilize": {
+      "fallback": "/ˈjuː.tɪ.laɪz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vaccine": {
+      "fallback": "/vækˈsin/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vague": {
+      "fallback": "/veɪɡ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/væɡ/"
+    },
+    "van": {
+      "fallback": "/van/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/væn/"
+    },
+    "vanish": {
+      "fallback": "/ˈvænɪʃ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "various": {
+      "fallback": "/ˈvɛəɹi.əs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vary": {
+      "fallback": "/ˈvɛːɹɪj/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈvɛəɹi/"
+    },
+    "vast": {
+      "fallback": "/vɑːst/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/væst/"
+    },
+    "vegetation": {
+      "fallback": "/ˌvɛd͡ʒəˈteɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vehicle": {
+      "fallback": "/ˈviː.ɪ.kəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "veil": {
+      "fallback": "/veɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "venture": {
+      "fallback": "/ˈvɛn.t͡ʃə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "venue": {
+      "fallback": "/ˈvɛnjuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "verify": {
+      "fallback": "/ˈvɛɹɪfaɪ/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "versatile": {
+      "fallback": "/ˈvɜː.səˌtaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "verse": {
+      "fallback": "/ˈvɜːs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/vɜːs/",
+      "us": "/ˈvɝs/"
+    },
+    "version": {
+      "fallback": "/ˈvɜːʒn̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "viable": {
+      "fallback": "/ˈvaɪəbəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vice": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/vaɪs/",
+      "us": null
+    },
+    "vicinity": {
+      "fallback": "/vɪˈsɪnɪti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/vəˈsɪnəti/"
+    },
+    "virgin": {
+      "fallback": "/ˈvɜːd͡ʒɪn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/veːd͡ʒɪn/"
+    },
+    "virtual": {
+      "fallback": "/ˈvɜːt͡ʃʊəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "virtue": {
+      "fallback": "/ˈvɜːt͡ʃuː/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "visible": {
+      "fallback": "/ˈvɪzɪb(ə)l/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vision": {
+      "fallback": "/ˈvɪʒ.ən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "visual": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈvɪʒuːəl/",
+      "us": "/ˈvɪʒuəl/"
+    },
+    "vital": {
+      "fallback": "/ˈvaɪtəl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "vocation": {
+      "fallback": "/vəʊˈkeɪʃən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "volatile": {
+      "fallback": "/ˈvɒl.əˌtaɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "volunteer": {
+      "fallback": "/ˌvɒl(ə)nˈtɪə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˌvɒlənˈtɪɹ/"
+    },
+    "wagon": {
+      "fallback": "/ˈwæɡən/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈweɪɡən/"
+    },
+    "wardrobe": {
+      "fallback": "/ˈwɔːdɹəʊb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "warn": {
+      "fallback": "/wɔːn/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "warrant": {
+      "fallback": "/ˈwɒɹənt/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "warranty": {
+      "fallback": "/ˈwoɹ.ən.ti/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈwɒɹ.ən.ti/",
+      "us": null
+    },
+    "wary": {
+      "fallback": "/ˈwɛə.ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "weary": {
+      "fallback": "/ˈwɪə̯ɹi/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈwɪɚi/"
+    },
+    "web": {
+      "fallback": "/wɛb/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "weird": {
+      "fallback": null,
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": "/ˈwɪə(ɹ)d/",
+      "us": "/ˈwiɚd/"
+    },
+    "whereas": {
+      "fallback": "/wɛəɹˈaz/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "wholesale": {
+      "fallback": "/ˈhoʊlseɪl/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "wield": {
+      "fallback": "/wiːld/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "witness": {
+      "fallback": "/ˈwɪt.nɪs/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "workshop": {
+      "fallback": "/ˈwɜːk.ʃɒp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈwɝk.ʃɑp/"
+    },
+    "wrap": {
+      "fallback": "/ɹæp/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "wrestle": {
+      "fallback": "/ˈɹɛsl̩/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "yield": {
+      "fallback": "/jiːld/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    },
+    "youngster": {
+      "fallback": "/ˈjʌŋstə/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": "/ˈjʌŋstɚ/"
+    },
+    "zoom": {
+      "fallback": "/zuːm/",
+      "source": "wiktionary",
+      "status": "ok",
+      "uk": null,
+      "us": null
+    }
+  }
+}
