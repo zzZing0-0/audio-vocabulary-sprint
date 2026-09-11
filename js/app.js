@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.17.3.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.17.4.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -76,12 +76,23 @@ function updateAnswerControls(){
   const judgeBox=document.getElementById("judgmentActions");
   const revealBtn=document.getElementById("reveal");
   const removeBtn=document.getElementById("removeTopBtn");
+  const undoBtn=document.getElementById("undoBtn");
 
   const hasWord=!!state.current;
+  const undoAvailable=!!(undoBtn && !undoBtn.disabled);
+
   if(revealBox) revealBox.hidden=revealed;
   if(judgeBox) judgeBox.hidden=!revealed;
   if(revealBtn) revealBtn.disabled=!hasWord;
   if(removeBtn) removeBtn.hidden=!(hasWord&&revealed);
+
+  if(undoBtn) undoBtn.hidden=!undoAvailable;
+
+  const stack=document.querySelector(".topRightActions");
+  if(stack){
+    const visible=[...stack.children].filter(el=>!el.hidden);
+    visible.forEach((el,i)=>el.style.order=String(i));
+  }
 }
 
 function changeVoice(step){
@@ -213,6 +224,17 @@ let transientToastTimer=null;
 let transientToastCountdownTimer=null;
 const confirmWindows=new Map();
 
+function clearTransientToastTimers(){
+  if(transientToastTimer){
+    clearTimeout(transientToastTimer);
+    transientToastTimer=null;
+  }
+  if(transientToastCountdownTimer){
+    clearInterval(transientToastCountdownTimer);
+    transientToastCountdownTimer=null;
+  }
+}
+
 function showTransientToast(message){
   let el=document.getElementById("transientToast");
   if(!el){
@@ -223,17 +245,30 @@ function showTransientToast(message){
     el.setAttribute("aria-live","polite");
     document.body.appendChild(el);
   }
-  if(transientToastTimer){
-    clearTimeout(transientToastTimer);
+  clearTransientToastTimers();
+  el.textContent=message;
+  el.classList.remove("show");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
+  transientToastTimer=setTimeout(()=>{
+    el.classList.remove("show");
     transientToastTimer=null;
+  },5000);
+}
+
+function showConfirmToast(message){
+  let el=document.getElementById("transientToast");
+  if(!el){
+    el=document.createElement("div");
+    el.id="transientToast";
+    el.className="transientToast";
+    el.setAttribute("role","status");
+    el.setAttribute("aria-live","polite");
+    document.body.appendChild(el);
   }
-  if(transientToastCountdownTimer){
-    clearInterval(transientToastCountdownTimer);
-    transientToastCountdownTimer=null;
-  }
+  clearTransientToastTimers();
 
   let remaining=5;
-  const render=()=>{el.textContent=`${message} · ${remaining}`;};
+  const render=()=>{el.textContent=`${message}（${remaining} 秒内再次点击确认）`;};
   render();
 
   el.classList.remove("show");
@@ -241,7 +276,7 @@ function showTransientToast(message){
 
   transientToastCountdownTimer=setInterval(()=>{
     remaining-=1;
-    if(remaining>=1) render();
+    if(remaining>=1)render();
   },1000);
 
   transientToastTimer=setTimeout(()=>{
@@ -263,7 +298,7 @@ function requireSecondClick(key,message,action){
     return true;
   }
   confirmWindows.set(key,now+5000);
-  showTransientToast(message+"（5 秒内再次点击确认）");
+  showConfirmToast(message);
   setTimeout(()=>{
     if((confirmWindows.get(key)||0)<=Date.now())confirmWindows.delete(key);
   },5100);

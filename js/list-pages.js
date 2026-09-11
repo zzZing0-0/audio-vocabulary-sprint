@@ -14,6 +14,18 @@ function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
 let listToastTimer=null;
 let listToastCountdownTimer=null;
 const listConfirmWindows=new Map();
+
+function clearListToastTimers(){
+  if(listToastTimer){
+    clearTimeout(listToastTimer);
+    listToastTimer=null;
+  }
+  if(listToastCountdownTimer){
+    clearInterval(listToastCountdownTimer);
+    listToastCountdownTimer=null;
+  }
+}
+
 function listToast(message){
   let el=document.getElementById("transientToast");
   if(!el){
@@ -23,11 +35,29 @@ function listToast(message){
     el.setAttribute("role","status");
     document.body.appendChild(el);
   }
-  if(listToastTimer)clearTimeout(listToastTimer);
-  if(listToastCountdownTimer)clearInterval(listToastCountdownTimer);
+  clearListToastTimers();
+  el.textContent=message;
+  el.classList.remove("show");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
+  listToastTimer=setTimeout(()=>{
+    el.classList.remove("show");
+    listToastTimer=null;
+  },5000);
+}
+
+function listConfirmToast(message){
+  let el=document.getElementById("transientToast");
+  if(!el){
+    el=document.createElement("div");
+    el.id="transientToast";
+    el.className="transientToast";
+    el.setAttribute("role","status");
+    document.body.appendChild(el);
+  }
+  clearListToastTimers();
 
   let remaining=5;
-  const render=()=>{el.textContent=`${message} · ${remaining}`;};
+  const render=()=>{el.textContent=`${message}（${remaining} 秒内再次点击确认）`;};
   render();
 
   el.classList.remove("show");
@@ -55,7 +85,7 @@ function listRequireSecondClick(key,message,action){
     return true;
   }
   listConfirmWindows.set(key,now+5000);
-  listToast(message+"（5 秒内再次点击确认）");
+  listConfirmToast(message);
   setTimeout(()=>{if((listConfirmWindows.get(key)||0)<=Date.now())listConfirmWindows.delete(key);},5100);
   return false;
 }

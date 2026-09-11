@@ -28,12 +28,14 @@ function armUndo(){
   lastJudgmentSnapshot=cloneLearningSnapshot();
   const b=document.getElementById("undoBtn");
   if(b)b.disabled=false;
+  updateAnswerControls();
 }
 
 function clearUndo(){
   lastJudgmentSnapshot=null;
   const b=document.getElementById("undoBtn");
   if(b)b.disabled=true;
+  updateAnswerControls();
 }
 
 function undoLastJudgment(){

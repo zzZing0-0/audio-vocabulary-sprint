@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.17.3: modal layers must cover the top-right undo control */
+/* v3.17.4: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.3 removed-word management ===== */
+/* ===== v3.17.4 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.3 transient top-right notice ===== */
+/* ===== v3.17.4 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.3 simplified study controls ===== */
+/* ===== v3.17.4 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.17.3 UI hierarchy refresh ===== */
+/* ===== v3.17.4 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.17.3 UI polish ===== */
+/* ===== v3.17.4 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.3 top-right actions + unified notices ===== */
+/* ===== v3.17.4 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.3 color + countdown polish ===== */
+/* ===== v3.17.4 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -768,4 +768,24 @@ button.controlBtn{
     right:max(12px,env(safe-area-inset-right));
     left:auto;
   }
+}
+
+
+/* ===== v3.17.4 behavior polish ===== */
+.topRightActions .undoBtn[hidden]{display:none!important;}
+
+/* Keep visible top-right actions compact with no reserved empty slot. */
+.topRightActions{
+  align-items:flex-end;
+}
+
+/* Match text exactly to the outline colors requested. */
+.revealAction{
+  color:#dcc8f8!important;
+}
+.passAction{
+  color:#d7e7e5!important;
+}
+.againAction{
+  color:#d3d3d1!important;
 }
