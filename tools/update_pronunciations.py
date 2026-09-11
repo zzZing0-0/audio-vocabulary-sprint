@@ -2,19 +2,31 @@
 # -*- coding: utf-8 -*-
 
 """
-Audio Vocabulary Sprint — build/update local IPA database from English Wiktionary.
-Robust version with rate limiting, retry/backoff, resumable checkpoints,
-and automatic retry of transient network/HTTP errors.
+Audio Vocabulary Sprint — update local IPA from English Wiktionary.
 
-Usage:
+Normal run:
   python3 tools/update_pronunciations.py
 
-Retry prior missing entries too:
+Recommended on macOS for long runs:
+  caffeinate -i python3 tools/update_pronunciations.py
+
+By default, customWords are read directly from the private GitHub
+audio-vocabulary-sprint-data/progress.json. No local progress.json is needed.
+The script uses GITHUB_TOKEN if present; otherwise it securely prompts for the
+fine-grained token with hidden input. The token is never written to disk.
+
+Retry genuine missing/no-IPA entries too:
   python3 tools/update_pronunciations.py --retry-missing
+
+BASE_WORDS only, without GitHub:
+  python3 tools/update_pronunciations.py --base-only
 """
 
 import argparse
+import base64
+import getpass
 import json
+import os
 import random
 import re
 import time
@@ -27,7 +39,7 @@ BASE_DELAY = 0.65
 JITTER = 0.20
 TIMEOUT = 10
 MAX_RETRIES = 5
-UA = "AudioVocabularySprint-PronunciationBuilder/1.1 (personal language-learning project)"
+UA = "AudioVocabularySprint-PronunciationBuilder/1.3 (personal language-learning project)"
 
 TRANSIENT_HTTP = {429, 500, 502, 503, 504}
 
@@ -44,6 +56,79 @@ def load_words(path):
     if not m:
         raise RuntimeError("Could not parse window.BASE_WORDS")
     return json.loads(m.group(1))
+
+
+def normalise_words(words):
+    out = []
+    seen = set()
+    for raw in words or []:
+        w = str(raw or "").strip()
+        k = w.lower()
+        if not w or k in seen or k in {"a", "an", "the"} or k == "vc_vocabulary":
+            continue
+        seen.add(k)
+        out.append(w)
+    return out
+
+
+GITHUB_OWNER = "zzZing0-0"
+GITHUB_REPO = "audio-vocabulary-sprint-data"
+GITHUB_PATH = "progress.json"
+GITHUB_BRANCH = "main"
+
+def github_progress_url(owner, repo, path, branch):
+    encoded_path = "/".join(urllib.parse.quote(part, safe="") for part in path.split("/"))
+    query = urllib.parse.urlencode({"ref": branch})
+    return f"https://api.github.com/repos/{owner}/{repo}/contents/{encoded_path}?{query}"
+
+def github_token():
+    token = (os.environ.get("GITHUB_TOKEN") or "").strip()
+    if token:
+        return token
+    print("GitHub token is required to read private progress.json.")
+    print("Paste your fine-grained token here; input is hidden and is NOT saved.")
+    return getpass.getpass("GitHub token: ").strip()
+
+def load_cloud_custom_words(owner, repo, path, branch, token):
+    if not token:
+        raise SystemExit("No GitHub token supplied.")
+
+    req = urllib.request.Request(
+        github_progress_url(owner, repo, path, branch),
+        headers={
+            "User-Agent": UA,
+            "Accept": "application/vnd.github+json",
+            "Authorization": "Bearer " + token,
+            "X-GitHub-Api-Version": "2022-11-28",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            meta = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        detail = ""
+        try:
+            detail = json.loads(e.read().decode("utf-8")).get("message", "")
+        except Exception:
+            pass
+        raise SystemExit(f"GitHub {e.code}: {detail or e.reason}")
+    except (TimeoutError, urllib.error.URLError) as e:
+        raise SystemExit(f"Could not read GitHub progress.json: {e}")
+
+    content = str(meta.get("content") or "").replace("\n", "")
+    if not content:
+        raise SystemExit("GitHub progress.json returned no content.")
+
+    try:
+        payload = json.loads(base64.b64decode(content).decode("utf-8"))
+    except Exception as e:
+        raise SystemExit(f"Could not decode GitHub progress.json: {e}")
+
+    state = payload.get("state", payload) if isinstance(payload, dict) else {}
+    if not isinstance(state, dict):
+        raise SystemExit("GitHub progress.json has an unexpected format.")
+
+    return normalise_words(state.get("customWords", []))
 
 def load_db(path):
     if not path.exists():
@@ -206,10 +291,28 @@ def is_transient_status(status):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--retry-missing", action="store_true")
+    ap.add_argument("--owner", default=GITHUB_OWNER)
+    ap.add_argument("--repo", default=GITHUB_REPO)
+    ap.add_argument("--path", default=GITHUB_PATH)
+    ap.add_argument("--branch", default=GITHUB_BRANCH)
+    ap.add_argument("--base-only", action="store_true",
+                    help="Skip GitHub and update IPA for BASE_WORDS only.")
     args = ap.parse_args()
 
     project = root()
-    vocab = load_words(project/"data"/"vocabulary.js")
+    base_vocab = normalise_words(load_words(project/"data"/"vocabulary.js"))
+
+    if args.base_only:
+        custom_vocab = []
+        cloud_source = "skipped (--base-only)"
+    else:
+        token = github_token()
+        custom_vocab = load_cloud_custom_words(
+            args.owner, args.repo, args.path, args.branch, token
+        )
+        cloud_source = f"github.com/{args.owner}/{args.repo}/{args.path}@{args.branch}"
+
+    vocab = normalise_words(base_vocab + custom_vocab)
     out = project/"data"/"pronunciations.json"
     db = load_db(out)
     existing = db["words"]
@@ -236,7 +339,10 @@ def main():
         if args.retry_missing and status in missing_statuses:
             pending.append(word)
 
-    print(f"Vocabulary: {len(vocab)}")
+    print(f"Base vocabulary: {len(base_vocab)}")
+    print(f"Custom words from cloud: {len(custom_vocab)}")
+    print(f"Combined vocabulary: {len(vocab)}")
+    print(f"Progress source: {cloud_source}")
     print(f"Already stored: {len(existing)}")
     print(f"To request/retry: {len(pending)}")
     print(f"Output: {out}\n")

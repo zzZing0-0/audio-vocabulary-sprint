@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint v3.4.1
+# Audio Vocabulary Sprint v3.14.1
 
 ## Structure
 - `index.html` — page structure
@@ -67,3 +67,50 @@ The current word is URL-encoded into both context-search links automatically.
 - Moved 钉子户 and 已掌握 full lists to active.html and mastered.html; main page no longer renders those lists.
 - Added lightweight PASS confetti celebration.
 - Preserved localStorage key and learning-state schema.
+
+
+## v3.14 Local IPA database
+- `data/pronunciations.json` is a static local IPA database built from English Wiktionary.
+- IPA appears only after Reveal, preserving the audio-first task.
+- Explicit UK/US labels are shown only when Wiktionary explicitly supports them.
+- If neither regional label exists but an unlabelled IPA exists, the UI shows `IPA`.
+- Missing entries occupy no UI space.
+- Formal IPA is preserved as stored, including symbols such as `/ɹ/`.
+
+
+### Updating IPA after importing another word list
+Web TXT imports are persistent `state.customWords` and are uploaded inside the private GitHub `progress.json`.
+
+The IPA updater does **not** require any local copy of `progress.json`.
+By default it directly reads the latest private GitHub file through the GitHub Contents API, then merges:
+
+1. `data/vocabulary.js` (`BASE_WORDS`)
+2. cloud `progress.json → state.customWords`
+
+It requests only pronunciation entries not already stored in `data/pronunciations.json`, plus transient failures.
+
+Recommended on macOS:
+
+```bash
+caffeinate -i python3 tools/update_pronunciations.py
+```
+
+Authentication:
+- If `GITHUB_TOKEN` exists in the Terminal environment, the script uses it.
+- Otherwise the script securely prompts for the fine-grained token with hidden input.
+- The token is never saved to project files or `pronunciations.json`.
+- The token only needs access to the private `audio-vocabulary-sprint-data` repository.
+
+For BASE_WORDS only:
+
+```bash
+python3 tools/update_pronunciations.py --base-only
+```
+
+Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/missing-page entries.
+
+## v3.14.1
+- Fixed IPA maintenance so `customWords` come directly from cloud `progress.json`.
+- Removed the need for a local private-data repo or local `progress.json`.
+- Normal daily study remains: study → GitHub Sync upload → done.
+- Terminal maintenance is only needed when newly imported vocabulary needs IPA.

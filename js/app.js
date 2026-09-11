@@ -10,6 +10,47 @@ function getPreferredEnglishVoices(){
 
 let voices=[], revealed=false, started=false;
 
+let pronunciationWords={};
+let pronunciationLoadFinished=false;
+
+function pronunciationHtml(word){
+  const item=pronunciationWords[String(word||"").toLowerCase()];
+  if(!item)return "";
+
+  // Prefer explicitly region-labelled IPA. Show generic fallback only when
+  // neither regional label exists; never guess a UK/US label.
+  const parts=[];
+  if(item.uk) parts.push('<span><b>UK</b> '+escapeHtml(item.uk)+'</span>');
+  if(item.us) parts.push('<span><b>US</b> '+escapeHtml(item.us)+'</span>');
+  if(!parts.length && item.fallback) parts.push('<span><b>IPA</b> '+escapeHtml(item.fallback)+'</span>');
+  if(!parts.length)return "";
+
+  return '<div class="ipaLine">'+parts.join('<span class="ipaSep">·</span>')+'</div>';
+}
+
+function refreshCurrentPronunciation(){
+  if(!revealed || !state.current)return;
+  const slot=document.getElementById("pronunciationSlot");
+  if(slot) slot.innerHTML=pronunciationHtml(state.current);
+}
+
+async function loadPronunciations(){
+  try{
+    const r=await fetch("data/pronunciations.json?v=3.14.1",{cache:"no-cache"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    const payload=await r.json();
+    pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
+  }catch(e){
+    console.warn("Pronunciation database unavailable:",e);
+    pronunciationWords={};
+  }finally{
+    pronunciationLoadFinished=true;
+    refreshCurrentPronunciation();
+  }
+}
+loadPronunciations();
+
+
 
 
 
@@ -48,6 +89,7 @@ function reveal(){
   document.getElementById("answer").innerHTML=
     '<div class="debtBadge">debt '+d+(state.debts[state.current]?'':' · 首次出现')+'</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
+    '<div id="pronunciationSlot">'+pronunciationHtml(state.current)+'</div>'+
     '<div class="note" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'+
       '<a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(state.current.toLowerCase().replace(/\s+/g,"-"))+'" target="vocabLookup" style="color:#666;text-decoration:none">📖 Oxford 英英</a>'+
       '<a href="'+youdaoHref+'" target="vocabLookup" style="color:#666;text-decoration:none">📘 有道英中</a>'+

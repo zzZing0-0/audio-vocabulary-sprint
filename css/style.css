@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.13.3.1: modal layers must cover the top-right undo control */
+/* v3.14.1: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -451,4 +451,29 @@ button.controlBtn{
 .dialog{
   position:relative;
   z-index:1001;
+}
+
+
+/* ===== v3.14 local IPA reveal ===== */
+.ipaLine{
+  margin-top:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  color:#666;
+  font-size:15px;
+  line-height:1.45;
+  font-family:"Charis SIL","Doulos SIL","Noto Sans","Segoe UI",sans-serif;
+}
+.ipaLine b{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:11px;
+  letter-spacing:.04em;
+  color:#888;
+}
+.ipaSep{color:#bbb}
+@media(max-width:500px){
+  .ipaLine{font-size:14px;gap:6px}
 }
