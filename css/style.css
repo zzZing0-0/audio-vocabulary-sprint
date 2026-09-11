@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.17: modal layers must cover the top-right undo control */
+/* v3.17.1: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17 removed-word management ===== */
+/* ===== v3.17.1 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17 transient top-right notice ===== */
+/* ===== v3.17.1 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17 simplified study controls ===== */
+/* ===== v3.17.1 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.17 UI hierarchy refresh ===== */
+/* ===== v3.17.1 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -605,3 +605,64 @@ button.controlBtn{
 .rainbowProgress .bar{height:100%;border-radius:999px;background:linear-gradient(90deg,#f6c8d9 0% 14.285%,#f5d2b8 14.285% 28.57%,#fbf0b8 28.57% 42.855%,#cfe9d9 42.855% 57.14%,#cfe6ef 57.14% 71.425%,#d5d7f5 71.425% 85.71%,#e4d0f5 85.71% 100%);transition:width .3s ease}
 .progressFlag{position:absolute;top:-24px;transform:translateX(-50%);font-size:18px;line-height:1;transition:left .3s ease}
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
+
+
+/* ===== v3.17.1 UI polish ===== */
+.debtBadge,
+.undoBtn{
+  top:18px;
+  min-height:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  padding:5px 10px;
+  line-height:1;
+}
+
+.noteDetails summary{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  width:auto;
+  padding:6px 10px;
+  border:1px solid #dcc8f8;
+  border-radius:10px;
+  background:#fff;
+  color:#6f6878;
+}
+.noteDetails summary::before{
+  content:"◀";
+  font-size:9px;
+  line-height:1;
+  color:#9a83bd;
+}
+.noteDetails[open] summary::before{content:"▼";}
+.noteDetails[open] summary{margin-bottom:8px;}
+.noteDetails .wordNoteInput{border-color:#dcc8f8;}
+
+.rainbowProgress .bar{
+  width:100%;
+  opacity:.68;
+  background:linear-gradient(
+    90deg,
+    #f4b9ca 0%,
+    #f5c6a8 16%,
+    #f6e6a8 32%,
+    #cde6bd 48%,
+    #bee2df 64%,
+    #bfd4ee 80%,
+    #d5c2ee 100%
+  );
+  clip-path:inset(0 100% 0 0 round 999px);
+  transition:clip-path .3s ease;
+}
+
+@media(max-width:500px){
+  .debtBadge,
+  .undoBtn{
+    top:14px;
+    min-height:25px;
+    padding:5px 9px;
+  }
+}

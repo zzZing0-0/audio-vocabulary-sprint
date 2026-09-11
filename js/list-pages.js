@@ -110,7 +110,7 @@ function renderRemoved(){
     .sort((a,b)=>String(b[1].removedAt||"").localeCompare(String(a[1].removedAt||""))||a[0].localeCompare(b[0]));
   document.getElementById("count").textContent=rows.length;
   root.innerHTML=rows.length?rows.map(([w,meta])=>{
-    const status=listState.mastered[w]?'原状态：Mastered':(Number(listState.debts[w]||0)>0?'原状态：debt '+listState.debts[w]:'原状态：Unseen / 无 debt');
+    const status=listState.mastered[w]?'原状态：已掌握':(Number(listState.debts[w]||0)>0?'原状态：学习中 · debt '+listState.debts[w]:'原状态：未学习 / 无 debt');
     const date=meta.removedAt?new Date(meta.removedAt).toLocaleDateString():"";
     const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';
     return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">'+h(status)+(date?' · '+h(date):'')+'</div><button class="miniBtn" data-restore="'+encodeURIComponent(w)+'">恢复词库</button>'+note+'</div>';

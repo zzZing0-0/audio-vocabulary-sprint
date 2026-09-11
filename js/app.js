@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.17",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.17.1.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -268,10 +268,14 @@ function updateStats(){
  document.getElementById("active").textContent=a;
  document.getElementById("unseen").textContent=u;
  const pct=m/Math.max(bank.length,1)*100;
+ const boundedPct=Math.max(0,Math.min(100,pct));
  const bar=document.getElementById("bar");
- if(bar) bar.style.width=(Math.floor(pct/10)*10)+"%";
+ if(bar){
+   bar.style.width="100%";
+   bar.style.clipPath=`inset(0 ${100-boundedPct}% 0 0 round 999px)`;
+ }
  const flag=document.getElementById("progressFlag");
- if(flag){flag.style.left=Math.max(0,Math.min(100,pct))+"%";flag.title=Math.round(pct)+"%";}
+ if(flag){flag.style.left=boundedPct+"%";flag.title=Math.round(pct)+"%";}
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function loadVoices(){voices=getPreferredEnglishVoices(); updateVoiceInfo();}
