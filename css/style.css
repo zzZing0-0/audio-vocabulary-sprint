@@ -435,3 +435,20 @@ button.controlBtn{
   opacity:.35;
   cursor:default;
 }
+
+/* v3.13.1.1: modal layers must cover the top-right undo control */
+#ruleOverlay,
+#syncOverlay,
+.modalOverlay,
+.overlay{
+  z-index:1000 !important;
+}
+#ruleOverlay > *,
+#syncOverlay > *,
+.modal,
+.modalCard,
+.sheet,
+.dialog{
+  position:relative;
+  z-index:1001;
+}

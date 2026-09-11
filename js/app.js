@@ -587,3 +587,21 @@ function installFeedbackAudioUnlock(){
   });
 }
 installFeedbackAudioUnlock();
+
+
+function installMoreToolsOutsideClose(){
+  const box=document.querySelector(".moreTools");
+  const menu=document.querySelector(".moreToolsMenu");
+  if(!box||!menu)return;
+
+  document.addEventListener("pointerdown",(e)=>{
+    if(!box.contains(e.target)){
+      menu.classList.remove("open");
+      menu.hidden=true;
+      menu.style.display="";
+      const trigger=box.querySelector("button");
+      if(trigger)trigger.setAttribute("aria-expanded","false");
+    }
+  },true);
+}
+installMoreToolsOutsideClose();
