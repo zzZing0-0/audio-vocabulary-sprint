@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.21.2",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.22",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -86,8 +86,8 @@ function updateAnswerControls(){
   if(revealBox) revealBox.hidden=revealed;
   if(judgeBox) judgeBox.hidden=!revealed;
   if(revealBtn) revealBtn.disabled=!hasWord;
-  if(passBtn) passBtn.disabled=!hasWord || !revealed || judgmentLocked;
-  if(againBtn) againBtn.disabled=!hasWord || !revealed || judgmentLocked;
+  if(passBtn) passBtn.disabled=!hasWord || !revealed || (judgmentLocked&&judgmentKind!=="PASS");
+  if(againBtn) againBtn.disabled=!hasWord || !revealed || (judgmentLocked&&judgmentKind!=="AGAIN");
   if(removeBtn) removeBtn.hidden=!(hasWord&&revealed);
   if(removeBtn) removeBtn.disabled=!!judgmentLocked;
 
@@ -397,8 +397,8 @@ document.getElementById("answer").addEventListener("blur",e=>{
 document.getElementById("reveal").onclick=()=>{if(state.current)reveal();};
 document.getElementById("removeTopBtn").onclick=removeCurrentWord;
 document.getElementById("undoBtn").onclick=undoLastJudgment;
-document.getElementById("pass").onclick=()=>{if(revealed&&!judgmentLocked)pass();};
-document.getElementById("again").onclick=()=>{if(revealed&&!judgmentLocked)again();};
+document.getElementById("pass").onclick=()=>{if(revealed)pass();};
+document.getElementById("again").onclick=()=>{if(revealed)again();};
 document.getElementById("voicePrev").onclick=()=>changeVoice(-1);
 document.getElementById("voiceNext").onclick=()=>changeVoice(1);
 document.getElementById("info").onclick=()=>{

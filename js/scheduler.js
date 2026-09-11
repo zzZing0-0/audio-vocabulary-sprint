@@ -10,11 +10,47 @@ function activeEligibleToday(w){
 let lastJudgmentSnapshot=null;
 let judgmentTimer=null;
 let judgmentLocked=false;
+let judgmentKind=null;
+let judgmentFromDebt=null;
+let judgmentToDebt=null;
 let debtAnimationTimers=[];
 
 function clearDebtAnimationTimers(){
   debtAnimationTimers.forEach(id=>clearTimeout(id));
   debtAnimationTimers=[];
+}
+
+function clearJudgmentBurst(){
+  if(judgmentTimer){
+    clearTimeout(judgmentTimer);
+    judgmentTimer=null;
+  }
+  judgmentLocked=false;
+  judgmentKind=null;
+  judgmentFromDebt=null;
+  judgmentToDebt=null;
+}
+
+function scheduleJudgmentExit(){
+  if(judgmentTimer)clearTimeout(judgmentTimer);
+  judgmentTimer=setTimeout(()=>{
+    judgmentTimer=null;
+    // Particle dissolve is deliberately deferred until the user stops tapping.
+    if(judgmentKind==="AGAIN")celebrateAgain();
+    next();
+  },900);
+}
+
+function replayJudgmentFeedback(kind){
+  if(!judgmentLocked || kind!==judgmentKind)return false;
+
+  // Extra taps are intentionally satisfying but never mutate debt again.
+  if(kind==="AGAIN")playAgainSound();
+  else playPassSound();
+
+  animateDebtEcho(kind,judgmentToDebt);
+  scheduleJudgmentExit();
+  return true;
 }
 
 function setDebtBadgeValue(badge,debt){
@@ -50,6 +86,32 @@ function animateDebtDelta(kind,fromDebt,toDebt){
     if(delta.isConnected)delta.remove();
     badge.classList.remove("debtImpact");
   },820));
+}
+
+function animateDebtEcho(kind,currentDebt){
+  const info=document.querySelector("#answer .topLeftInfo");
+  const badge=document.querySelector("#answer .debtBadge");
+  if(!info||!badge)return;
+
+  // Do not clear earlier echo timers: rapid taps may overlap visually.
+  setDebtBadgeValue(badge,currentDebt);
+
+  const delta=document.createElement("span");
+  delta.className="debtDelta debtDeltaEcho "+(kind==="PASS"?"debtDeltaPass":"debtDeltaAgain");
+  delta.textContent=kind==="PASS"?"−1":"+1";
+  info.appendChild(delta);
+
+  const hit=setTimeout(()=>{
+    if(!badge.isConnected)return;
+    badge.classList.remove("debtImpact");
+    void badge.offsetWidth;
+    badge.classList.add("debtImpact");
+  },300);
+  const gone=setTimeout(()=>{
+    if(delta.isConnected)delta.remove();
+    if(badge.isConnected)badge.classList.remove("debtImpact");
+  },680);
+  debtAnimationTimers.push(hit,gone);
 }
 
 function cloneLearningSnapshot(){
@@ -90,7 +152,7 @@ function undoLastJudgment(){
 
   speechSynthesis.cancel();
   clearDebtAnimationTimers();
-  judgmentLocked=false;
+  clearJudgmentBurst();
   resetWordDissolve();
 
   const s=lastJudgmentSnapshot;
@@ -158,7 +220,7 @@ function popNextEligible(){
 function next(){
   speechSynthesis.cancel();
   clearDebtAnimationTimers();
-  judgmentLocked=false;
+  clearJudgmentBurst();
   revealed=false;
   resetWordDissolve();
   document.getElementById("answer").innerHTML="";
@@ -183,14 +245,24 @@ function next(){
 }
 
 function pass(){
-  if(!state.current || judgmentLocked)return;
+  if(!state.current)return;
+  if(judgmentLocked){
+    replayJudgmentFeedback("PASS");
+    return;
+  }
+
   judgmentLocked=true;
+  judgmentKind="PASS";
   updateAnswerControls();
   saveCurrentNote();
   armUndo();
   celebratePass(); playPassSound();
+
   let w=state.current, d=state.debts[w]||1;
   const nextDebt=Math.max(0,d-1);
+  judgmentFromDebt=d;
+  judgmentToDebt=nextDebt;
+
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, d);
   if(d<=1){
     delete state.debts[w];
@@ -205,15 +277,25 @@ function pass(){
 }
 
 function again(){
-  if(!state.current || judgmentLocked)return;
+  if(!state.current)return;
+  if(judgmentLocked){
+    replayJudgmentFeedback("AGAIN");
+    return;
+  }
+
   judgmentLocked=true;
+  judgmentKind="AGAIN";
   updateAnswerControls();
   playAgainSound();
   saveCurrentNote();
   armUndo();
+
   let w=state.current;
   const d=state.debts[w]||1;
   const nextDebt=d+1;
+  judgmentFromDebt=d;
+  judgmentToDebt=nextDebt;
+
   state.debts[w]=nextDebt;
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, nextDebt);
   state.lastReviewedDate[w]=localDateKey();
@@ -221,7 +303,8 @@ function again(){
 }
 
 function revealThenNext(kind,fromDebt,toDebt){
-  // Re-render the judged word at its pre-click debt, then animate the arithmetic.
+  // First tap commits the learning result exactly once.
+  // The word stays on screen so repeated same-button taps can replay +1/−1 and sound.
   reveal(fromDebt,false);
   save();
 
@@ -230,12 +313,8 @@ function revealThenNext(kind,fromDebt,toDebt){
 
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     animateDebtDelta(kind,fromDebt,toDebt);
-    if(kind==="AGAIN")celebrateAgain();
   }));
 
-  if(judgmentTimer)clearTimeout(judgmentTimer);
-  judgmentTimer=setTimeout(()=>{
-    judgmentTimer=null;
-    next();
-  },1050);
+  scheduleJudgmentExit();
 }
+

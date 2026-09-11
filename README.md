@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint v3.21.2
+# Audio Vocabulary Sprint v3.22
 
 ## Structure
 - `index.html` — page structure
@@ -109,14 +109,14 @@ python3 tools/update_pronunciations.py --base-only
 
 Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/missing-page entries.
 
-## v3.21.2
+## v3.22
 - Fixed IPA maintenance so `customWords` come directly from cloud `progress.json`.
 - Removed the need for a local private-data repo or local `progress.json`.
 - Normal daily study remains: study → GitHub Sync upload → done.
 - Terminal maintenance is only needed when newly imported vocabulary needs IPA.
 
 
-## v3.21.2 Removed words
+## v3.22 Removed words
 - Reveal now includes `移出词库`.
 - Removed words are stored in `state.removedWords` and sync inside GitHub `progress.json`.
 - Removal excludes a word from the effective learning bank and future queues without deleting its debt, Mastered, peak, review-date, or Note history.
@@ -126,14 +126,14 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - IPA maintenance reads cloud `removedWords` and excludes them from the combined vocabulary, so newly removed custom words are not fetched unnecessarily.
 
 
-## v3.21.2
+## v3.22
 - `移出词库` is now included in the one-step Undo system.
 - Undo restores `removedWords`, queue/current word, seen/debt/Mastered/peak/review state from the pre-removal snapshot.
 - Removal feedback no longer overwrites the listening hint for the next word.
 - Added a top-right transient notice that disappears automatically after 5 seconds.
 
 
-## v3.21.2 Simplified study UI
+## v3.22 Simplified study UI
 - Voice switching moved beside the speaker: `‹` = previous voice, `›` = next voice.
 - Tapping the speaker repeats the current pronunciation.
 - Removed the separate `切换语音` study button.
@@ -141,14 +141,14 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - After Reveal, `显示答案` disappears and only `PASS` / `AGAIN` remain.
 - PASS / AGAIN cannot be submitted before Reveal.
 
-## v3.21.2 UI polish
+## v3.22 UI polish
 - Removed-page historical states are fully localized: 已掌握 / 学习中 / 未学习.
 - Note disclosure uses a thin `#dcc8f8` outline and a direction triangle (`◀` closed, `▼` open).
 - Debt badge and Undo share the same top position and control height.
 - Rainbow progress now fills the exact mastered percentage, including progress below 10%.
 - The rainbow remains mapped across the full track and is revealed by clipping, with lower opacity for a softer look.
 
-## v3.21.2 UI/message polish
+## v3.22 UI/message polish
 - Note disclosure arrow is now `▶` when closed and `▼` when open.
 - `移出词库` moved beneath `撤回` in the card's top-right corner, with pale-pink `#fbd5e4` warning styling.
 - Native browser `alert()` / `confirm()` dialogs were removed from the main app, sync workflow, and list pages.
@@ -156,30 +156,30 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Operation feedback uses one unified pale-blue top-left toast that disappears after five seconds.
 - User-facing operation messages were normalized to Chinese terminology where applicable.
 
-## v3.21.2 UI polish
+## v3.22 UI polish
 - Unified operation toast moved to the top-right.
 - Toast uses the same pale-blue family as the debt badge and shows a visible `5 → 4 → 3 → 2 → 1` countdown.
 - Undo button background changed to `#fbf6d5`.
 - PASS / AGAIN text colors now match their border colors exactly.
 
-## v3.21.2 behavior polish
+## v3.22 behavior polish
 - Ordinary five-second operation notices no longer show a countdown number.
 - Only second-click confirmation notices count down, and the number replaces the value inside `（5 秒内再次点击确认）` as `5 → 4 → 3 → 2 → 1`.
 - Undo is completely hidden while unavailable.
 - Top-right actions no longer reserve an empty slot; whichever action is visible occupies the top position.
 - `显示答案` text now matches its purple border color exactly.
 
-## v3.21.2
+## v3.22
 - Main study UI localized to `查看答案` / `通过` / `再来一次` / `笔记`.
 - PASS / AGAIN result badges localized to `通过` / `再来一次`.
 - `debt` remains unchanged.
 - Primary study buttons get a subtle border-colored glow on mouse hover.
 - Hover styling applies only to fine-pointer devices, so touch behavior is unchanged.
-## v3.21.2
+## v3.22
 - Fixed `查看答案` hover glow being visually overridden by existing action-button CSS.
 - Added a higher-specificity purple radiating glow for mouse/fine-pointer hover.
 
-## v3.21.2
+## v3.22
 - `重新加入` renamed to `重新学习`.
 - `移出词库` renamed to `删除` for a more compact UI.
 - Header status labels now use traffic-light dots:
@@ -187,13 +187,13 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - yellow = 学习中
   - red = 未学习
 
-## v3.21.2
+## v3.22
 - Header status rows are left-aligned so the three traffic-light dots share one vertical line.
 - `debt: N` and `首次出现` are separate top-left pills.
 - Undo/Delete are compact outline buttons, laid out horizontally at the top-right with no reserved empty slot.
 - Undo uses a warm yellow outline/text; Delete uses a soft pink outline/text.
 
-## v3.21.2
+## v3.22
 - Hardened IPA rendering for Safari/macOS without altering the IPA database:
   explicit LTR/bidi isolation, stable IPA-capable font fallback, and safer shaping.
 - Judgment feedback now visualizes the debt arithmetic instead of repeating button labels:
@@ -201,19 +201,27 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - `通过`: `−1` drops away from the debt badge, then the number decrements.
 - Passing `debt: 1` visibly resolves to `debt: 0` before the word leaves the screen.
 
-## v3.21.2
+## v3.22
 - Before `查看答案`, the pronunciation controls (`‹  🔊  ›`) are enlarged.
 - Mobile receives the strongest enlargement for easier one-handed tapping.
 - After reveal, the pronunciation controls smoothly shrink back to the existing compact layout.
 - The same transition runs in reverse when the next unrevealed word appears.
 
-## v3.21.2
+## v3.22
 - Mobile pre-reveal pronunciation controls moved significantly lower into the one-handed thumb reach zone.
 - Pre-reveal speaker enlarged again (164px on mobile) and side arrows enlarged proportionally.
 - Post-reveal layout remains unchanged and compact.
 
-## v3.21.2
+## v3.22
 - Fixed repeated taps on `通过` / `再来一次` applying multiple debt changes during the animation delay.
 - The first judgment now locks the word until the next card appears.
 - Judgment buttons are disabled during the debt animation; extra taps are ignored at both UI and logic layers.
 - Undo immediately clears the judgment lock.
+
+## v3.22
+- Restores playful rapid tapping without corrupting learning state.
+- The first `通过` / `再来一次` tap commits exactly one debt change.
+- Repeated taps on that same button replay the `−1` / `+1` visual and sound only; debt does not change again.
+- Every extra tap keeps the judged word on screen a little longer.
+- The opposite judgment button is disabled after the first choice, so the committed judgment cannot flip accidentally.
+- AGAIN particle dissolve is deferred until the final idle timeout, so it runs only once after the user stops tapping.
