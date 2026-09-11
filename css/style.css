@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.22.2: modal layers must cover the top-right undo control */
+/* v3.22.3: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 removed-word management ===== */
+/* ===== v3.22.3 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 transient top-right notice ===== */
+/* ===== v3.22.3 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 simplified study controls ===== */
+/* ===== v3.22.3 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.22.2 UI hierarchy refresh ===== */
+/* ===== v3.22.3 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.22.2 UI polish ===== */
+/* ===== v3.22.3 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 top-right actions + unified notices ===== */
+/* ===== v3.22.3 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 color + countdown polish ===== */
+/* ===== v3.22.3 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -771,7 +771,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 behavior polish ===== */
+/* ===== v3.22.3 behavior polish ===== */
 .topRightActions .undoBtn[hidden]{display:none!important;}
 
 /* Keep visible top-right actions compact with no reserved empty slot. */
@@ -791,7 +791,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 Chinese labels + primary action hover glow ===== */
+/* ===== v3.22.3 Chinese labels + primary action hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   .revealAction,
   .passAction,
@@ -828,7 +828,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 fix: 查看答案 hover glow ===== */
+/* ===== v3.22.3 fix: 查看答案 hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   button.action.revealAction:hover:not(:disabled){
     border-color:#dcc8f8!important;
@@ -842,7 +842,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 compact labels + traffic-light stats ===== */
+/* ===== v3.22.3 compact labels + traffic-light stats ===== */
 .stats div{
   display:flex;
   align-items:center;
@@ -865,7 +865,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 final-night UI alignment ===== */
+/* ===== v3.22.3 final-night UI alignment ===== */
 /* Header status: left-aligned dots on one vertical guide. */
 .stats{
   align-items:flex-start;
@@ -951,7 +951,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 IPA rendering + debt arithmetic feedback ===== */
+/* ===== v3.22.3 IPA rendering + debt arithmetic feedback ===== */
 
 /* Safari can render combining IPA marks poorly when a chip falls through mixed
    font/bidi shaping. Keep the stored IPA unchanged and make shaping explicit. */
@@ -1036,7 +1036,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 larger pre-reveal pronunciation controls ===== */
+/* ===== v3.22.3 larger pre-reveal pronunciation controls ===== */
 
 /* Keep the post-reveal layout at the existing compact size, but animate
    the three pronunciation controls between the two study states. */
@@ -1113,7 +1113,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 mobile reach-zone adjustment ===== */
+/* ===== v3.22.3 mobile reach-zone adjustment ===== */
 @media(max-width:500px){
   .card.preReveal .speakerNav{
     margin-top:180px;
@@ -1146,7 +1146,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 judgment double-click guard ===== */
+/* ===== v3.22.3 judgment double-click guard ===== */
 .passAction:disabled,
 .againAction:disabled{
   cursor:default;
@@ -1159,11 +1159,22 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.2 playful judgment burst ===== */
+/* ===== v3.22.3 playful judgment burst ===== */
 .passAction:not(:disabled):active,
 .againAction:not(:disabled):active{
   transform:scale(.97);
 }
 .debtDeltaEcho{
   z-index:5;
+}
+
+
+/* ===== v3.22.3 mobile revealed-position refinement ===== */
+@media(max-width:500px){
+  /* Desktop placement is already good. On phones, give the compact revealed
+     pronunciation controls a lower, easier-to-reach position. Because answer
+     content follows .listen in normal flow, the word/IPA move down together. */
+  .card:not(.preReveal) .listen{
+    padding-top:88px;
+  }
 }

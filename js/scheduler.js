@@ -308,7 +308,6 @@ function again(){
   judgmentKind="AGAIN";
   updateAnswerControls();
   playAgainSound();
-  celebrateAgain();
   saveCurrentNote();
   armUndo();
 
@@ -326,12 +325,16 @@ function again(){
 
 function revealThenNext(kind,fromDebt,toDebt){
   // First tap commits the learning result exactly once.
-  // The word stays on screen so repeated same-button taps can replay +1/−1 and sound.
+  // Re-render first so the dissolve targets the actual visible word node.
   reveal(fromDebt,false);
   save();
 
   const firstBadge=document.querySelector("#answer .firstBadge");
   if(firstBadge)firstBadge.style.display="none";
+
+  // AGAIN feedback starts immediately after the DOM rebuild: the word disappears
+  // into particles on the same tap instead of being recreated visibly afterward.
+  if(kind==="AGAIN")celebrateAgain();
 
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     animateDebtDelta(kind,fromDebt,toDebt);
