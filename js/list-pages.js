@@ -11,20 +11,53 @@ listState.queue=Array.isArray(listState.queue)?listState.queue:[];
 
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
+let listToastTimer=null;
+const listConfirmWindows=new Map();
+function listToast(message){
+  let el=document.getElementById("transientToast");
+  if(!el){
+    el=document.createElement("div");
+    el.id="transientToast";
+    el.className="transientToast";
+    el.setAttribute("role","status");
+    document.body.appendChild(el);
+  }
+  if(listToastTimer)clearTimeout(listToastTimer);
+  el.textContent=message;
+  el.classList.remove("show");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
+  listToastTimer=setTimeout(()=>{el.classList.remove("show");listToastTimer=null;},5000);
+}
+function listRequireSecondClick(key,message,action){
+  const now=Date.now(),until=listConfirmWindows.get(key)||0;
+  if(until>now){
+    listConfirmWindows.delete(key);
+    action();
+    return true;
+  }
+  listConfirmWindows.set(key,now+5000);
+  listToast(message+"（5 秒内再次点击确认）");
+  setTimeout(()=>{if((listConfirmWindows.get(key)||0)<=Date.now())listConfirmWindows.delete(key);},5100);
+  return false;
+}
 function removedSet(){return new Set(Object.keys(listState.removedWords||{}).map(w=>w.toLowerCase()));}
 function isRemovedListWord(w){return removedSet().has(String(w).toLowerCase());}
 
 function removeListWord(w,rerender){
   if(!w)return;
-  if(!confirm(`把 “${w}” 移出学习词库？
-
-可在「已移除」页面恢复，学习历史不会删除。`))return;
-  listState.removedWords=listState.removedWords||{};
-  listState.removedWords[w]={removedAt:new Date().toISOString()};
-  listState.queue=(listState.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
-  if(listState.current&&String(listState.current).toLowerCase()===String(w).toLowerCase())listState.current=null;
-  persist();
-  rerender();
+  listRequireSecondClick(
+    "remove-list:"+w,
+    `将 “${w}” 移出学习词库；学习历史和 Note 会保留`,
+    ()=>{
+      listState.removedWords=listState.removedWords||{};
+      listState.removedWords[w]={removedAt:new Date().toISOString()};
+      listState.queue=(listState.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
+      if(listState.current&&String(listState.current).toLowerCase()===String(w).toLowerCase())listState.current=null;
+      persist();
+      rerender();
+      listToast(`已移出 “${w}”`);
+    }
+  );
 }
 
 function renderActive(){
@@ -101,6 +134,7 @@ function restoreRemovedWord(w){
 
   persist();
   renderRemoved();
+  listToast(`已恢复 “${w}” 到学习词库`);
 }
 
 function renderRemoved(){

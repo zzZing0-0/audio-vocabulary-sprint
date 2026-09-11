@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.17.1.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.17.2.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -75,11 +75,13 @@ function updateAnswerControls(){
   const revealBox=document.getElementById("revealControls");
   const judgeBox=document.getElementById("judgmentActions");
   const revealBtn=document.getElementById("reveal");
+  const removeBtn=document.getElementById("removeTopBtn");
 
   const hasWord=!!state.current;
   if(revealBox) revealBox.hidden=revealed;
   if(judgeBox) judgeBox.hidden=!revealed;
   if(revealBtn) revealBtn.disabled=!hasWord;
+  if(removeBtn) removeBtn.hidden=!(hasWord&&revealed);
 }
 
 function changeVoice(step){
@@ -122,8 +124,7 @@ function reveal(){
     '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
       '<summary>Note</summary>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
-    '</details>'+
-    '<button class="removeCurrentBtn" id="removeCurrentWord" type="button">移出词库</button>';
+    '</details>';
 
   try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
 }
@@ -209,6 +210,8 @@ function saveCurrentNote(){
   save();
 }
 let transientToastTimer=null;
+const confirmWindows=new Map();
+
 function showTransientToast(message){
   let el=document.getElementById("transientToast");
   if(!el){
@@ -225,7 +228,6 @@ function showTransientToast(message){
   }
   el.textContent=message;
   el.classList.remove("show");
-  // Force a frame so repeated messages restart the transition/timer cleanly.
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
   transientToastTimer=setTimeout(()=>{
     el.classList.remove("show");
@@ -233,29 +235,47 @@ function showTransientToast(message){
   },5000);
 }
 
+function requireSecondClick(key,message,action){
+  const now=Date.now();
+  const until=confirmWindows.get(key)||0;
+  if(until>now){
+    confirmWindows.delete(key);
+    action();
+    return true;
+  }
+  confirmWindows.set(key,now+5000);
+  showTransientToast(message+"（5 秒内再次点击确认）");
+  setTimeout(()=>{
+    if((confirmWindows.get(key)||0)<=Date.now())confirmWindows.delete(key);
+  },5100);
+  return false;
+}
+
 function removeCurrentWord(){
   const w=state.current;
   if(!w)return;
   saveCurrentNote();
-  if(!confirm(`把 “${w}” 移出学习词库？
 
-它会进入「已移除」页面，可随时恢复；已有 debt / Mastered / Note 历史不会被删除。`))return;
+  requireSecondClick(
+    "remove:"+w,
+    `将 “${w}” 移出学习词库；学习历史和 Note 会保留`,
+    ()=>{
+      armUndo();
+      state.removedWords=state.removedWords||{};
+      state.removedWords[w]={removedAt:new Date().toISOString()};
+      state.queue=(state.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
 
-  // Removal is a first-class reversible action, just like PASS / AGAIN.
-  armUndo();
+      speechSynthesis.cancel();
+      state.current=null;
+      revealed=false;
+      save();
 
-  state.removedWords=state.removedWords||{};
-  state.removedWords[w]={removedAt:new Date().toISOString()};
-  state.queue=(state.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
-
-  speechSynthesis.cancel();
-  state.current=null;
-  revealed=false;
-  save();
-
-  updateStats();
-  showTransientToast(`已移出 “${w}” · 可点击撤回恢复`);
-  next();
+      updateStats();
+      updateAnswerControls();
+      showTransientToast(`已移出 “${w}”，可点击撤回恢复`);
+      next();
+    }
+  );
 }
 
 function updateStats(){
@@ -303,13 +323,11 @@ document.getElementById("speak").onclick=()=>{
 document.getElementById("answer").addEventListener("change",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 });
-document.getElementById("answer").addEventListener("click",e=>{
-  if(e.target && e.target.id==="removeCurrentWord") removeCurrentWord();
-});
 document.getElementById("answer").addEventListener("blur",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 },true);
 document.getElementById("reveal").onclick=()=>{if(state.current)reveal();};
+document.getElementById("removeTopBtn").onclick=removeCurrentWord;
 document.getElementById("undoBtn").onclick=undoLastJudgment;
 document.getElementById("pass").onclick=()=>{if(revealed)pass();};
 document.getElementById("again").onclick=()=>{if(revealed)again();};
@@ -330,19 +348,24 @@ document.getElementById("info").onclick=()=>{
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};
 document.getElementById("reset").onclick=()=>{
- if(confirm("重置本机学习进度？\n\n这会清空当前浏览器里的 Mastered、debt、seen、peak 等学习记录，但不会修改 GitHub 云端 progress.json。\n\n重置后如果再上传，会用重置后的空白进度覆盖云端。")){
-   localStorage.removeItem(KEY);
-   state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
-   shuffle(state.queue);
-   localStorage.setItem("audio_vocab_sprint_just_reset","1");
-   save();
-   speechSynthesis.cancel();
-   revealed=false; started=false;
-   document.getElementById("answer").innerHTML="";
-   document.getElementById("hint").textContent="本机进度已重置。点击喇叭开始。";
-   updateAnswerControls();
-   alert("本机已重置。\n⚠️ 此时上传 GitHub 会覆盖云端进度。");
- }
+ requireSecondClick(
+   "reset-local",
+   "将重置本机学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
+   ()=>{
+     localStorage.removeItem(KEY);
+     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
+     shuffle(state.queue);
+     localStorage.setItem("audio_vocab_sprint_just_reset","1");
+     save();
+     speechSynthesis.cancel();
+     revealed=false; started=false;
+     document.getElementById("answer").innerHTML="";
+     document.getElementById("hint").textContent="";
+     updateStats();
+     updateAnswerControls();
+     showTransientToast("本机学习进度已重置；此时上传会覆盖 GitHub 云端进度");
+   }
+ );
 };
 
 async function exportProgress(){
@@ -416,9 +439,9 @@ async function importProgress(file){
     document.getElementById("answer").innerHTML="";
     document.getElementById("hint").textContent="进度已导入。点击喇叭继续。";
     updateAnswerControls();
-    alert("进度导入成功");
+    showTransientToast("进度导入成功");
   }catch(e){
-    alert("导入失败：这不是有效的进度文件。");
+    showTransientToast("导入失败：这不是有效的进度文件");
   }
 }
 
@@ -482,17 +505,13 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
       save();
       updateStats();
 
-      alert(
-        "导入完成：\n"+
-        "读取词条 "+imported.length+" 个\n"+
-        "永久加入自定义词库 "+added.length+" 个\n"+
-        "已在内置词库 "+alreadyBase+" 个\n"+
-        "已在自定义词库 "+alreadyCustom+" 个\n"+
-        "其中保留既有 Mastered 记录 "+skippedMastered+" 个\n"+
-        "其中保留既有 Active 记录 "+skippedActive+" 个"
+      showTransientToast(
+        "词表导入完成：读取 "+imported.length+" 个；新增 "+added.length+
+        " 个；内置重复 "+alreadyBase+" 个；自定义重复 "+alreadyCustom+
+        " 个；保留已掌握 "+skippedMastered+" 个；保留学习中 "+skippedActive+" 个"
       );
     }catch(e){
-      alert("词表导入失败："+e.message);
+      showTransientToast("词表导入失败："+e.message);
     }finally{
       ev.target.value="";
     }

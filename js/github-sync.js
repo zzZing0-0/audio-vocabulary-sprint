@@ -69,14 +69,19 @@ async function githubGetProgress(){
   }
   return await r.json();
 }
-async function syncUpload(){
+async function syncUpload(forceAfterReset=false){
   const token = getSyncToken();
   if(!token){
-    alert("请先在 Token 设置里粘贴并保存 token。");
+    showTransientToast("请先在 Token 设置里粘贴并保存 Token");
     return;
   }
-  if(localStorage.getItem("audio_vocab_sprint_just_reset")==="1"){
-    if(!confirm("⚠️ 当前设备刚刚执行过“重置本机”。\n\n继续上传会用重置后的进度覆盖 GitHub 云端 progress.json。\n\n确定继续上传吗？")) return;
+  if(!forceAfterReset && localStorage.getItem("audio_vocab_sprint_just_reset")==="1"){
+    requireSecondClick(
+      "upload-after-reset",
+      "当前设备刚重置过；继续上传会用空白进度覆盖 GitHub 云端",
+      ()=>syncUpload(true)
+    );
+    return;
   }
   setSyncStatus("正在上传…");
   try{
@@ -109,19 +114,27 @@ async function syncUpload(){
     const now = new Date();
     markSyncSuccess("upload");
     setSyncStatus("上传成功 · " + now.toLocaleString());
+    showTransientToast("已上传到 GitHub");
   }catch(e){
     console.error(e);
     setSyncStatus("上传失败 · " + e.message);
-    alert("上传失败：\n" + e.message);
+    showTransientToast("上传失败："+e.message);
   }
 }
-async function syncDownload(){
+async function syncDownload(forceDownload=false){
   const token = getSyncToken();
   if(!token){
-    alert("请先在 Token 设置里粘贴并保存 token。");
+    showTransientToast("请先在 Token 设置里粘贴并保存 Token");
     return;
   }
-  if(!confirm("从 GitHub 下载会覆盖当前设备进度。\n下载前会自动保存一份本机备份。\n\n继续吗？")) return;
+  if(!forceDownload){
+    requireSecondClick(
+      "download-overwrite",
+      "从 GitHub 下载会覆盖当前设备进度；下载前会自动保存本机备份",
+      ()=>syncDownload(true)
+    );
+    return;
+  }
 
   setSyncStatus("正在下载…");
   try{
@@ -164,12 +177,13 @@ async function syncDownload(){
     localStorage.removeItem("audio_vocab_sprint_just_reset");
     markSyncSuccess("download");
     setSyncStatus("下载成功 · " + new Date().toLocaleString());
-    alert("已从 GitHub 下载并覆盖当前设备进度。");
+    showTransientToast("已从 GitHub 下载最新进度");
+    showTransientToast("已从 GitHub 下载并覆盖当前设备进度");
     location.reload();
   }catch(e){
     console.error(e);
     setSyncStatus("下载失败 · " + e.message);
-    alert("下载失败：\n" + e.message);
+    showTransientToast("下载失败："+e.message);
   }
 }
 
@@ -190,15 +204,17 @@ if(syncUploadBtn) syncUploadBtn.onclick = syncUpload;
 if(syncDownloadBtn) syncDownloadBtn.onclick = syncDownload;
 document.getElementById("syncSaveToken").onclick = ()=>{
   const v = document.getElementById("syncTokenInput").value.trim();
-  if(!v){ alert("请先粘贴 token。"); return; }
+  if(!v){ showTransientToast("请先粘贴 Token"); return; }
   localStorage.setItem(SYNC.tokenKey, v);
   document.getElementById("syncTokenInput").value = "";
   setSyncStatus("Token 已保存到此浏览器。");
+  showTransientToast("Token 已保存到此浏览器");
 };
 document.getElementById("syncClearToken").onclick = ()=>{
   localStorage.removeItem(SYNC.tokenKey);
   document.getElementById("syncTokenInput").value = "";
   setSyncStatus("Token 已清除。");
+  showTransientToast("Token 已清除");
 };
 
 updateLastSyncInfo();

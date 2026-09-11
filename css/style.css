@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.17.1: modal layers must cover the top-right undo control */
+/* v3.17.2: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.1 removed-word management ===== */
+/* ===== v3.17.2 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.1 transient top-right notice ===== */
+/* ===== v3.17.2 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.17.1 simplified study controls ===== */
+/* ===== v3.17.2 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.17.1 UI hierarchy refresh ===== */
+/* ===== v3.17.2 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.17.1 UI polish ===== */
+/* ===== v3.17.2 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -664,5 +664,73 @@ button.controlBtn{
     top:14px;
     min-height:25px;
     padding:5px 9px;
+  }
+}
+
+
+/* ===== v3.17.2 top-right actions + unified notices ===== */
+.topRightActions{
+  position:absolute;
+  top:18px;
+  right:20px;
+  z-index:12;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:7px;
+}
+.topRightActions .undoBtn,
+.topRightActions .removeTopBtn{
+  position:static;
+  top:auto;
+  right:auto;
+  min-height:26px;
+  border:0;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  line-height:1;
+  cursor:pointer;
+  box-sizing:border-box;
+}
+.topRightActions .undoBtn{
+  background:#f6f6f4;
+  color:#666;
+}
+.topRightActions .removeTopBtn{
+  background:#fbd5e4;
+  color:#7c5362;
+}
+.topRightActions .removeTopBtn[hidden]{display:none;}
+.topRightActions .undoBtn:disabled{opacity:.35;cursor:default;}
+
+.noteDetails summary::before{content:"▶";}
+.noteDetails[open] summary::before{content:"▼";}
+
+.transientToast{
+  top:calc(18px + env(safe-area-inset-top));
+  left:max(18px,env(safe-area-inset-left));
+  right:auto;
+  max-width:min(420px,calc(100vw - 36px));
+  background:#d9edf5;
+  border-color:#c9e2ec;
+  color:#425b66;
+}
+@media(max-width:560px){
+  .topRightActions{
+    top:14px;
+    right:14px;
+    gap:6px;
+  }
+  .topRightActions .undoBtn,
+  .topRightActions .removeTopBtn{
+    min-height:25px;
+    padding:5px 9px;
+  }
+  .transientToast{
+    top:calc(12px + env(safe-area-inset-top));
+    left:max(12px,env(safe-area-inset-left));
+    right:auto;
+    max-width:calc(100vw - 24px);
   }
 }
