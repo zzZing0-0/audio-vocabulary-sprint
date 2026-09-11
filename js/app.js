@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.17.2.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.17.3.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -210,6 +210,7 @@ function saveCurrentNote(){
   save();
 }
 let transientToastTimer=null;
+let transientToastCountdownTimer=null;
 const confirmWindows=new Map();
 
 function showTransientToast(message){
@@ -226,10 +227,28 @@ function showTransientToast(message){
     clearTimeout(transientToastTimer);
     transientToastTimer=null;
   }
-  el.textContent=message;
+  if(transientToastCountdownTimer){
+    clearInterval(transientToastCountdownTimer);
+    transientToastCountdownTimer=null;
+  }
+
+  let remaining=5;
+  const render=()=>{el.textContent=`${message} · ${remaining}`;};
+  render();
+
   el.classList.remove("show");
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
+
+  transientToastCountdownTimer=setInterval(()=>{
+    remaining-=1;
+    if(remaining>=1) render();
+  },1000);
+
   transientToastTimer=setTimeout(()=>{
+    if(transientToastCountdownTimer){
+      clearInterval(transientToastCountdownTimer);
+      transientToastCountdownTimer=null;
+    }
     el.classList.remove("show");
     transientToastTimer=null;
   },5000);

@@ -12,6 +12,7 @@ listState.queue=Array.isArray(listState.queue)?listState.queue:[];
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
 let listToastTimer=null;
+let listToastCountdownTimer=null;
 const listConfirmWindows=new Map();
 function listToast(message){
   let el=document.getElementById("transientToast");
@@ -23,10 +24,28 @@ function listToast(message){
     document.body.appendChild(el);
   }
   if(listToastTimer)clearTimeout(listToastTimer);
-  el.textContent=message;
+  if(listToastCountdownTimer)clearInterval(listToastCountdownTimer);
+
+  let remaining=5;
+  const render=()=>{el.textContent=`${message} · ${remaining}`;};
+  render();
+
   el.classList.remove("show");
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add("show")));
-  listToastTimer=setTimeout(()=>{el.classList.remove("show");listToastTimer=null;},5000);
+
+  listToastCountdownTimer=setInterval(()=>{
+    remaining-=1;
+    if(remaining>=1)render();
+  },1000);
+
+  listToastTimer=setTimeout(()=>{
+    if(listToastCountdownTimer){
+      clearInterval(listToastCountdownTimer);
+      listToastCountdownTimer=null;
+    }
+    el.classList.remove("show");
+    listToastTimer=null;
+  },5000);
 }
 function listRequireSecondClick(key,message,action){
   const now=Date.now(),until=listConfirmWindows.get(key)||0;
