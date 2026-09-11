@@ -9,6 +9,47 @@ function activeEligibleToday(w){
 
 let lastJudgmentSnapshot=null;
 let judgmentTimer=null;
+let debtAnimationTimers=[];
+
+function clearDebtAnimationTimers(){
+  debtAnimationTimers.forEach(id=>clearTimeout(id));
+  debtAnimationTimers=[];
+}
+
+function setDebtBadgeValue(badge,debt){
+  if(!badge)return;
+  badge.textContent="debt: "+debt;
+  badge.classList.remove("debtLow","debtMid","debtHigh","debtExtreme","debtImpact");
+  badge.classList.add(debtVisualClass(Math.max(1,Number(debt)||1)));
+  if(Number(debt)>=7) badge.textContent="🔥 "+badge.textContent;
+}
+
+function animateDebtDelta(kind,fromDebt,toDebt){
+  clearDebtAnimationTimers();
+  const info=document.querySelector("#answer .topLeftInfo");
+  const badge=document.querySelector("#answer .debtBadge");
+  if(!info||!badge)return;
+
+  setDebtBadgeValue(badge,fromDebt);
+
+  const delta=document.createElement("span");
+  delta.className="debtDelta "+(kind==="PASS"?"debtDeltaPass":"debtDeltaAgain");
+  delta.textContent=kind==="PASS"?"−1":"+1";
+  info.appendChild(delta);
+
+  // The arithmetic lands before the next word appears:
+  // AGAIN: +1 drops onto the current debt.
+  // PASS:  −1 drops away from the current debt.
+  debtAnimationTimers.push(setTimeout(()=>{
+    setDebtBadgeValue(badge,toDebt);
+    badge.classList.add("debtImpact");
+  },430));
+
+  debtAnimationTimers.push(setTimeout(()=>{
+    if(delta.isConnected)delta.remove();
+    badge.classList.remove("debtImpact");
+  },820));
+}
 
 function cloneLearningSnapshot(){
   return {
@@ -47,6 +88,7 @@ function undoLastJudgment(){
   }
 
   speechSynthesis.cancel();
+  clearDebtAnimationTimers();
   resetWordDissolve();
 
   const s=lastJudgmentSnapshot;
@@ -65,11 +107,6 @@ function undoLastJudgment(){
 
   if(state.current){
     reveal();
-    const badge=document.querySelector("#answer .debtBadge");
-    if(badge){
-      badge.textContent="已撤回";
-      badge.classList.remove("passBadge","againBadge");
-    }
     setTimeout(()=>speakCurrent(),80);
   }
 }
@@ -117,7 +154,9 @@ function popNextEligible(){
 }
 
 function next(){
-  speechSynthesis.cancel(); revealed=false;
+  speechSynthesis.cancel();
+  clearDebtAnimationTimers();
+  revealed=false;
   resetWordDissolve();
   document.getElementById("answer").innerHTML="";
   updateAnswerControls();
@@ -146,6 +185,7 @@ function pass(){
   armUndo();
   celebratePass(); playPassSound();
   let w=state.current, d=state.debts[w]||1;
+  const nextDebt=Math.max(0,d-1);
   state.highestDebt[w]=Math.max(state.highestDebt[w]||0, d);
   if(d<=1){
     delete state.debts[w];
@@ -153,10 +193,10 @@ function pass(){
     state.mastered[w]=true;
     playMasteredSound(); celebrateMastered();
   }else{
-    state.debts[w]=d-1;
+    state.debts[w]=nextDebt;
     state.lastReviewedDate[w]=localDateKey();
   }
-  revealThenNext("PASS");
+  revealThenNext("PASS",d,nextDebt);
 }
 
 function again(){
@@ -165,30 +205,30 @@ function again(){
   saveCurrentNote();
   armUndo();
   let w=state.current;
-  state.debts[w]=(state.debts[w]||1)+1;
-  state.highestDebt[w]=Math.max(state.highestDebt[w]||0, state.debts[w]);
+  const d=state.debts[w]||1;
+  const nextDebt=d+1;
+  state.debts[w]=nextDebt;
+  state.highestDebt[w]=Math.max(state.highestDebt[w]||0, nextDebt);
   state.lastReviewedDate[w]=localDateKey();
-  revealThenNext("AGAIN");
+  revealThenNext("AGAIN",d,nextDebt);
 }
 
-function revealThenNext(kind){
-  reveal(); save();
-  const badge=document.querySelector("#answer .debtBadge");
-  if(badge){
-    badge.textContent=kind==="PASS"?"通过":"再来一次";
-    badge.classList.add(kind==="PASS"?"passBadge":"againBadge");
-  }
+function revealThenNext(kind,fromDebt,toDebt){
+  // Re-render the judged word at its pre-click debt, then animate the arithmetic.
+  reveal(fromDebt,false);
+  save();
+
   const firstBadge=document.querySelector("#answer .firstBadge");
   if(firstBadge)firstBadge.style.display="none";
 
-  // Wait until the newly revealed word has actually been laid out.
-  if(kind==="AGAIN"){
-    requestAnimationFrame(()=>requestAnimationFrame(()=>celebrateAgain()));
-  }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    animateDebtDelta(kind,fromDebt,toDebt);
+    if(kind==="AGAIN")celebrateAgain();
+  }));
 
   if(judgmentTimer)clearTimeout(judgmentTimer);
   judgmentTimer=setTimeout(()=>{
     judgmentTimer=null;
     next();
-  },950);
+  },1050);
 }

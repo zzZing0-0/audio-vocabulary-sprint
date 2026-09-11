@@ -20,9 +20,9 @@ function pronunciationHtml(word){
   // Prefer explicitly region-labelled IPA. Show generic fallback only when
   // neither regional label exists; never guess a UK/US label.
   const parts=[];
-  if(item.uk) parts.push('<span class="ipaChip ipaUk" title="UK">'+escapeHtml(item.uk)+'</span>');
-  if(item.us) parts.push('<span class="ipaChip ipaUs" title="US">'+escapeHtml(item.us)+'</span>');
-  if(!parts.length && item.fallback) parts.push('<span class="ipaChip ipaGeneric" title="IPA">'+escapeHtml(item.fallback)+'</span>');
+  if(item.uk) parts.push('<span class="ipaChip ipaUk" title="UK" dir="ltr" lang="en">'+escapeHtml(item.uk)+'</span>');
+  if(item.us) parts.push('<span class="ipaChip ipaUs" title="US" dir="ltr" lang="en">'+escapeHtml(item.us)+'</span>');
+  if(!parts.length && item.fallback) parts.push('<span class="ipaChip ipaGeneric" title="IPA" dir="ltr" lang="en">'+escapeHtml(item.fallback)+'</span>');
   if(!parts.length)return "";
 
   return '<div class="ipaLine">'+parts.join('')+'</div>';
@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.19.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.20",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -113,15 +113,17 @@ function speakText(text){
   speechSynthesis.speak(u);
 }
 function speakCurrent(){ if(state.current) speakText(state.current); }
-function reveal(){
+function reveal(debtOverride=null, firstOverride=null){
   if(!state.current)return;
   revealed=true;
   updateAnswerControls();
-  let d=state.debts[state.current]||1;
+  const storedDebt=state.debts[state.current];
+  let d=debtOverride===null ? (storedDebt||1) : Number(debtOverride);
+
   const youdaoHref=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)
     ? "https://m.youdao.com/dict?le=eng&q="+encodeURIComponent(state.current)
     : "https://dict.youdao.com/w/eng/"+encodeURIComponent(state.current);
-  const isFirst=!state.debts[state.current];
+  const isFirst=firstOverride===null ? !storedDebt : !!firstOverride;
   document.getElementById("answer").innerHTML=
     '<div class="topLeftInfo">'+
       '<div class="debtBadge">debt: '+d+'</div>'+

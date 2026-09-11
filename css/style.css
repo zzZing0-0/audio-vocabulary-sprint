@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.19.1: modal layers must cover the top-right undo control */
+/* v3.20: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 removed-word management ===== */
+/* ===== v3.20 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 transient top-right notice ===== */
+/* ===== v3.20 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 simplified study controls ===== */
+/* ===== v3.20 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.19.1 UI hierarchy refresh ===== */
+/* ===== v3.20 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.19.1 UI polish ===== */
+/* ===== v3.20 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 top-right actions + unified notices ===== */
+/* ===== v3.20 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 color + countdown polish ===== */
+/* ===== v3.20 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -771,7 +771,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 behavior polish ===== */
+/* ===== v3.20 behavior polish ===== */
 .topRightActions .undoBtn[hidden]{display:none!important;}
 
 /* Keep visible top-right actions compact with no reserved empty slot. */
@@ -791,7 +791,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 Chinese labels + primary action hover glow ===== */
+/* ===== v3.20 Chinese labels + primary action hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   .revealAction,
   .passAction,
@@ -828,7 +828,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 fix: 查看答案 hover glow ===== */
+/* ===== v3.20 fix: 查看答案 hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   button.action.revealAction:hover:not(:disabled){
     border-color:#dcc8f8!important;
@@ -842,7 +842,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 compact labels + traffic-light stats ===== */
+/* ===== v3.20 compact labels + traffic-light stats ===== */
 .stats div{
   display:flex;
   align-items:center;
@@ -865,7 +865,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.19.1 final-night UI alignment ===== */
+/* ===== v3.20 final-night UI alignment ===== */
 /* Header status: left-aligned dots on one vertical guide. */
 .stats{
   align-items:flex-start;
@@ -947,5 +947,90 @@ button.controlBtn{
   .topRightActions{
     flex-direction:row;
     gap:6px;
+  }
+}
+
+
+/* ===== v3.20 IPA rendering + debt arithmetic feedback ===== */
+
+/* Safari can render combining IPA marks poorly when a chip falls through mixed
+   font/bidi shaping. Keep the stored IPA unchanged and make shaping explicit. */
+.ipaChip{
+  display:inline-block;
+  direction:ltr;
+  unicode-bidi:isolate;
+  writing-mode:horizontal-tb;
+  text-orientation:mixed;
+  white-space:nowrap;
+  text-align:left;
+  letter-spacing:0;
+  word-spacing:0;
+  font-kerning:normal;
+  font-variant-ligatures:none;
+  font-feature-settings:"liga" 0,"clig" 0;
+  font-family:"Arial Unicode MS","Arial","Helvetica Neue","Noto Sans",sans-serif;
+}
+
+/* The debt badge remains information; +1 / −1 is the judgment feedback. */
+.topLeftInfo{
+  overflow:visible;
+}
+.debtBadge{
+  position:relative;
+  z-index:2;
+}
+.debtDelta{
+  position:absolute;
+  z-index:4;
+  left:0;
+  width:100%;
+  text-align:center;
+  pointer-events:none;
+  font-size:13px;
+  font-weight:700;
+  line-height:1;
+  opacity:0;
+  will-change:transform,opacity;
+}
+.debtDeltaAgain{
+  top:-19px;
+  color:#c49f3f;
+  animation:debtPlusDrop .72s cubic-bezier(.20,.78,.25,1) forwards;
+}
+.debtDeltaPass{
+  top:7px;
+  color:#72a68b;
+  animation:debtMinusDrop .72s cubic-bezier(.25,.55,.35,1) forwards;
+}
+.debtBadge.debtImpact{
+  animation:debtImpact .24s ease-out;
+}
+
+@keyframes debtPlusDrop{
+  0%{opacity:0;transform:translateY(-12px) scale(.92)}
+  18%{opacity:1}
+  62%{opacity:1;transform:translateY(18px) scale(1)}
+  78%{opacity:.82;transform:translateY(20px) scale(.94)}
+  100%{opacity:0;transform:translateY(20px) scale(.90)}
+}
+@keyframes debtMinusDrop{
+  0%{opacity:0;transform:translateY(-1px) scale(.96)}
+  15%{opacity:1}
+  58%{opacity:1;transform:translateY(17px) scale(1)}
+  100%{opacity:0;transform:translateY(35px) scale(.90)}
+}
+@keyframes debtImpact{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.09)}
+  100%{transform:scale(1)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .debtDeltaAgain,
+  .debtDeltaPass{
+    animation-duration:.18s;
+  }
+  .debtBadge.debtImpact{
+    animation:none;
   }
 }
