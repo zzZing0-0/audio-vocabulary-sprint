@@ -1,0 +1,10 @@
+{
+  "name": "Audio Vocabulary Sprint",
+  "short_name": "Vocab Sprint",
+  "start_url": "./?source=homescreen",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f5f1",
+  "theme_color": "#f6f5f1",
+  "orientation": "portrait-primary"
+}

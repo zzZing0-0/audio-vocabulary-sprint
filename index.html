@@ -3,13 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Audio Vocabulary Sprint v3.22.3</title>
-<link rel="stylesheet" href="css/style.css?v=3.22.3">
+<meta name="app-build" content="3.23">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Audio Vocabulary Sprint">
+<link rel="manifest" href="manifest.webmanifest?v=3.23">
+<title>Audio Vocabulary Sprint v3.23</title>
+<link rel="stylesheet" href="css/style.css?v=3.23">
 </head>
 <body>
 <main>
 <div class="top">
- <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.22.3</div></div>
+ <div><h1>Audio Vocabulary Sprint</h1><div class="sub">v3.23</div></div>
  <div class="stats">
    <div><span class="statusDot statusMastered" aria-hidden="true"></span>已掌握 <span id="mastered">0</span></div>
    <div><span class="statusDot statusActive" aria-hidden="true"></span>学习中 <span id="active">0</span></div>
@@ -36,7 +41,9 @@
  </div>
  <div>
   <div class="revealControls" id="revealControls">
+   <button class="mobileRevealVoiceArrow" id="voicePrevMobile" type="button" aria-label="上一个语音">‹</button>
    <button class="action revealAction" id="reveal">查看答案</button>
+   <button class="mobileRevealVoiceArrow" id="voiceNextMobile" type="button" aria-label="下一个语音">›</button>
   </div>
   <div class="actions" id="judgmentActions" hidden>
    <button class="action passAction" id="pass">通过</button>
@@ -101,11 +108,50 @@
   </div>
 </div>
 
-<script src="data/vocabulary.js?v=3.22.3"></script>
-<script src="js/storage.js?v=3.22.3"></script>
-<script src="js/scheduler.js?v=3.22.3"></script>
-<script src="js/app.js?v=3.22.3"></script>
-<script src="js/github-sync.js?v=3.22.3"></script>
+<script>
+(()=>{
+  const CURRENT_BUILD="3.23";
+  let checking=false;
+
+  async function checkForFreshBuild(){
+    if(checking || !navigator.onLine)return;
+    checking=true;
+    try{
+      const base=new URL("index.html",location.href);
+      base.searchParams.set("__avs_refresh",Date.now().toString());
+      const response=await fetch(base.toString(),{
+        cache:"no-store",
+        headers:{"Cache-Control":"no-cache"}
+      });
+      if(!response.ok)return;
+
+      const html=await response.text();
+      const match=html.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i);
+      const latest=match&&match[1];
+      if(latest && latest!==CURRENT_BUILD){
+        const target=new URL(location.href);
+        target.searchParams.set("build",latest);
+        target.searchParams.set("__reload",Date.now().toString());
+        location.replace(target.toString());
+      }
+    }catch(e){
+      // Offline or transient network failures should never block study.
+    }finally{
+      checking=false;
+    }
+  }
+
+  window.addEventListener("pageshow",()=>{checkForFreshBuild();});
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible")checkForFreshBuild();
+  });
+})();
+</script>
+<script src="data/vocabulary.js?v=3.23"></script>
+<script src="js/storage.js?v=3.23"></script>
+<script src="js/scheduler.js?v=3.23"></script>
+<script src="js/app.js?v=3.23"></script>
+<script src="js/github-sync.js?v=3.23"></script>
 
 
 

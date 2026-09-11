@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.22.3",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.23",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -401,6 +401,8 @@ document.getElementById("pass").onclick=()=>{if(revealed)pass();};
 document.getElementById("again").onclick=()=>{if(revealed)again();};
 document.getElementById("voicePrev").onclick=()=>changeVoice(-1);
 document.getElementById("voiceNext").onclick=()=>changeVoice(1);
+document.getElementById("voicePrevMobile").onclick=()=>changeVoice(-1);
+document.getElementById("voiceNextMobile").onclick=()=>changeVoice(1);
 document.getElementById("info").onclick=()=>{
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
@@ -750,7 +752,7 @@ function buildWordDissolveTemplate(wordEl){
   const data=image.data;
   const points=[];
 
-  // Slightly coarser than v3.22.3 because the same cached shape can now burst repeatedly.
+  // Slightly coarser than v3.23 because the same cached shape can now burst repeatedly.
   // The final visual remains fine-grained because each point becomes a very small particle.
   const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){

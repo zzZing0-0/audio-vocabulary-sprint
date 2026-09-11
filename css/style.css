@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.22.3: modal layers must cover the top-right undo control */
+/* v3.23: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 removed-word management ===== */
+/* ===== v3.23 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 transient top-right notice ===== */
+/* ===== v3.23 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 simplified study controls ===== */
+/* ===== v3.23 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.22.3 UI hierarchy refresh ===== */
+/* ===== v3.23 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.22.3 UI polish ===== */
+/* ===== v3.23 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 top-right actions + unified notices ===== */
+/* ===== v3.23 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 color + countdown polish ===== */
+/* ===== v3.23 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -771,7 +771,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 behavior polish ===== */
+/* ===== v3.23 behavior polish ===== */
 .topRightActions .undoBtn[hidden]{display:none!important;}
 
 /* Keep visible top-right actions compact with no reserved empty slot. */
@@ -791,7 +791,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 Chinese labels + primary action hover glow ===== */
+/* ===== v3.23 Chinese labels + primary action hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   .revealAction,
   .passAction,
@@ -828,7 +828,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 fix: 查看答案 hover glow ===== */
+/* ===== v3.23 fix: 查看答案 hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   button.action.revealAction:hover:not(:disabled){
     border-color:#dcc8f8!important;
@@ -842,7 +842,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 compact labels + traffic-light stats ===== */
+/* ===== v3.23 compact labels + traffic-light stats ===== */
 .stats div{
   display:flex;
   align-items:center;
@@ -865,7 +865,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 final-night UI alignment ===== */
+/* ===== v3.23 final-night UI alignment ===== */
 /* Header status: left-aligned dots on one vertical guide. */
 .stats{
   align-items:flex-start;
@@ -951,7 +951,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 IPA rendering + debt arithmetic feedback ===== */
+/* ===== v3.23 IPA rendering + debt arithmetic feedback ===== */
 
 /* Safari can render combining IPA marks poorly when a chip falls through mixed
    font/bidi shaping. Keep the stored IPA unchanged and make shaping explicit. */
@@ -1036,117 +1036,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 larger pre-reveal pronunciation controls ===== */
-
-/* Keep the post-reveal layout at the existing compact size, but animate
-   the three pronunciation controls between the two study states. */
-.speakerNav{
-  transition:gap .26s cubic-bezier(.22,.8,.28,1);
-}
-.speaker,
-.voiceArrow{
-  transition:
-    width .26s cubic-bezier(.22,.8,.28,1),
-    height .26s cubic-bezier(.22,.8,.28,1),
-    border-radius .26s cubic-bezier(.22,.8,.28,1),
-    font-size .26s cubic-bezier(.22,.8,.28,1),
-    background-color .18s ease,
-    color .18s ease,
-    transform .18s ease;
-}
-
-/* Before 查看答案: pronunciation is the only task, so make its controls
-   intentionally larger and easier to hit. */
-.card.preReveal .speakerNav{
-  gap:28px;
-}
-.card.preReveal .speaker{
-  width:150px;
-  height:150px;
-  border-radius:75px;
-  font-size:52px;
-}
-.card.preReveal .voiceArrow{
-  width:64px;
-  height:76px;
-  font-size:52px;
-}
-
-/* Mobile gets the strongest enlargement for comfortable one-handed use. */
-@media(max-width:500px){
-  .card.preReveal .speakerNav{
-    gap:18px;
-  }
-  .card.preReveal .speaker{
-    width:148px;
-    height:148px;
-    border-radius:74px;
-    font-size:54px;
-  }
-  .card.preReveal .voiceArrow{
-    width:62px;
-    height:72px;
-    font-size:48px;
-    border-radius:18px;
-  }
-
-  /* After reveal these return to the existing compact mobile layout. */
-  .card:not(.preReveal) .speakerNav{gap:12px}
-  .card:not(.preReveal) .speaker{
-    width:112px;
-    height:112px;
-    border-radius:56px;
-  }
-  .card:not(.preReveal) .voiceArrow{
-    width:40px;
-    height:52px;
-    font-size:38px;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-  .speakerNav,
-  .speaker,
-  .voiceArrow{
-    transition:none;
-  }
-}
-
-
-/* ===== v3.22.3 mobile reach-zone adjustment ===== */
-@media(max-width:500px){
-  .card.preReveal .speakerNav{
-    margin-top:180px;
-    gap:20px;
-  }
-
-  .card.preReveal .voiceLine{
-    margin-top:16px;
-  }
-
-  .card.preReveal .speaker{
-    width:164px;
-    height:164px;
-    border-radius:82px;
-    font-size:58px;
-  }
-
-  .card.preReveal .voiceArrow{
-    width:68px;
-    height:80px;
-    font-size:52px;
-    border-radius:20px;
-  }
-
-  /* Keep the reveal button near the bottom so the listening controls occupy
-     the comfortable one-handed middle-lower reach zone. */
-  .card.preReveal .answerActions{
-    margin-top:auto;
-  }
-}
-
-
-/* ===== v3.22.3 judgment double-click guard ===== */
+/* ===== v3.23 judgment double-click guard ===== */
 .passAction:disabled,
 .againAction:disabled{
   cursor:default;
@@ -1159,7 +1049,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 playful judgment burst ===== */
+/* ===== v3.23 playful judgment burst ===== */
 .passAction:not(:disabled):active,
 .againAction:not(:disabled):active{
   transform:scale(.97);
@@ -1169,12 +1059,71 @@ button.controlBtn{
 }
 
 
-/* ===== v3.22.3 mobile revealed-position refinement ===== */
+
+/* ===== v3.23 mobile reveal voice controls ===== */
+
+/* Desktop keeps the original pronunciation layout exactly as before. */
+.mobileRevealVoiceArrow{
+  display:none;
+}
+
+/* No more pre/post reveal size morphing. */
+.speakerNav,
+.speaker,
+.voiceArrow{
+  transition:none!important;
+}
+
 @media(max-width:500px){
-  /* Desktop placement is already good. On phones, give the compact revealed
-     pronunciation controls a lower, easier-to-reach position. Because answer
-     content follows .listen in normal flow, the word/IPA move down together. */
-  .card:not(.preReveal) .listen{
-    padding-top:88px;
+  /* Before reveal, the upper left/right voice arrows are hidden; the speaker
+     remains in its normal compact location. */
+  .card.preReveal #voicePrev,
+  .card.preReveal #voiceNext{
+    display:none;
+  }
+
+  /* Three controls form one thumb-reachable row:
+       ‹   查看答案   ›
+     The arrows use the same purple language as the reveal button. */
+  .card.preReveal .revealControls{
+    display:grid;
+    grid-template-columns:56px minmax(0,1fr) 56px;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    max-width:none;
+  }
+
+  .card.preReveal .mobileRevealVoiceArrow{
+    display:block;
+    width:56px;
+    height:64px;
+    border:2px solid #dcc8f8;
+    border-radius:18px;
+    background:#fff;
+    color:#dcc8f8;
+    font-size:38px;
+    font-weight:300;
+    line-height:1;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+
+  .card.preReveal .mobileRevealVoiceArrow:active{
+    transform:scale(.96);
+    box-shadow:
+      0 0 0 2px rgba(220,200,248,.18),
+      0 0 14px rgba(220,200,248,.32);
+  }
+
+  .card.preReveal .revealAction{
+    width:100%;
+    min-width:0;
+  }
+
+  /* Once the answer is visible, restore the existing upper ‹ 🔊 › layout and
+     remove the duplicate lower arrows. */
+  .card:not(.preReveal) .mobileRevealVoiceArrow{
+    display:none;
   }
 }
