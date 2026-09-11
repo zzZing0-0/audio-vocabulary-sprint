@@ -67,7 +67,7 @@ function undoLastJudgment(){
     reveal();
     const badge=document.querySelector("#answer .debtBadge");
     if(badge){
-      badge.textContent="↶ 已撤回";
+      badge.textContent="已撤回";
       badge.classList.remove("passBadge","againBadge");
     }
     setTimeout(()=>speakCurrent(),80);
@@ -175,7 +175,7 @@ function revealThenNext(kind){
   reveal(); save();
   const badge=document.querySelector("#answer .debtBadge");
   if(badge){
-    badge.textContent=kind==="PASS"?"✓ PASS":"↻ AGAIN";
+    badge.textContent=kind==="PASS"?"通过":"再来一次";
     badge.classList.add(kind==="PASS"?"passBadge":"againBadge");
   }
 

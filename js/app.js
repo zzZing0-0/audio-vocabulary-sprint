@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.17.4.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.18.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -133,7 +133,7 @@ function reveal(){
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
     '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
-      '<summary>Note</summary>'+
+      '<summary>笔记</summary>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</details>';
 
@@ -312,7 +312,7 @@ function removeCurrentWord(){
 
   requireSecondClick(
     "remove:"+w,
-    `将 “${w}” 移出学习词库；学习历史和 Note 会保留`,
+    `将 “${w}” 移出学习词库；学习历史和笔记会保留`,
     ()=>{
       armUndo();
       state.removedWords=state.removedWords||{};
@@ -390,10 +390,10 @@ document.getElementById("voiceNext").onclick=()=>changeVoice(1);
 document.getElementById("info").onclick=()=>{
  document.getElementById("panel").innerHTML=
    '<h2>规则</h2>'+
-   '<p>每个新词首次出现时默认 debt = 1。PASS：debt −1；AGAIN：debt +1。debt 到 0 后进入已掌握。因此首次 PASS 直接清零；首次 AGAIN 会变成 debt = 2。</p>'+
-   '<p>Active 单词每个自然日最多考核一次：AGAIN 后当天退场；若 debt &gt; 1，PASS 后也当天退场，下一次最早在下一个自然日出现。</p>'+
+   '<p>每个新词首次出现时默认 debt = 1。通过：debt −1；再来一次：debt +1。debt 到 0 后进入已掌握。因此首次通过直接清零；首次再来一次会变成 debt = 2。</p>'+
+   '<p>学习中单词每个自然日最多考核一次：再来一次后当天退场；若 debt &gt; 1，通过后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
-   '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / Mastered / Note 历史；可随时恢复。</p>'+
+   '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / 已掌握 / 笔记 历史；可随时恢复。</p>'+
    '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">⚠️ 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✅️ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">❌ 查看已移除</a></div>'+
    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";

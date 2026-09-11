@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint v3.17.4
+# Audio Vocabulary Sprint v3.18
 
 ## Structure
 - `index.html` — page structure
@@ -109,14 +109,14 @@ python3 tools/update_pronunciations.py --base-only
 
 Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/missing-page entries.
 
-## v3.17.4
+## v3.18
 - Fixed IPA maintenance so `customWords` come directly from cloud `progress.json`.
 - Removed the need for a local private-data repo or local `progress.json`.
 - Normal daily study remains: study → GitHub Sync upload → done.
 - Terminal maintenance is only needed when newly imported vocabulary needs IPA.
 
 
-## v3.17.4 Removed words
+## v3.18 Removed words
 - Reveal now includes `移出词库`.
 - Removed words are stored in `state.removedWords` and sync inside GitHub `progress.json`.
 - Removal excludes a word from the effective learning bank and future queues without deleting its debt, Mastered, peak, review-date, or Note history.
@@ -126,14 +126,14 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - IPA maintenance reads cloud `removedWords` and excludes them from the combined vocabulary, so newly removed custom words are not fetched unnecessarily.
 
 
-## v3.17.4
+## v3.18
 - `移出词库` is now included in the one-step Undo system.
 - Undo restores `removedWords`, queue/current word, seen/debt/Mastered/peak/review state from the pre-removal snapshot.
 - Removal feedback no longer overwrites the listening hint for the next word.
 - Added a top-right transient notice that disappears automatically after 5 seconds.
 
 
-## v3.17.4 Simplified study UI
+## v3.18 Simplified study UI
 - Voice switching moved beside the speaker: `‹` = previous voice, `›` = next voice.
 - Tapping the speaker repeats the current pronunciation.
 - Removed the separate `切换语音` study button.
@@ -141,14 +141,14 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - After Reveal, `显示答案` disappears and only `PASS` / `AGAIN` remain.
 - PASS / AGAIN cannot be submitted before Reveal.
 
-## v3.17.4 UI polish
+## v3.18 UI polish
 - Removed-page historical states are fully localized: 已掌握 / 学习中 / 未学习.
 - Note disclosure uses a thin `#dcc8f8` outline and a direction triangle (`◀` closed, `▼` open).
 - Debt badge and Undo share the same top position and control height.
 - Rainbow progress now fills the exact mastered percentage, including progress below 10%.
 - The rainbow remains mapped across the full track and is revealed by clipping, with lower opacity for a softer look.
 
-## v3.17.4 UI/message polish
+## v3.18 UI/message polish
 - Note disclosure arrow is now `▶` when closed and `▼` when open.
 - `移出词库` moved beneath `撤回` in the card's top-right corner, with pale-pink `#fbd5e4` warning styling.
 - Native browser `alert()` / `confirm()` dialogs were removed from the main app, sync workflow, and list pages.
@@ -156,15 +156,22 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Operation feedback uses one unified pale-blue top-left toast that disappears after five seconds.
 - User-facing operation messages were normalized to Chinese terminology where applicable.
 
-## v3.17.4 UI polish
+## v3.18 UI polish
 - Unified operation toast moved to the top-right.
 - Toast uses the same pale-blue family as the debt badge and shows a visible `5 → 4 → 3 → 2 → 1` countdown.
 - Undo button background changed to `#fbf6d5`.
 - PASS / AGAIN text colors now match their border colors exactly.
 
-## v3.17.4 behavior polish
+## v3.18 behavior polish
 - Ordinary five-second operation notices no longer show a countdown number.
 - Only second-click confirmation notices count down, and the number replaces the value inside `（5 秒内再次点击确认）` as `5 → 4 → 3 → 2 → 1`.
 - Undo is completely hidden while unavailable.
 - Top-right actions no longer reserve an empty slot; whichever action is visible occupies the top position.
 - `显示答案` text now matches its purple border color exactly.
+
+## v3.18
+- Main study UI localized to `查看答案` / `通过` / `再来一次` / `笔记`.
+- PASS / AGAIN result badges localized to `通过` / `再来一次`.
+- `debt` remains unchanged.
+- Primary study buttons get a subtle border-colored glow on mouse hover.
+- Hover styling applies only to fine-pointer devices, so touch behavior is unchanged.
