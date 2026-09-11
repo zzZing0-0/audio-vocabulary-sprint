@@ -591,30 +591,17 @@ installFeedbackAudioUnlock();
 
 
 
+
+
+
 function installMoreToolsOutsideClose(){
-  const box=document.querySelector(".moreTools");
-  const menu=document.querySelector(".moreToolsMenu");
-  if(!box||!menu)return;
+  const details=document.querySelector("details.moreTools");
+  if(!details)return;
 
   document.addEventListener("pointerdown",(e)=>{
-    if(!box.contains(e.target)){
-      menu.classList.remove("open");
-      menu.style.display="none";
-      const trigger=box.querySelector("button");
-      if(trigger)trigger.setAttribute("aria-expanded","false");
+    if(details.open && !details.contains(e.target)){
+      details.open=false;
     }
   },true);
 }
 installMoreToolsOutsideClose();
-
-document.addEventListener("click",(e)=>{
-  const btn=e.target.closest(".moreTools button");
-  if(!btn)return;
-  const box=btn.closest(".moreTools");
-  const menu=box&&box.querySelector(".moreToolsMenu");
-  if(!menu)return;
-  const open=getComputedStyle(menu).display!=="none";
-  menu.style.display=open?"none":"block";
-  menu.classList.toggle("open",!open);
-  btn.setAttribute("aria-expanded",String(!open));
-});
