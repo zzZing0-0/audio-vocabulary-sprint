@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.25",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.25.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -754,7 +754,7 @@ function buildWordDissolveTemplate(wordEl){
   const data=image.data;
   const points=[];
 
-  // Slightly coarser than v3.25 because the same cached shape can now burst repeatedly.
+  // Slightly coarser than v3.25.1 because the same cached shape can now burst repeatedly.
   // The final visual remains fine-grained because each point becomes a very small particle.
   const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){
