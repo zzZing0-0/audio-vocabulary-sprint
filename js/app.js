@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.24",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.25",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -422,7 +422,7 @@ document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closeP
 document.getElementById("reset").onclick=()=>{
  requireSecondClick(
    "reset-local",
-   "将重置本机学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
+   "将重置进度学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
    ()=>{
      localStorage.removeItem(KEY);
      state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
@@ -754,7 +754,7 @@ function buildWordDissolveTemplate(wordEl){
   const data=image.data;
   const points=[];
 
-  // Slightly coarser than v3.24 because the same cached shape can now burst repeatedly.
+  // Slightly coarser than v3.25 because the same cached shape can now burst repeatedly.
   // The final visual remains fine-grained because each point becomes a very small particle.
   const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){

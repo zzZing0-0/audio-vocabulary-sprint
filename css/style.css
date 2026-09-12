@@ -436,7 +436,7 @@ button.controlBtn{
   cursor:default;
 }
 
-/* v3.24: modal layers must cover the top-right undo control */
+/* v3.25: modal layers must cover the top-right undo control */
 #ruleOverlay,
 #syncOverlay,
 .modalOverlay,
@@ -479,7 +479,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 removed-word management ===== */
+/* ===== v3.25 removed-word management ===== */
 .removeCurrentBtn{
   display:block;
   margin:12px auto 0;
@@ -498,7 +498,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 transient top-right notice ===== */
+/* ===== v3.25 transient top-right notice ===== */
 .transientToast{
   position:fixed;
   top:calc(18px + env(safe-area-inset-top));
@@ -533,7 +533,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 simplified study controls ===== */
+/* ===== v3.25 simplified study controls ===== */
 .speakerNav{
   display:flex;
   align-items:center;
@@ -585,7 +585,7 @@ button.controlBtn{
   .voiceArrow{width:40px;height:52px;font-size:38px}
 }
 
-/* ===== v3.24 UI hierarchy refresh ===== */
+/* ===== v3.25 UI hierarchy refresh ===== */
 .stats{display:flex;flex-direction:column;gap:2px;min-width:max-content;line-height:1.45}
 .stats div{white-space:nowrap}
 .hint:empty{display:none}
@@ -607,7 +607,7 @@ button.controlBtn{
 @media(max-width:500px){.stats{font-size:11px;gap:1px}.ipaChip{padding:4px 8px;border-radius:10px;font-size:14px}.revealAction{width:100%}.progressFlag{font-size:17px;top:-23px}}
 
 
-/* ===== v3.24 UI polish ===== */
+/* ===== v3.25 UI polish ===== */
 .debtBadge,
 .undoBtn{
   top:18px;
@@ -668,7 +668,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 top-right actions + unified notices ===== */
+/* ===== v3.25 top-right actions + unified notices ===== */
 .topRightActions{
   position:absolute;
   top:18px;
@@ -736,7 +736,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 color + countdown polish ===== */
+/* ===== v3.25 color + countdown polish ===== */
 
 /* Toast back to top-right and styled like the debt badge. */
 .transientToast{
@@ -771,7 +771,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 behavior polish ===== */
+/* ===== v3.25 behavior polish ===== */
 .topRightActions .undoBtn[hidden]{display:none!important;}
 
 /* Keep visible top-right actions compact with no reserved empty slot. */
@@ -791,7 +791,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 Chinese labels + primary action hover glow ===== */
+/* ===== v3.25 Chinese labels + primary action hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   .revealAction,
   .passAction,
@@ -828,7 +828,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 fix: 查看答案 hover glow ===== */
+/* ===== v3.25 fix: 查看答案 hover glow ===== */
 @media (hover:hover) and (pointer:fine){
   button.action.revealAction:hover:not(:disabled){
     border-color:#dcc8f8!important;
@@ -842,7 +842,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 compact labels + traffic-light stats ===== */
+/* ===== v3.25 compact labels + traffic-light stats ===== */
 .stats div{
   display:flex;
   align-items:center;
@@ -865,7 +865,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 final-night UI alignment ===== */
+/* ===== v3.25 final-night UI alignment ===== */
 /* Header status: left-aligned dots on one vertical guide. */
 .stats{
   align-items:flex-start;
@@ -951,7 +951,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 IPA rendering + debt arithmetic feedback ===== */
+/* ===== v3.25 IPA rendering + debt arithmetic feedback ===== */
 
 /* Safari can render combining IPA marks poorly when a chip falls through mixed
    font/bidi shaping. Keep the stored IPA unchanged and make shaping explicit. */
@@ -1036,7 +1036,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 judgment double-click guard ===== */
+/* ===== v3.25 judgment double-click guard ===== */
 .passAction:disabled,
 .againAction:disabled{
   cursor:default;
@@ -1049,7 +1049,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 playful judgment burst ===== */
+/* ===== v3.25 playful judgment burst ===== */
 .passAction:not(:disabled):active,
 .againAction:not(:disabled):active{
   transform:scale(.97);
@@ -1060,7 +1060,7 @@ button.controlBtn{
 
 
 
-/* ===== v3.24 mobile reveal voice controls ===== */
+/* ===== v3.25 mobile reveal voice controls ===== */
 
 /* Desktop keeps the original pronunciation layout exactly as before. */
 .mobileRevealVoiceArrow{
@@ -1129,7 +1129,7 @@ button.controlBtn{
 }
 
 
-/* ===== v3.24 study-first layout + traffic-light progress ===== */
+/* ===== v3.25 study-first layout + traffic-light progress ===== */
 main{padding-top:18px;}
 
 .footerProgressWrap{
@@ -1205,4 +1205,75 @@ main{padding-top:18px;}
     flex-direction:column;
     gap:10px;
   }
+}
+
+
+/* ===== v3.25 approved compact status + website footer ===== */
+.studyStatus{margin:0 0 14px;}
+.studyStatus .trafficProgress{margin:0;}
+.horizontalStats{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  margin-top:10px;
+  font-size:12px;
+  line-height:1.3;
+  text-align:left;
+}
+.horizontalStats div{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  width:auto;
+  white-space:nowrap;
+}
+.card{margin-top:0;}
+.siteFooter{
+  margin-top:18px;
+  padding:2px 2px 8px;
+  color:#777;
+  font-size:12px;
+  text-align:center;
+}
+.footerLine{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  line-height:1.8;
+}
+.footerLink{
+  appearance:none;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:#666;
+  font:inherit;
+  cursor:pointer;
+  text-decoration:none;
+}
+.footerLink:hover{color:#444;}
+.footerImport{display:inline;cursor:pointer;}
+.footerSep{color:#bbb;user-select:none;}
+.footerVersion{color:#aaa;white-space:nowrap;}
+
+@media(max-width:500px){
+  .studyStatus{margin-bottom:12px;}
+  .horizontalStats{
+    gap:7px 13px;
+    margin-top:9px;
+    padding-left:2px;
+    font-size:11px;
+  }
+  .horizontalStats .statusDot{width:7px;height:7px;}
+  .siteFooter{
+    margin-top:15px;
+    padding-bottom:4px;
+    font-size:11px;
+  }
+  .footerLine{gap:6px;}
 }

@@ -3,16 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="3.24">
+<meta name="app-build" content="3.25">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Audio Vocabulary Sprint">
-<link rel="manifest" href="manifest.webmanifest?v=3.24">
-<title>Audio Vocabulary Sprint v3.24</title>
-<link rel="stylesheet" href="css/style.css?v=3.24">
+<link rel="manifest" href="manifest.webmanifest?v=3.25">
+<title>Audio Vocabulary Sprint v3.25</title>
+<link rel="stylesheet" href="css/style.css?v=3.25">
 </head>
 <body>
 <main>
+<section class="studyStatus" aria-label="词库学习状态">
+ <div class="progress trafficProgress" id="progressTrack">
+  <div class="progressSegment progressMastered" id="progressMastered" title="已掌握"></div>
+  <div class="progressSegment progressActive" id="progressActive" title="学习中"></div>
+  <div class="progressSegment progressUnseen" id="progressUnseen" title="未学习"></div>
+ </div>
+ <div class="stats horizontalStats" aria-label="词库状态图例">
+  <div><span class="statusDot statusMastered" aria-hidden="true"></span>已掌握 <span id="mastered">0</span></div>
+  <div><span class="statusDot statusActive" aria-hidden="true"></span>学习中 <span id="active">0</span></div>
+  <div><span class="statusDot statusUnseen" aria-hidden="true"></span>未学习 <span id="unseen">0</span></div>
+ </div>
+</section>
 <section class="card preReveal">
  <div class="topRightActions">
   <button class="undoBtn" id="undoBtn" type="button" disabled aria-label="撤回上一步">撤回</button>
@@ -40,39 +52,25 @@
    <button class="action passAction" id="pass">通过</button>
    <button class="action again againAction" id="again">再来一次</button>
   </div>
-  <div class="utilityRow">
-   <button class="utilityLink" id="info">规则 / 进度</button>
-   <button class="utilityLink" id="syncBtn">同步</button>
-   <details class="moreTools">
-    <summary aria-label="更多工具">•••</summary>
-    <div class="moreToolsMenu">
-     <label class="moreToolItem importBtn" for="importWordsFile">导入新词表<input id="importWordsFile" type="file" accept=".txt,text/plain" style="display:none"></label>
-     <button class="moreToolItem dangerLite" id="reset">重置本机</button>
-    </div>
-   </details>
-  </div>
  </div>
 </section>
 
-<div class="progressWrap footerProgressWrap" aria-label="词库学习状态进度">
- <div class="progress trafficProgress" id="progressTrack">
-  <div class="progressSegment progressMastered" id="progressMastered" title="已掌握"></div>
-  <div class="progressSegment progressActive" id="progressActive" title="学习中"></div>
-  <div class="progressSegment progressUnseen" id="progressUnseen" title="未学习"></div>
- </div>
-</div>
 
-<footer class="appFooter">
- <div class="appIdentity">
-  <div class="appName">Audio Vocabulary Sprint</div>
-  <div class="sub">v3.24</div>
- </div>
- <div class="stats" aria-label="词库状态图例">
-   <div><span class="statusDot statusMastered" aria-hidden="true"></span>已掌握 <span id="mastered">0</span></div>
-   <div><span class="statusDot statusActive" aria-hidden="true"></span>学习中 <span id="active">0</span></div>
-   <div><span class="statusDot statusUnseen" aria-hidden="true"></span>未学习 <span id="unseen">0</span></div>
+
+<footer class="siteFooter" aria-label="应用工具">
+ <div class="footerLine">
+  <button class="footerLink" id="info" type="button">规则 / 进度</button>
+  <span class="footerSep">｜</span>
+  <button class="footerLink" id="syncBtn" type="button">同步</button>
+  <span class="footerSep">｜</span>
+  <label class="footerLink footerImport" for="importWordsFile">导入新词表<input id="importWordsFile" type="file" accept=".txt,text/plain" style="display:none"></label>
+  <span class="footerSep">｜</span>
+  <button class="footerLink" id="reset" type="button">重置进度</button>
+  <span class="footerSep">｜</span>
+  <span class="footerVersion">v3.25</span>
  </div>
 </footer>
+
 </main>
 <div class="overlay" id="overlay"><div class="panel" id="panel"></div></div>
 <div class="overlay" id="syncOverlay" style="display:none">
@@ -121,7 +119,7 @@
 
 <script>
 (()=>{
-  const CURRENT_BUILD="3.24";
+  const CURRENT_BUILD="3.25";
   let checking=false;
 
   async function checkForFreshBuild(){
@@ -158,11 +156,11 @@
   });
 })();
 </script>
-<script src="data/vocabulary.js?v=3.24"></script>
-<script src="js/storage.js?v=3.24"></script>
-<script src="js/scheduler.js?v=3.24"></script>
-<script src="js/app.js?v=3.24"></script>
-<script src="js/github-sync.js?v=3.24"></script>
+<script src="data/vocabulary.js?v=3.25"></script>
+<script src="js/storage.js?v=3.25"></script>
+<script src="js/scheduler.js?v=3.25"></script>
+<script src="js/app.js?v=3.25"></script>
+<script src="js/github-sync.js?v=3.25"></script>
 
 
 
