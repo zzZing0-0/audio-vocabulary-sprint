@@ -82,6 +82,21 @@ function setDebtBadgeValue(badge,debt){
   if(Number(debt)>=7) badge.textContent="🔥 "+badge.textContent;
 }
 
+function playDebtImpact(badge){
+  if(!badge)return;
+  try{
+    badge.getAnimations().forEach(a=>a.cancel());
+    badge.animate(
+      [
+        {transform:"scale(1)"},
+        {transform:"scale(1.07)",offset:.45},
+        {transform:"scale(1)"}
+      ],
+      {duration:180,easing:"ease-out"}
+    );
+  }catch(e){}
+}
+
 function animateDebtDelta(kind,fromDebt,toDebt){
   clearDebtAnimationTimers();
   const info=document.querySelector("#answer .topLeftInfo");
@@ -100,12 +115,11 @@ function animateDebtDelta(kind,fromDebt,toDebt){
   // PASS:  −1 drops away from the current debt.
   debtAnimationTimers.push(setTimeout(()=>{
     setDebtBadgeValue(badge,toDebt);
-    badge.classList.add("debtImpact");
-  },430));
+    playDebtImpact(badge);
+  },240));
 
   debtAnimationTimers.push(setTimeout(()=>{
     if(delta.isConnected)delta.remove();
-    badge.classList.remove("debtImpact");
   },820));
 }
 
@@ -124,13 +138,10 @@ function animateDebtEcho(kind,currentDebt){
 
   const hit=setTimeout(()=>{
     if(!badge.isConnected)return;
-    badge.classList.remove("debtImpact");
-    void badge.offsetWidth;
-    badge.classList.add("debtImpact");
-  },300);
+    playDebtImpact(badge);
+  },220);
   const gone=setTimeout(()=>{
     if(delta.isConnected)delta.remove();
-    if(badge.isConnected)badge.classList.remove("debtImpact");
   },680);
   debtAnimationTimers.push(hit,gone);
 }
