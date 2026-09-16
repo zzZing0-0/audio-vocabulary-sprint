@@ -36,7 +36,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.25.2",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.26",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -518,69 +518,133 @@ async function importProgress(file){
 }
 
 function normalizeImportedWords(text){
-  const stop = new Set(["a","an","the"]);
-  const seen = new Set();
-  const words = [];
+  const stop=new Set(["a","an","the"]);
+  const seen=new Set();
+  const words=[];
+  let blank=0, header=0, stopword=0, chinese=0, duplicateInFile=0;
+
   text.split(/\r?\n/).forEach(raw=>{
-    const w = raw.trim();
-    if(!w) return;
-    if(w.toLowerCase()==="vc_vocabulary") return;
-    const key = w.toLowerCase();
-    if(stop.has(key)) return;
-    if(seen.has(key)) return;
+    const w=raw.trim();
+    if(!w){blank++;return;}
+    if(w.toLowerCase()==="vc_vocabulary"){header++;return;}
+    if(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(w)){chinese++;return;}
+
+    const key=w.toLowerCase();
+    if(stop.has(key)){stopword++;return;}
+    if(seen.has(key)){duplicateInFile++;return;}
+
     seen.add(key);
     words.push(w);
   });
-  return words;
+
+  return {
+    words,
+    skipped:{blank,header,stopword,chinese,duplicateInFile}
+  };
+}
+
+function findStateKeyCaseInsensitive(obj,lowerKey){
+  return Object.keys(obj||{}).find(k=>String(k).toLowerCase()===lowerKey)||null;
 }
 
 document.getElementById("importWordsFile").onchange=(ev)=>{
-  const file=ev.target.files && ev.target.files[0];
-  if(!file) return;
+  const file=ev.target.files&&ev.target.files[0];
+  if(!file)return;
+
   const reader=new FileReader();
   reader.onload=()=>{
     try{
-      const imported=normalizeImportedWords(String(reader.result||""));
+      const normalized=normalizeImportedWords(String(reader.result||""));
+      const imported=normalized.words;
       const baseSet=new Set(BASE_WORDS.map(w=>String(w).toLowerCase()));
       const customSet=new Set((state.customWords||[]).map(w=>String(w).toLowerCase()));
-      const masteredSet=new Set(Object.keys(state.mastered||{}).map(w=>w.toLowerCase()));
-      const activeSet=new Set([
-        ...Object.keys(state.debts||{}),
-        ...(state.queue||[]),
-        ...(state.current?[state.current]:[])
-      ].map(w=>String(w).toLowerCase()));
 
-      let alreadyBase=0, alreadyCustom=0, skippedMastered=0, skippedActive=0;
-      const added=[];
+      let added=0;
+      let unseenDuplicate=0;
+      let activeRaised=0;
+      let masteredReactivated=0;
 
       imported.forEach(w=>{
         const k=w.toLowerCase();
-        if(baseSet.has(k)){ alreadyBase++; return; }
-        if(customSet.has(k)){ alreadyCustom++; return; }
+        const alreadyExists=baseSet.has(k)||customSet.has(k);
 
-        // A word can remain historically Mastered/Active even if it came from an older queue-only import.
-        // In that case, promote it into customWords without destroying its learning record.
-        state.customWords.push(w);
-        customSet.add(k);
-        added.push(w);
-        if(masteredSet.has(k)) skippedMastered++;
-        else if(activeSet.has(k)) skippedActive++;
+        // New vocabulary entry: add it, but importing is not a learning failure.
+        // It therefore starts conceptually at debt 1 and receives no extra debt.
+        if(!alreadyExists){
+          state.customWords.push(w);
+          customSet.add(k);
+          added++;
+          return;
+        }
+
+        const masteredKey=findStateKeyCaseInsensitive(state.mastered,k);
+        const debtKey=findStateKeyCaseInsensitive(state.debts,k);
+        const seenKey=findStateKeyCaseInsensitive(state.seen,k);
+        const reviewKey=findStateKeyCaseInsensitive(state.lastReviewedDate,k);
+        const hasLearningHistory=Boolean(
+          masteredKey||
+          debtKey||
+          seenKey||
+          reviewKey
+        );
+
+        // Existing but never studied: keep it Unseen. A database/string overlap alone
+        // must never increase debt.
+        if(!hasLearningHistory){
+          unseenDuplicate++;
+          return;
+        }
+
+        // Mastered + re-imported => reactivate at debt 1.
+        if(masteredKey){
+          delete state.mastered[masteredKey];
+          const canonical=debtKey||masteredKey||w;
+          state.debts[canonical]=1;
+          state.highestDebt[canonical]=Math.max(state.highestDebt[canonical]||0,1);
+          delete state.lastReviewedDate[canonical]; // eligible immediately
+          masteredReactivated++;
+          return;
+        }
+
+        // Active + re-imported => debt +1. Do not count the current queue alone as
+        // learning history; only persisted learning-state fields trigger this branch.
+        if(debtKey){
+          const oldDebt=Math.max(1,Number(state.debts[debtKey])||1);
+          state.debts[debtKey]=oldDebt+1;
+          state.highestDebt[debtKey]=Math.max(state.highestDebt[debtKey]||0,oldDebt+1);
+          delete state.lastReviewedDate[debtKey]; // the new source makes it eligible now
+          activeRaised++;
+          return;
+        }
+
+        // Seen/review history without a current debt is conservatively treated as
+        // an unseen duplicate rather than inventing extra debt.
+        unseenDuplicate++;
       });
 
-      // Only genuinely unseen added words need queue insertion; mastered/active ones already have state.
-      const toQueue=added.filter(w=>{
-        const k=w.toLowerCase();
-        return !masteredSet.has(k) && !activeSet.has(k);
-      });
-      shuffle(toQueue);
-      state.queue=(state.queue||[]).concat(toQueue);
+      // Rebuild the queue so newly added words and reactivated words participate
+      // under the normal 4 unseen : 1 Active scheduler. This does not itself alter debt.
+      state.queue=[];
+      state.queueDate=null;
+      refill();
       save();
       updateStats();
 
+      const invalid=
+        normalized.skipped.chinese+
+        normalized.skipped.stopword+
+        normalized.skipped.header;
+
       showTransientToast(
-        "词表导入完成：读取 "+imported.length+" 个；新增 "+added.length+
-        " 个；内置重复 "+alreadyBase+" 个；自定义重复 "+alreadyCustom+
-        " 个；保留已掌握 "+skippedMastered+" 个；保留学习中 "+skippedActive+" 个"
+        "词表导入完成：有效 "+imported.length+
+        "｜新增 "+added+
+        "｜未学习重复 "+unseenDuplicate+
+        "｜学习中 debt+1 "+activeRaised+
+        "｜重新激活 "+masteredReactivated+
+        "｜跳过无效 "+invalid+
+        (normalized.skipped.duplicateInFile
+          ?"｜文件内重复 "+normalized.skipped.duplicateInFile
+          :"")
       );
     }catch(e){
       showTransientToast("词表导入失败："+e.message);
@@ -590,7 +654,6 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
   };
   reader.readAsText(file,"utf-8");
 };
-
 
 
 
@@ -754,7 +817,7 @@ function buildWordDissolveTemplate(wordEl){
   const data=image.data;
   const points=[];
 
-  // Slightly coarser than v3.25.2 because the same cached shape can now burst repeatedly.
+  // Slightly coarser than v3.26 because the same cached shape can now burst repeatedly.
   // The final visual remains fine-grained because each point becomes a very small particle.
   const step=Math.max(2,Math.round(2.2*dpr));
   for(let py=0;py<off.height;py+=step){
