@@ -129,6 +129,14 @@ def load_cloud_custom_words(owner, repo, path, branch, token):
         raise SystemExit("GitHub progress.json has an unexpected format.")
 
     custom = normalise_words(state.get("customWords", []))
+    custom_pronunciations_raw = state.get("customPronunciations", {})
+    if isinstance(custom_pronunciations_raw, dict):
+        custom_pronunciation_keys = {
+            str(w).lower() for w, item in custom_pronunciations_raw.items()
+            if isinstance(item, dict) and any(item.get(k) for k in ("uk", "us", "fallback"))
+        }
+    else:
+        custom_pronunciation_keys = set()
     removed_raw = state.get("removedWords", {})
     if isinstance(removed_raw, dict):
         removed = {str(w).lower() for w in removed_raw.keys()}
@@ -136,7 +144,7 @@ def load_cloud_custom_words(owner, repo, path, branch, token):
         removed = {str(w).lower() for w in removed_raw}
     else:
         removed = set()
-    return custom, removed
+    return custom, removed, custom_pronunciation_keys
 
 def load_db(path):
     if not path.exists():
@@ -315,13 +323,14 @@ def main():
         cloud_source = "skipped (--base-only)"
     else:
         token = github_token()
-        custom_vocab, removed_cloud = load_cloud_custom_words(
+        custom_vocab, removed_cloud, custom_pronunciation_keys = load_cloud_custom_words(
             args.owner, args.repo, args.path, args.branch, token
         )
         cloud_source = f"github.com/{args.owner}/{args.repo}/{args.path}@{args.branch}"
 
     if args.base_only:
         removed_cloud = set()
+        custom_pronunciation_keys = set()
 
     vocab = [w for w in normalise_words(base_vocab + custom_vocab) if w.lower() not in removed_cloud]
     out = project/"data"/"pronunciations.json"
@@ -333,6 +342,12 @@ def main():
     pending = []
     for word in vocab:
         key = word.lower()
+
+        # A pronunciation imported from the learner's Eudic CSV is authoritative for
+        # the app and travels inside private progress.json, so do not query Wiktionary.
+        if key in custom_pronunciation_keys:
+            continue
+
         old = existing.get(key)
 
         if old is None:
@@ -352,6 +367,7 @@ def main():
 
     print(f"Base vocabulary: {len(base_vocab)}")
     print(f"Custom words from cloud: {len(custom_vocab)}")
+    print(f"Cloud words with imported IPA: {len(custom_pronunciation_keys)}")
     print(f"Removed words excluded: {len(removed_cloud)}")
     print(f"Combined vocabulary: {len(vocab)}")
     print(f"Progress source: {cloud_source}")

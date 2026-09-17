@@ -88,7 +88,7 @@ async function syncUpload(forceAfterReset=false){
     const existing = await githubGetProgress();
     const payload = {
       app:"Audio Vocabulary Sprint",
-      version:7,
+      version:8,
       syncedAt:new Date().toISOString(),
       source: (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) ? "mobile" : "desktop",
       state:state
@@ -163,6 +163,7 @@ async function syncDownload(forceDownload=false){
     state.highestDebt = state.highestDebt || {};
     state.lastReviewedDate = state.lastReviewedDate || {};
     state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
+    state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {};
     state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
     state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
     state.queue = Array.isArray(state.queue) ? state.queue : [];

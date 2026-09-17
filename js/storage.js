@@ -11,6 +11,7 @@ state.seen = state.seen || {};
 state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
+state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {};
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day

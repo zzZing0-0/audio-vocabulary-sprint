@@ -14,7 +14,8 @@ let pronunciationWords={};
 let pronunciationLoadFinished=false;
 
 function pronunciationHtml(word){
-  const item=pronunciationWords[String(word||"").toLowerCase()];
+  const key=String(word||"").toLowerCase();
+  const item=(state.customPronunciations&&state.customPronunciations[key]) || pronunciationWords[key];
   if(!item)return "";
 
   // Prefer explicitly region-labelled IPA. Show generic fallback only when
@@ -36,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.26",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.27",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -411,7 +412,7 @@ document.getElementById("info").onclick=()=>{
    '<p>每个新词首次出现时默认 debt = 1。通过：debt −1；再来一次：debt +1。debt 到 0 后进入已掌握。因此首次通过直接清零；首次再来一次会变成 debt = 2。</p>'+
    '<p>学习中单词每个自然日最多考核一次：再来一次后当天退场；若 debt &gt; 1，通过后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
-   '<p><b>自定义词库</b>：导入的新词会永久写入学习 state，并随 GitHub progress.json 同步；不会只临时塞进 queue。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / 已掌握 / 笔记 历史；可随时恢复。</p>'+
+   '<p><b>自定义词库</b>：支持 TXT（一行一个词条）和 CSV。欧路词典 CSV 的“单词 / 音标”会同时导入；音标随 GitHub progress.json 私有同步，并优先于内置 Wiktionary 音标。</p><p><b>重复导入</b>：未学习词不增加 debt；学习中词 debt +1；已掌握词重新激活为 debt = 1。同一文件内的重复行只处理一次。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / 已掌握 / 笔记 历史；可随时恢复。</p>'+
    '<div class="listLinks"><a class="miniBtn linkBtn" href="active.html">⚠️ 查看钉子户</a><a class="miniBtn linkBtn" href="mastered.html">✅️ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">❌ 查看已移除</a></div>'+
    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
@@ -425,7 +426,7 @@ document.getElementById("reset").onclick=()=>{
    "将重置进度学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
    ()=>{
      localStorage.removeItem(KEY);
-     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
+     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
      shuffle(state.queue);
      localStorage.setItem("audio_vocab_sprint_just_reset","1");
      save();
@@ -495,6 +496,7 @@ async function importProgress(file){
       highestDebt: incoming.highestDebt || {},
       lastReviewedDate: incoming.lastReviewedDate || {},
       customWords: Array.isArray(incoming.customWords) ? incoming.customWords : [],
+      customPronunciations: (incoming.customPronunciations && typeof incoming.customPronunciations === "object" && !Array.isArray(incoming.customPronunciations)) ? incoming.customPronunciations : {},
       notes: (incoming.notes && typeof incoming.notes === "object") ? incoming.notes : {},
       removedWords: (incoming.removedWords && typeof incoming.removedWords === "object" && !Array.isArray(incoming.removedWords)) ? incoming.removedWords : {},
       current: incoming.current || null,
@@ -517,30 +519,94 @@ async function importProgress(file){
   }
 }
 
-function normalizeImportedWords(text){
+function normalizeImportedEntries(entries){
   const stop=new Set(["a","an","the"]);
-  const seen=new Set();
-  const words=[];
+  const seen=new Map();
+  const out=[];
   let blank=0, header=0, stopword=0, chinese=0, duplicateInFile=0;
 
-  text.split(/\r?\n/).forEach(raw=>{
-    const w=raw.trim();
+  (entries||[]).forEach(entry=>{
+    const w=String((entry&&entry.word)||"").trim();
     if(!w){blank++;return;}
     if(w.toLowerCase()==="vc_vocabulary"){header++;return;}
     if(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(w)){chinese++;return;}
 
     const key=w.toLowerCase();
     if(stop.has(key)){stopword++;return;}
-    if(seen.has(key)){duplicateInFile++;return;}
+    if(seen.has(key)){
+      duplicateInFile++;
+      // Same-file duplicates never stack debt. If the first row had no IPA but a
+      // later duplicate does, keep the richer pronunciation metadata.
+      const existing=seen.get(key);
+      if(!existing.pronunciation && entry.pronunciation) existing.pronunciation=entry.pronunciation;
+      return;
+    }
 
-    seen.add(key);
-    words.push(w);
+    const clean={word:w,pronunciation:entry&&entry.pronunciation?entry.pronunciation:null};
+    seen.set(key,clean);
+    out.push(clean);
   });
 
-  return {
-    words,
-    skipped:{blank,header,stopword,chinese,duplicateInFile}
-  };
+  return {entries:out,skipped:{blank,header,stopword,chinese,duplicateInFile}};
+}
+
+function parseTxtVocabulary(text){
+  return normalizeImportedEntries(
+    String(text||"").split(/\r?\n/).map(line=>({word:line,pronunciation:null}))
+  );
+}
+
+function parseCsvRows(text){
+  const rows=[];
+  let row=[],field="",quoted=false;
+  const src=String(text||"").replace(/^\uFEFF/,"");
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(quoted){
+      if(ch==='"' && src[i+1]==='"'){field+='"';i++;}
+      else if(ch==='"'){quoted=false;}
+      else field+=ch;
+    }else{
+      if(ch==='"') quoted=true;
+      else if(ch===','){row.push(field);field="";}
+      else if(ch==='\n'){
+        row.push(field);rows.push(row);row=[];field="";
+      }else if(ch!=='\r') field+=ch;
+    }
+  }
+  if(field!==""||row.length){row.push(field);rows.push(row);}
+  return rows;
+}
+
+function parseEudicPronunciation(raw){
+  const text=String(raw||"").trim();
+  if(!text)return null;
+  const ukMatch=text.match(/英\s*[:：]\s*(.+?)(?=\s*美\s*[:：]|$)/);
+  const usMatch=text.match(/美\s*[:：]\s*(.+)$/);
+  const uk=ukMatch?ukMatch[1].trim():null;
+  const us=usMatch?usMatch[1].trim():null;
+  let fallback=null;
+  if(!uk&&!us) fallback=text;
+  if(!uk&&!us&&!fallback)return null;
+  return {uk:uk||null,us:us||null,fallback:fallback||null,source:"eudic"};
+}
+
+function parseCsvVocabulary(text){
+  const rows=parseCsvRows(text).filter(r=>r.some(cell=>String(cell||"").trim()!==""));
+  if(!rows.length) return normalizeImportedEntries([]);
+
+  const headers=rows[0].map(x=>String(x||"").trim().toLowerCase());
+  const wordHeaders=new Set(["单词","word","words","词条","term"]);
+  const ipaHeaders=new Set(["音标","ipa","pronunciation","phonetic"]);
+  const wordIndex=headers.findIndex(h=>wordHeaders.has(h));
+  const ipaIndex=headers.findIndex(h=>ipaHeaders.has(h));
+  if(wordIndex<0) throw new Error("CSV 找不到“单词”列");
+
+  const entries=rows.slice(1).map(r=>({
+    word:String(r[wordIndex]||"").trim(),
+    pronunciation:ipaIndex>=0?parseEudicPronunciation(r[ipaIndex]):null
+  }));
+  return normalizeImportedEntries(entries);
 }
 
 function findStateKeyCaseInsensitive(obj,lowerKey){
@@ -554,22 +620,33 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
   const reader=new FileReader();
   reader.onload=()=>{
     try{
-      const normalized=normalizeImportedWords(String(reader.result||""));
-      const imported=normalized.words;
+      const text=String(reader.result||"");
+      const isCsv=/\.csv$/i.test(file.name||"") || /csv/i.test(file.type||"");
+      const normalized=isCsv?parseCsvVocabulary(text):parseTxtVocabulary(text);
+      const imported=normalized.entries;
       const baseSet=new Set(BASE_WORDS.map(w=>String(w).toLowerCase()));
       const customSet=new Set((state.customWords||[]).map(w=>String(w).toLowerCase()));
+      state.customPronunciations=(state.customPronunciations&&typeof state.customPronunciations==="object")?state.customPronunciations:{};
 
       let added=0;
       let unseenDuplicate=0;
       let activeRaised=0;
       let masteredReactivated=0;
+      let ipaImported=0;
 
-      imported.forEach(w=>{
+      imported.forEach(entry=>{
+        const w=entry.word;
         const k=w.toLowerCase();
         const alreadyExists=baseSet.has(k)||customSet.has(k);
 
+        // Eudic/CSV pronunciation belongs to the learner's private state and overrides
+        // the static Wiktionary database for this word on every synced device.
+        if(entry.pronunciation){
+          state.customPronunciations[k]=entry.pronunciation;
+          ipaImported++;
+        }
+
         // New vocabulary entry: add it, but importing is not a learning failure.
-        // It therefore starts conceptually at debt 1 and receives no extra debt.
         if(!alreadyExists){
           state.customWords.push(w);
           customSet.add(k);
@@ -581,15 +658,9 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
         const debtKey=findStateKeyCaseInsensitive(state.debts,k);
         const seenKey=findStateKeyCaseInsensitive(state.seen,k);
         const reviewKey=findStateKeyCaseInsensitive(state.lastReviewedDate,k);
-        const hasLearningHistory=Boolean(
-          masteredKey||
-          debtKey||
-          seenKey||
-          reviewKey
-        );
+        const hasLearningHistory=Boolean(masteredKey||debtKey||seenKey||reviewKey);
 
-        // Existing but never studied: keep it Unseen. A database/string overlap alone
-        // must never increase debt.
+        // Existing but never studied: keep it Unseen. Import overlap alone is not failure.
         if(!hasLearningHistory){
           unseenDuplicate++;
           return;
@@ -601,50 +672,41 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
           const canonical=debtKey||masteredKey||w;
           state.debts[canonical]=1;
           state.highestDebt[canonical]=Math.max(state.highestDebt[canonical]||0,1);
-          delete state.lastReviewedDate[canonical]; // eligible immediately
+          delete state.lastReviewedDate[canonical];
           masteredReactivated++;
           return;
         }
 
-        // Active + re-imported => debt +1. Do not count the current queue alone as
-        // learning history; only persisted learning-state fields trigger this branch.
+        // Active + re-imported => debt +1.
         if(debtKey){
           const oldDebt=Math.max(1,Number(state.debts[debtKey])||1);
           state.debts[debtKey]=oldDebt+1;
           state.highestDebt[debtKey]=Math.max(state.highestDebt[debtKey]||0,oldDebt+1);
-          delete state.lastReviewedDate[debtKey]; // the new source makes it eligible now
+          delete state.lastReviewedDate[debtKey];
           activeRaised++;
           return;
         }
 
-        // Seen/review history without a current debt is conservatively treated as
-        // an unseen duplicate rather than inventing extra debt.
         unseenDuplicate++;
       });
 
-      // Rebuild the queue so newly added words and reactivated words participate
-      // under the normal 4 unseen : 1 Active scheduler. This does not itself alter debt.
       state.queue=[];
       state.queueDate=null;
       refill();
       save();
       updateStats();
+      refreshCurrentPronunciation();
 
-      const invalid=
-        normalized.skipped.chinese+
-        normalized.skipped.stopword+
-        normalized.skipped.header;
-
+      const invalid=normalized.skipped.chinese+normalized.skipped.stopword+normalized.skipped.header;
       showTransientToast(
-        "词表导入完成：有效 "+imported.length+
+        (isCsv?"CSV":"TXT")+" 导入完成：有效 "+imported.length+
         "｜新增 "+added+
         "｜未学习重复 "+unseenDuplicate+
         "｜学习中 debt+1 "+activeRaised+
         "｜重新激活 "+masteredReactivated+
+        (isCsv?"｜导入 IPA "+ipaImported:"")+
         "｜跳过无效 "+invalid+
-        (normalized.skipped.duplicateInFile
-          ?"｜文件内重复 "+normalized.skipped.duplicateInFile
-          :"")
+        (normalized.skipped.duplicateInFile?"｜文件内重复 "+normalized.skipped.duplicateInFile:"")
       );
     }catch(e){
       showTransientToast("词表导入失败："+e.message);
@@ -654,7 +716,6 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
   };
   reader.readAsText(file,"utf-8");
 };
-
 
 
 updateStats();

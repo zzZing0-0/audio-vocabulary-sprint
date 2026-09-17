@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint v3.26
+# Audio Vocabulary Sprint v3.27
 
 ## Structure
 - `index.html` — page structure
@@ -297,3 +297,12 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Existing Active words receive debt +1 when re-imported.
 - Existing Mastered words are reactivated at debt 1 when re-imported.
 - Import toast reports new entries, unseen duplicates, Active debt increases, reactivated Mastered entries, invalid lines, and in-file duplicates.
+
+
+## v3.27 CSV / Eudic import
+- The vocabulary importer accepts both TXT and CSV.
+- Eudic-style CSV columns `单词,音标` are recognized directly.
+- `英:` and `美:` IPA values map to the existing UK/US chips; an unlabelled IPA maps to the generic chip.
+- Imported IPA is saved in `state.customPronunciations`, synced privately through `progress.json`, and takes priority over the static Wiktionary pronunciation database.
+- The pronunciation updater skips Wiktionary requests for cloud words that already have imported IPA.
+- Existing v3.26 duplicate/debt semantics remain unchanged.
