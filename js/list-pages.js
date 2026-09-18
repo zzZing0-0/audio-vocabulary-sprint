@@ -122,9 +122,13 @@ function renderPagination(key,totalPages,rerender){
   const el=document.getElementById("pagination"); if(!el)return;
   if(totalPages<=1){el.innerHTML="";return;}
   const page=pageState[key];
-  el.innerHTML='<button class="miniBtn" id="pagePrev" '+(page<=1?'disabled':'')+'>‹ 上一页</button><span class="pageInfo">'+page+' / '+totalPages+'</span><button class="miniBtn" id="pageNext" '+(page>=totalPages?'disabled':'')+'>下一页 ›</button>';
-  document.getElementById("pagePrev").onclick=()=>{if(pageState[key]>1){pageState[key]--;rerender();window.scrollTo({top:0,behavior:"smooth"});}};
-  document.getElementById("pageNext").onclick=()=>{if(pageState[key]<totalPages){pageState[key]++;rerender();window.scrollTo({top:0,behavior:"smooth"});}};
+  el.innerHTML='<button class="miniBtn pageFirst" '+(page<=1?'disabled':'')+'>« 首页</button><button class="miniBtn pagePrev" '+(page<=1?'disabled':'')+'>‹ 上一页</button><span class="pageInfo">'+page+' / '+totalPages+'</span><form class="pageJump"><input class="pageJumpInput" type="number" inputmode="numeric" min="1" max="'+totalPages+'" value="'+page+'" aria-label="页码"><button class="miniBtn" type="submit">跳转</button></form><button class="miniBtn pageNext" '+(page>=totalPages?'disabled':'')+'>下一页 ›</button><button class="miniBtn pageLast" '+(page>=totalPages?'disabled':'')+'>尾页 »</button>';
+  const go=n=>{pageState[key]=Math.min(Math.max(1,n),totalPages);rerender();window.scrollTo({top:0,behavior:"smooth"});};
+  el.querySelector('.pageFirst').onclick=()=>go(1);
+  el.querySelector('.pagePrev').onclick=()=>go(page-1);
+  el.querySelector('.pageNext').onclick=()=>go(page+1);
+  el.querySelector('.pageLast').onclick=()=>go(totalPages);
+  el.querySelector('.pageJump').onsubmit=e=>{e.preventDefault();const n=parseInt(el.querySelector('.pageJumpInput').value,10);if(Number.isFinite(n))go(n);};
 }
 function renderActive(){
   const root=document.getElementById("listRoot");
