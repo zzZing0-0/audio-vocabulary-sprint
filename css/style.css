@@ -1287,15 +1287,23 @@ main{padding-top:18px;}
 }
 
 
-/* ===== v3.28.2 lookup + notes ===== */
+/* ===== v3.28.3 lookup + notes ===== */
 .lookupSearch{display:flex;gap:10px;max-width:620px;margin:0 auto 22px}.lookupInput{flex:1;min-width:0;border:1px solid #ddd;border-radius:14px;padding:12px 14px;font-size:16px;background:#fff}.lookupSearchBtn{padding:10px 16px}.lookupResult{min-height:150px}.lookupEmpty,.lookupMissing{text-align:center;color:#777;padding:42px 10px}.lookupMissing b{font-size:24px;color:#333}.lookupMissing .action{max-width:300px;margin:18px auto 0}.lookupDetail{text-align:center;padding:8px 0 18px}.lookupStatusRow{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}.lookupStatusRow span{font-size:12px;color:#777;background:#f6f6f4;border-radius:999px;padding:6px 9px}.lookupWord{font-size:38px;font-weight:700;line-height:1.2;word-break:break-word}.lookupSpeaker{border:0;background:transparent;font-size:42px;cursor:pointer;margin-top:12px}.lookupLinks{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.lookupLinks a{color:#666;text-decoration:none}.lookupDetail .noteDetails{max-width:520px}.noteManageRow{position:relative;padding:14px 4px;border-bottom:1px solid #eee}.noteManageRow:last-child{border-bottom:0}.noteManageHead{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px}.noteWordLink{font-weight:700;color:#333;text-decoration:none;word-break:break-word}.noteWordLink:hover{text-decoration:underline}.noteManageInput{width:100%;box-sizing:border-box}.noteDelete{margin-top:8px}.wordNoteInput{box-sizing:border-box}
 @media(max-width:500px){.lookupSearch{gap:7px}.lookupWord{font-size:32px}.lookupSpeaker{font-size:38px}.noteManageHead{align-items:flex-start;flex-direction:column;gap:4px}}
 
 
-/* ===== v3.28.2 lookup access + paginated study lists ===== */
+/* ===== v3.28.3 lookup access + paginated study lists ===== */
 .lookupSearchIcon{display:none}.wordLookupLink{color:inherit;text-decoration:none}.wordLookupLink:hover{text-decoration:underline}.pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;padding-top:12px;border-top:1px solid #eee}.pagination .miniBtn:disabled{opacity:.35;cursor:default}.pageInfo{font-size:12px;color:#777;min-width:48px;text-align:center}.infoPrimaryLinks{margin-bottom:18px}.infoPrimaryLinks .dangerLite{font:inherit}
 @media(max-width:500px){.lookupSearchBtn{width:52px;min-width:52px;padding:10px 0;font-size:19px}.lookupSearchText{display:none}.lookupSearchIcon{display:inline}.pagination{gap:9px}.pagination .miniBtn{padding:7px 10px}}
 
-/* ===== v3.28.2 pagination refinement ===== */
+/* ===== v3.28.3 pagination refinement ===== */
 .resetBottom{margin-top:22px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:flex-end}.pagination{flex-wrap:wrap}.pageJump{display:flex;align-items:center;gap:6px}.pageJumpInput{width:58px;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:7px 6px;text-align:center;font:inherit;background:#fff}.pageJumpInput:focus{outline:none;border-color:#c9b5ee;box-shadow:0 0 0 3px rgba(201,181,238,.16)}
 @media(max-width:500px){.pagination{gap:7px}.pagination .miniBtn{padding:7px 8px}.pageJump{order:3;width:100%;justify-content:center}.pageJumpInput{width:64px}.pageInfo{min-width:44px}}
+
+/* ===== v3.28.3 unified icon controls ===== */
+.lookupSearchText{display:none!important}
+.lookupSearchIcon{display:inline!important}
+.lookupSearchBtn{display:flex;align-items:center;justify-content:center;font-size:19px}
+.resetBottom{display:block}
+.resetEntry{width:100%;box-sizing:border-box;min-height:44px}
+.pageJump .miniBtn{min-width:44px;display:flex;align-items:center;justify-content:center}

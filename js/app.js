@@ -37,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.28.2",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.28.3",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -414,7 +414,7 @@ document.getElementById("info").onclick=()=>{
    '<p>学习中单词每个自然日最多考核一次：再来一次后当天退场；若 debt &gt; 1，通过后也当天退场，下一次最早在下一个自然日出现。</p>'+
    '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
    '<p><b>自定义词库</b>：支持 TXT（一行一个词条）和 CSV。欧路词典 CSV 的“单词 / 音标”会同时导入；音标随 GitHub progress.json 私有同步，并优先于内置 Wiktionary 音标。</p><p><b>重复导入</b>：未学习词不增加 debt；学习中词 debt +1；已掌握词重新激活为 debt = 1。同一文件内的重复行只处理一次。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / 已掌握 / 笔记 历史；可随时恢复。</p>'+
-   '<div class="resetBottom"><button class="miniBtn dangerLite" id="panelReset" type="button">重置进度</button></div>'+
+   '<div class="resetBottom"><button class="miniBtn linkBtn dangerLite resetEntry" id="panelReset" type="button">🔄 重置进度</button></div>'+
    '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
  document.getElementById("overlay").style.display="flex";
  const panelReset=document.getElementById("panelReset");
