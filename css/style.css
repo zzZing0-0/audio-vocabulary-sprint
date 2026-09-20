@@ -1370,3 +1370,37 @@ main{padding-top:18px;}
   .lookupRemoveBtn{top:0;right:0;min-height:25px;padding:5px 9px;}
   .lookupStatusRow{padding-right:52px;}
 }
+
+/* ===== v3.30 learning history ===== */
+.historyPage{width:100%;max-width:980px;margin:0 auto;padding:30px 28px 50px;}
+.historyCard{margin-top:22px;background:var(--card);border-radius:24px;padding:24px;box-shadow:0 5px 25px rgba(0,0,0,.05);}
+.historyTabs{display:flex;gap:8px;margin-bottom:18px;}
+.historyTab{border:1px solid #ddd;background:#fff;border-radius:12px;padding:8px 18px;font-size:14px;cursor:pointer;color:#666;}
+.historyTab.active{background:#222;color:#fff;border-color:#222;font-weight:650;}
+.historyNav{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:14px;}
+.historyArrow{border:0;background:transparent;font-size:28px;color:#666;cursor:pointer;min-height:42px;}
+.historyPeriod{text-align:center;font-weight:700;font-size:18px;}
+.weekHead,.monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;}
+.weekHead{margin-bottom:7px;color:#999;font-size:12px;text-align:center;}
+.monthCell{position:relative;min-height:72px;border:0;border-radius:14px;padding:9px;background:#f2f1ee;text-align:left;cursor:pointer;color:var(--text);}
+.monthCell.outside{background:transparent;cursor:default;}
+.monthCell.selected,.yearDay.selected{outline:2px solid #555;outline-offset:2px;}
+.monthDate{font-size:12px;color:#666;}
+.monthTotal{display:block;margin-top:10px;font-size:20px;font-weight:750;text-align:center;}
+.heat0{background:#efeeea!important}.heat1{background:#e1f0e6!important}.heat2{background:#cce6d5!important}.heat3{background:#b8dfc7!important}.heat4{background:#91c9a5!important}
+.beforeStats{background:#f7f6f3!important;color:#bbb!important;}
+.heatLegend{display:flex;justify-content:flex-end;align-items:center;gap:5px;margin-top:14px;color:#999;font-size:11px;}
+.heatLegend i{display:inline-block;width:12px;height:12px;border-radius:3px;}
+.dayDetail{margin-top:20px;padding:18px;border-top:1px solid #eee;text-align:center;}
+.dayDetailDate{font-weight:700;margin-bottom:10px;}
+.dayMetrics{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;color:#666;font-size:14px;}.dayMetrics b{color:#222;font-size:18px;margin-right:4px;}
+.yearScroll{overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
+.yearMonthLabels{display:grid;gap:3px;margin-left:27px;min-width:max-content;height:20px;color:#888;font-size:10px;}
+.yearMonthLabels span{white-space:nowrap;}
+.yearBody{display:flex;gap:7px;min-width:max-content;}
+.yearWeekLabels{display:grid;grid-template-rows:repeat(7,12px);gap:3px;width:20px;color:#999;font-size:9px;line-height:12px;}
+.yearGrid{display:flex;gap:3px;}
+.yearWeek{display:grid;grid-template-rows:repeat(7,12px);gap:3px;}
+.yearDay{width:12px;height:12px;border:0;border-radius:3px;padding:0;cursor:pointer;}
+.yearDay.outside{background:transparent!important;cursor:default;}
+@media(max-width:600px){.historyPage{padding:calc(18px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom));}.historyCard{padding:18px 12px;border-radius:20px}.monthGrid,.weekHead{gap:4px}.monthCell{min-height:58px;border-radius:11px;padding:7px}.monthTotal{font-size:17px;margin-top:7px}.dayMetrics{gap:14px}.historyPage .listPageHead{align-items:flex-start;gap:10px}.historyPage h1{font-size:24px}}

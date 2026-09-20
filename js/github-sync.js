@@ -171,6 +171,8 @@ async function syncDownload(forceDownload=false){
     state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
     state.queue = Array.isArray(state.queue) ? state.queue : [];
     state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null;
+    state.dailyStats = (state.dailyStats && typeof state.dailyStats === "object" && !Array.isArray(state.dailyStats)) ? state.dailyStats : {};
+    state.statsStartDate = (typeof state.statsStartDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(state.statsStartDate)) ? state.statsStartDate : localDateKey();
     state.voiceIndex = Number(state.voiceIndex)||0;
     ensureLinkedWordsInVocabulary();
 

@@ -7,6 +7,21 @@ function activeEligibleToday(w){
   return (state.debts[w]||0)>0 && !state.mastered[w] && state.lastReviewedDate[w]!==localDateKey();
 }
 
+function ensureDailyStatsStart(){
+  if(!state.dailyStats || typeof state.dailyStats!=="object" || Array.isArray(state.dailyStats))state.dailyStats={};
+  if(!state.statsStartDate)state.statsStartDate=localDateKey();
+}
+
+function recordDailyJudgment(isNew){
+  ensureDailyStatsStart();
+  const day=localDateKey();
+  const row=(state.dailyStats[day]&&typeof state.dailyStats[day]==="object")?state.dailyStats[day]:{total:0,new:0,review:0};
+  row.total=(Number(row.total)||0)+1;
+  if(isNew)row.new=(Number(row.new)||0)+1;
+  else row.review=(Number(row.review)||0)+1;
+  state.dailyStats[day]=row;
+}
+
 let lastJudgmentSnapshot=null;
 let judgmentTimer=null;
 let judgmentLocked=false;
@@ -154,6 +169,8 @@ function cloneLearningSnapshot(){
     highestDebt:JSON.parse(JSON.stringify(state.highestDebt||{})),
     lastReviewedDate:JSON.parse(JSON.stringify(state.lastReviewedDate||{})),
     removedWords:JSON.parse(JSON.stringify(state.removedWords||{})),
+    dailyStats:JSON.parse(JSON.stringify(state.dailyStats||{})),
+    statsStartDate:state.statsStartDate||null,
     current:state.current,
     queue:Array.isArray(state.queue)?state.queue.slice():[],
     queueDate:state.queueDate
@@ -194,6 +211,8 @@ function undoLastJudgment(){
   state.highestDebt=s.highestDebt;
   state.lastReviewedDate=s.lastReviewedDate;
   state.removedWords=s.removedWords||{};
+  state.dailyStats=s.dailyStats||{};
+  state.statsStartDate=s.statsStartDate||null;
   state.current=s.current;
   state.queue=s.queue;
   state.queueDate=s.queueDate;
@@ -288,6 +307,8 @@ function pass(){
   updateAnswerControls();
   saveCurrentNote();
   armUndo();
+  const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
+  recordDailyJudgment(wasNew);
   celebratePass(); playPassSound();
 
   let w=state.current, d=state.debts[w]||1;
@@ -321,6 +342,8 @@ function again(){
   playAgainSound();
   saveCurrentNote();
   armUndo();
+  const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
+  recordDailyJudgment(wasNew);
 
   let w=state.current;
   const d=state.debts[w]||1;

@@ -16,6 +16,13 @@ state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {
 state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
+state.dailyStats = (state.dailyStats && typeof state.dailyStats === "object" && !Array.isArray(state.dailyStats)) ? state.dailyStats : {}; // v3.30: learning log
+state.statsStartDate = (typeof state.statsStartDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(state.statsStartDate)) ? state.statsStartDate : null;
+if(!state.statsStartDate){
+  const _statsNow=new Date();
+  state.statsStartDate=_statsNow.getFullYear()+"-"+String(_statsNow.getMonth()+1).padStart(2,"0")+"-"+String(_statsNow.getDate()).padStart(2,"0");
+  localStorage.setItem(KEY,JSON.stringify(state));
+}
 
 // v3.29.6: linkedWords is only a relationship map; every referenced word must
 // also exist in the actual vocabulary (BASE_WORDS or customWords). Repair any
