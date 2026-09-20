@@ -1347,3 +1347,26 @@ main{padding-top:18px;}
 
 /* ===== v3.29.1 lookup voice switching ===== */
 .lookupVoiceControls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}.lookupVoiceControls .lookupSpeaker{margin-top:0}.lookupVoiceControls .voiceArrow{flex:0 0 auto}
+
+
+/* ===== v3.29.5 Lookup delete control ===== */
+.lookupDetail{position:relative;}
+.lookupRemoveBtn{
+  position:absolute;
+  top:0;
+  right:0;
+  min-height:26px;
+  border:0;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  line-height:1;
+  cursor:pointer;
+  box-sizing:border-box;
+  background:#fbd5e4;
+  color:#7c5362;
+}
+@media(max-width:560px){
+  .lookupRemoveBtn{top:0;right:0;min-height:25px;padding:5px 9px;}
+  .lookupStatusRow{padding-right:52px;}
+}

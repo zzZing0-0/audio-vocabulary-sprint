@@ -17,7 +17,7 @@ state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" 
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
 
-// v3.29.4: linkedWords is only a relationship map; every referenced word must
+// v3.29.5: linkedWords is only a relationship map; every referenced word must
 // also exist in the actual vocabulary (BASE_WORDS or customWords). Repair any
 // older/orphaned links without touching debt/seen/mastered state.
 function ensureLinkedWordsInVocabulary(){
