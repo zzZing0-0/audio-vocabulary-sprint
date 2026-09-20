@@ -1,4 +1,10 @@
-# Audio Vocabulary Sprint v3.29.3
+# Audio Vocabulary Sprint v3.29.4
+
+
+## v3.29.4
+- Fix: linked confusable words are now guaranteed to exist in the actual vocabulary.
+- Older/orphaned `linkedWords` references are repaired into `state.customWords` without changing debt, seen, or mastery state.
+- GitHub upload/download runs the same repair so linked words remain searchable on every device after sync.
 
 ## Structure
 - `index.html` — page structure

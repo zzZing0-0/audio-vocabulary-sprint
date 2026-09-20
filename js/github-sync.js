@@ -86,6 +86,8 @@ async function syncUpload(forceAfterReset=false){
   setSyncStatus("正在上传…");
   try{
     const existing = await githubGetProgress();
+    // Keep linkedWords and the real vocabulary in sync before serializing.
+    ensureLinkedWordsInVocabulary();
     const payload = {
       app:"Audio Vocabulary Sprint",
       version:8,
@@ -170,6 +172,7 @@ async function syncDownload(forceDownload=false){
     state.queue = Array.isArray(state.queue) ? state.queue : [];
     state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null;
     state.voiceIndex = Number(state.voiceIndex)||0;
+    ensureLinkedWordsInVocabulary();
 
     for (const [w,d] of Object.entries(state.debts)) {
       state.highestDebt[w] = Math.max(state.highestDebt[w]||0, Number(d)||0);

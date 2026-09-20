@@ -17,7 +17,32 @@ state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" 
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
 
-
+// v3.29.4: linkedWords is only a relationship map; every referenced word must
+// also exist in the actual vocabulary (BASE_WORDS or customWords). Repair any
+// older/orphaned links without touching debt/seen/mastered state.
+function ensureLinkedWordsInVocabulary(){
+  const known=new Set();
+  for(const raw of BASE_WORDS.concat(state.customWords||[])){
+    const w=String(raw||"").trim();
+    if(w)known.add(w.toLowerCase());
+  }
+  let added=0;
+  const refs=[];
+  for(const [rawKey,rawList] of Object.entries(state.linkedWords||{})){
+    refs.push(rawKey);
+    if(Array.isArray(rawList))refs.push(...rawList);
+  }
+  for(const raw of refs){
+    const w=String(raw||"").trim();
+    const k=w.toLowerCase();
+    if(!w||known.has(k))continue;
+    state.customWords.push(w);
+    known.add(k);
+    added++;
+  }
+  return added;
+}
+ensureLinkedWordsInVocabulary();
 
 for (const [w,d] of Object.entries(state.debts)) {
   state.highestDebt[w] = Math.max(state.highestDebt[w]||0, Number(d)||0);
@@ -112,4 +137,4 @@ function unlinkWords(a,b){
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
 
-function save(){ localStorage.setItem(KEY,JSON.stringify(state)); if(typeof updateStats==="function") updateStats(); }
+function save(){ ensureLinkedWordsInVocabulary(); localStorage.setItem(KEY,JSON.stringify(state)); if(typeof updateStats==="function") updateStats(); }
