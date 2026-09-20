@@ -1349,7 +1349,7 @@ main{padding-top:18px;}
 .lookupVoiceControls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}.lookupVoiceControls .lookupSpeaker{margin-top:0}.lookupVoiceControls .voiceArrow{flex:0 0 auto}
 
 
-/* ===== v3.29.5 Lookup delete control ===== */
+/* ===== v3.29.6 Lookup delete control ===== */
 .lookupDetail{position:relative;}
 .lookupRemoveBtn{
   position:absolute;

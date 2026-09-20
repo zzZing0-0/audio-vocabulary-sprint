@@ -8,6 +8,9 @@ listState.lastReviewedDate=listState.lastReviewedDate||{};
 listState.notes=(listState.notes&&typeof listState.notes==="object")?listState.notes:{};
 listState.removedWords=(listState.removedWords&&typeof listState.removedWords==="object"&&!Array.isArray(listState.removedWords))?listState.removedWords:{};
 listState.queue=Array.isArray(listState.queue)?listState.queue:[];
+listState.customWords=Array.isArray(listState.customWords)?listState.customWords:[];
+listState.customPronunciations=(listState.customPronunciations&&typeof listState.customPronunciations==="object"&&!Array.isArray(listState.customPronunciations))?listState.customPronunciations:{};
+listState.linkedWords=(listState.linkedWords&&typeof listState.linkedWords==="object"&&!Array.isArray(listState.linkedWords))?listState.linkedWords:{};
 
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
@@ -157,9 +160,48 @@ function renderMastered(){
 function restoreRemovedWord(w){
   const key=Object.keys(listState.removedWords||{}).find(k=>k.toLowerCase()===String(w).toLowerCase()); if(!key)return; delete listState.removedWords[key]; const alreadyQueued=(listState.queue||[]).some(x=>String(x).toLowerCase()===String(w).toLowerCase()); const mastered=!!listState.mastered[w]; if(!mastered&&!alreadyQueued)listState.queue.push(w); persist(); renderRemoved(); listToast(`已恢复 “${w}” 到学习词库`);
 }
+function deleteCaseInsensitiveKey(obj,w){
+  if(!obj||typeof obj!=="object")return;
+  const target=String(w).toLowerCase();
+  for(const key of Object.keys(obj))if(String(key).toLowerCase()===target)delete obj[key];
+}
+function isCustomListWord(w){
+  const target=String(w).toLowerCase();
+  return (listState.customWords||[]).some(x=>String(x).toLowerCase()===target);
+}
+function permanentlyDeleteRemovedWord(w){
+  if(!isCustomListWord(w)){
+    listToast(`“${w}” 来自基础词库，只能保持已移除，不能彻底删除`);
+    return;
+  }
+  listRequireSecondClick(
+    "permanent-delete:"+String(w).toLowerCase(),
+    `将彻底删除 “${w}” 的全部记录、发音、笔记和易混词链接；此操作不可恢复`,
+    ()=>{
+      const target=String(w).toLowerCase();
+      listState.customWords=(listState.customWords||[]).filter(x=>String(x).toLowerCase()!==target);
+      for(const obj of [listState.customPronunciations,listState.debts,listState.mastered,listState.seen,listState.highestDebt,listState.lastReviewedDate,listState.notes,listState.removedWords])deleteCaseInsensitiveKey(obj,w);
+      // Remove both the word's own linkedWords entry and every reverse reference to it.
+      deleteCaseInsensitiveKey(listState.linkedWords,w);
+      for(const key of Object.keys(listState.linkedWords||{})){
+        if(Array.isArray(listState.linkedWords[key])){
+          listState.linkedWords[key]=listState.linkedWords[key].filter(x=>String(x).toLowerCase()!==target);
+          if(listState.linkedWords[key].length===0)delete listState.linkedWords[key];
+        }
+      }
+      listState.queue=(listState.queue||[]).filter(x=>String(x).toLowerCase()!==target);
+      if(listState.current&&String(listState.current).toLowerCase()===target)listState.current=null;
+      persist();
+      renderRemoved();
+      listToast(`已彻底删除 “${w}” 及其全部记录`);
+    }
+  );
+}
 function renderRemoved(){
   const root=document.getElementById("listRoot"); const rows=Object.entries(listState.removedWords||{}).map(([w,meta])=>[w,meta||{}]).sort((a,b)=>String(b[1].removedAt||"").localeCompare(String(a[1].removedAt||""))||a[0].localeCompare(b[0])); document.getElementById("count").textContent=rows.length;
   const pg=pageSlice(rows,"removed");
-  root.innerHTML=pg.items.length?pg.items.map(([w,meta])=>{const status=listState.mastered[w]?'原状态：已掌握':(Number(listState.debts[w]||0)>0?'原状态：学习中 · debt '+listState.debts[w]:'原状态：未学习 / 无 debt'),date=meta.removedAt?new Date(meta.removedAt).toLocaleDateString():"",note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">'+h(status)+(date?' · '+h(date):'')+'</div><button class="miniBtn" data-restore="'+encodeURIComponent(w)+'">恢复词库</button>'+note+'</div>';}).join(''):'<p>暂无已移除单词。</p>';
-  root.querySelectorAll('[data-restore]').forEach(btn=>btn.onclick=()=>restoreRemovedWord(decodeURIComponent(btn.dataset.restore))); renderPagination("removed",pg.totalPages,renderRemoved);
+  root.innerHTML=pg.items.length?pg.items.map(([w,meta])=>{const status=listState.mastered[w]?'原状态：已掌握':(Number(listState.debts[w]||0)>0?'原状态：学习中 · debt '+listState.debts[w]:'原状态：未学习 / 无 debt'),date=meta.removedAt?new Date(meta.removedAt).toLocaleDateString():"",note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'',permanent=isCustomListWord(w)?'<button class="miniBtn dangerLite" data-permanent="'+encodeURIComponent(w)+'">彻底删除</button>':'';return '<div class="wordListRow"><div class="wordListWord">'+h(w)+'</div><div class="wordListMeta">'+h(status)+(date?' · '+h(date):'')+'</div><div class="listRowActions"><button class="miniBtn" data-restore="'+encodeURIComponent(w)+'">恢复词库</button>'+permanent+'</div>'+note+'</div>';}).join(''):'<p>暂无已移除单词。</p>';
+  root.querySelectorAll('[data-restore]').forEach(btn=>btn.onclick=()=>restoreRemovedWord(decodeURIComponent(btn.dataset.restore)));
+  root.querySelectorAll('[data-permanent]').forEach(btn=>btn.onclick=()=>permanentlyDeleteRemovedWord(decodeURIComponent(btn.dataset.permanent)));
+  renderPagination("removed",pg.totalPages,renderRemoved);
 }
