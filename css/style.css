@@ -1287,20 +1287,20 @@ main{padding-top:18px;}
 }
 
 
-/* ===== v3.28.6 lookup + notes ===== */
+/* ===== v3.29.0 lookup + notes ===== */
 .lookupSearch{display:flex;gap:10px;max-width:620px;margin:0 auto 22px}.lookupInput{flex:1;min-width:0;border:1px solid #ddd;border-radius:14px;padding:12px 14px;font-size:16px;background:#fff}.lookupSearchBtn{padding:10px 16px}.lookupResult{min-height:150px}.lookupEmpty,.lookupMissing{text-align:center;color:#777;padding:42px 10px}.lookupMissing b{font-size:24px;color:#333}.lookupMissing .action{max-width:300px;margin:18px auto 0}.lookupDetail{text-align:center;padding:8px 0 18px}.lookupStatusRow{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}.lookupStatusRow span{font-size:12px;color:#777;background:#f6f6f4;border-radius:999px;padding:6px 9px}.lookupWord{font-size:38px;font-weight:700;line-height:1.2;word-break:break-word}.lookupSpeaker{border:0;background:transparent;font-size:42px;cursor:pointer;margin-top:12px}.lookupLinks{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.lookupLinks a{color:#666;text-decoration:none}.lookupDetail .noteDetails{max-width:520px}.noteManageRow{position:relative;padding:14px 4px;border-bottom:1px solid #eee}.noteManageRow:last-child{border-bottom:0}.noteManageHead{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px}.noteWordLink{font-weight:700;color:#333;text-decoration:none;word-break:break-word}.noteWordLink:hover{text-decoration:underline}.noteManageInput{width:100%;box-sizing:border-box}.noteDelete{margin-top:8px}.wordNoteInput{box-sizing:border-box}
 @media(max-width:500px){.lookupSearch{gap:7px}.lookupWord{font-size:32px}.lookupSpeaker{font-size:38px}.noteManageHead{align-items:flex-start;flex-direction:column;gap:4px}}
 
 
-/* ===== v3.28.6 lookup access + paginated study lists ===== */
+/* ===== v3.29.0 lookup access + paginated study lists ===== */
 .lookupSearchIcon{display:none}.wordLookupLink{color:inherit;text-decoration:none}.wordLookupLink:hover{text-decoration:underline}.pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;padding-top:12px;border-top:1px solid #eee}.pagination .miniBtn:disabled{opacity:.35;cursor:default}.pageInfo{font-size:12px;color:#777;min-width:48px;text-align:center}.infoPrimaryLinks{margin-bottom:18px}.infoPrimaryLinks .dangerLite{font:inherit}
 @media(max-width:500px){.lookupSearchBtn{width:52px;min-width:52px;padding:10px 0;font-size:19px}.lookupSearchText{display:none}.lookupSearchIcon{display:inline}.pagination{gap:9px}.pagination .miniBtn{padding:7px 10px}}
 
-/* ===== v3.28.6 pagination refinement ===== */
+/* ===== v3.29.0 pagination refinement ===== */
 .resetBottom{margin-top:22px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:flex-end}.pagination{flex-wrap:wrap}.pageJump{display:flex;align-items:center;gap:6px}.pageJumpInput{width:58px;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:7px 6px;text-align:center;font:inherit;background:#fff}.pageJumpInput:focus{outline:none;border-color:#c9b5ee;box-shadow:0 0 0 3px rgba(201,181,238,.16)}
 @media(max-width:500px){.pagination{gap:7px}.pagination .miniBtn{padding:7px 8px}.pageJump{order:3;width:100%;justify-content:center}.pageJumpInput{width:64px}.pageInfo{min-width:44px}}
 
-/* ===== v3.28.6 mobile text-control fix ===== */
+/* ===== v3.29.0 mobile text-control fix ===== */
 .lookupSearchText{display:inline!important;white-space:nowrap}
 .lookupSearchIcon{display:none!important}
 .lookupSearchBtn{display:inline-flex!important;align-items:center;justify-content:center;min-width:64px;width:auto;flex:0 0 auto;white-space:nowrap;overflow:visible}
@@ -1309,7 +1309,7 @@ main{padding-top:18px;}
 .resetEntry{width:100%;box-sizing:border-box;min-height:44px}
 @media (max-width:700px){.lookupSearchText{display:inline!important}.lookupSearchBtn{min-width:60px!important;width:auto!important;padding-left:12px!important;padding-right:12px!important;font-size:14px!important}.pageJump .miniBtn{min-width:60px!important;width:auto!important;padding-left:12px!important;padding-right:12px!important;font-size:14px!important}}
 
-/* ===== v3.28.6 iOS visible button labels ===== */
+/* ===== v3.29.0 iOS visible button labels ===== */
 .lookupSearchBtn,
 .pageJump .miniBtn{
   color:#333!important;
@@ -1325,7 +1325,7 @@ main{padding-top:18px;}
   white-space:nowrap!important;
 }
 
-/* ===== v3.28.6 ordinary iPhone-safe action buttons ===== */
+/* ===== v3.29.0 ordinary iPhone-safe action buttons ===== */
 .lookupSearch > .miniBtn,
 .pageJump > .miniBtn{
   color:#333!important;
@@ -1340,3 +1340,7 @@ main{padding-top:18px;}
   padding:7px 10px!important;
   white-space:nowrap!important;
 }
+
+/* ===== v3.29.0 confusable-word links ===== */
+.confusableSection{max-width:560px;margin:16px auto 10px;padding:13px 14px;border:1px solid #ece8e2;border-radius:14px;background:#fcfbf8;text-align:left}.confusableHead{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:700;color:#555}.confusableManageBtn{border:0;background:transparent;padding:4px 0;color:#777;font:inherit;font-weight:500;cursor:pointer}.confusableManageBtn:hover{text-decoration:underline}.confusableList{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.confusableChip{display:inline-flex;align-items:center;gap:5px;padding:6px 9px 6px 6px;border-radius:999px;background:#f1eee8}.confusableChip a{color:#444;text-decoration:none;font-weight:650}.confusableChip a:hover{text-decoration:underline}.confusableSpeak{border:0;background:transparent;padding:0 2px;cursor:pointer;font-size:16px}.confusableEmpty{margin-top:8px;font-size:12px;color:#999}.confusableManager{margin-top:12px;padding-top:10px;border-top:1px solid #e8e3dc}.confusableCount{font-size:11px;color:#999;margin-bottom:5px}.confusableManageRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #eee9e2}.confusableManageRow>span{font-weight:650;word-break:break-word}.confusableManageRow>div{display:flex;gap:6px}.confusableRemove{color:#9a6666}.confusableAddRow{display:flex;gap:8px;margin-top:10px}.confusableAddRow .lookupInput{padding:8px 10px;font-size:14px}.confusableAddRow .miniBtn{flex:0 0 auto}.confusableMessage{font-size:12px;color:#8b735e;margin-top:8px;line-height:1.5}.lookupDetail .confusableSection{max-width:520px}
+@media(max-width:500px){.confusableSection{margin-top:13px;padding:12px}.confusableHead{align-items:baseline}.confusableAddRow{gap:6px}.confusableManageRow{align-items:flex-start}.confusableManageRow>div{flex:0 0 auto}}

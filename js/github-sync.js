@@ -165,6 +165,7 @@ async function syncDownload(forceDownload=false){
     state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
     state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {};
     state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
+    state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {};
     state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
     state.queue = Array.isArray(state.queue) ? state.queue : [];
     state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null;

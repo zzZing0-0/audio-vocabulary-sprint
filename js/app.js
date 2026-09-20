@@ -37,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.28.6",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.29.0",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -122,6 +122,66 @@ function speakText(text){
   speechSynthesis.speak(u);
 }
 function speakCurrent(){ if(state.current) speakText(state.current); }
+function linkedWordsHtml(word){
+  const linked=getLinkedWords(word);
+  const chips=linked.map(w=>
+    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'">'+escapeHtml(w)+'</a></span>'
+  ).join('');
+  return '<section class="confusableSection"><div class="confusableHead"><span>易混词</span><button class="confusableManageBtn" id="manageConfusables" type="button">管理易混词</button></div>'+
+    (chips?'<div class="confusableList">'+chips+'</div>':'<div class="confusableEmpty">还没有链接易混词</div>')+
+    '<div class="confusableManager" id="confusableManager" hidden></div></section>';
+}
+function bindConfusableControls(){
+  document.querySelectorAll('[data-confusable-speak]').forEach(btn=>btn.onclick=()=>speakText(btn.dataset.confusableSpeak));
+  const manage=document.getElementById('manageConfusables');
+  if(manage)manage.onclick=()=>{
+    const box=document.getElementById('confusableManager');
+    box.hidden=!box.hidden;
+    if(!box.hidden)renderConfusableManager();
+  };
+}
+function renderConfusableManager(message=''){
+  const box=document.getElementById('confusableManager');
+  if(!box||!state.current)return;
+  const linked=getLinkedWords(state.current);
+  box.innerHTML='<div class="confusableCount">'+linked.length+' / 3</div>'+
+    linked.map(w=>'<div class="confusableManageRow"><span>'+escapeHtml(w)+'</span><div><button class="miniBtn" type="button" data-manage-speak="'+escapeHtml(w)+'">🔊</button><button class="miniBtn confusableRemove" type="button" data-unlink="'+escapeHtml(w)+'">移除</button></div></div>').join('')+
+    '<div class="confusableAddRow"><input id="confusableInput" class="lookupInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入易混词或词组"><button class="miniBtn" id="confusableAdd" type="button"'+(linked.length>=3?' disabled':'')+'>添加</button></div>'+
+    (linked.length>=3?'<div class="confusableMessage">已达到 3 个上限，可先移除一个再添加。</div>':'')+
+    (message?'<div class="confusableMessage">'+escapeHtml(message)+'</div>':'');
+  box.querySelectorAll('[data-manage-speak]').forEach(btn=>btn.onclick=()=>speakText(btn.dataset.manageSpeak));
+  box.querySelectorAll('[data-unlink]').forEach(btn=>btn.onclick=()=>{unlinkWords(state.current,btn.dataset.unlink);save();refreshConfusableSection(true);});
+  const add=document.getElementById('confusableAdd'),input=document.getElementById('confusableInput');
+  if(add)add.onclick=()=>addConfusable(input.value);
+  if(input)input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addConfusable(input.value);}};
+}
+function refreshConfusableSection(keepManager=false){
+  const old=document.querySelector('.confusableSection');
+  if(!old||!state.current)return;
+  const wrap=document.createElement('div');wrap.innerHTML=linkedWordsHtml(state.current);
+  old.replaceWith(wrap.firstElementChild);bindConfusableControls();
+  if(keepManager){const box=document.getElementById('confusableManager');box.hidden=false;renderConfusableManager();}
+}
+function validConfusableNew(q){return q&&!/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(q)&&!new Set(['a','an','the']).has(q.toLowerCase());}
+function addConfusable(raw){
+  const q=String(raw||'').trim();if(!q)return;
+  if(q.toLowerCase()===state.current.toLowerCase()){renderConfusableManager('不能把单词和自己链接。');return;}
+  let target=findWordCaseInsensitive(q,true);
+  if(target&&isRemovedWord(target)){renderConfusableManager(target+' 当前已移除，请先在「已移除」页面恢复后再链接。');return;}
+  if(!target){
+    if(!validConfusableNew(q)){renderConfusableManager('请输入有效的英文单词或词组。');return;}
+    state.customWords.push(q);target=q;
+  }
+  const result=linkWords(state.current,target);
+  if(!result.ok){
+    if(result.reason==='source-full')renderConfusableManager('当前词已经达到 3 个易混词上限。');
+    else if(result.reason==='target-full')renderConfusableManager(target+' 已经链接了 3 个易混词，请先在它的 Lookup 页面移除一个。');
+    else renderConfusableManager('无法建立链接。');
+    return;
+  }
+  save();refreshConfusableSection(true);
+}
+
 function reveal(debtOverride=null, firstOverride=null){
   if(!state.current)return;
   revealed=true;
@@ -147,10 +207,13 @@ function reveal(debtOverride=null, firstOverride=null){
       '<a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(state.current)+'" target="vocabLookup" style="color:#666;text-decoration:none">🎬 PlayPhrase 影视</a>'+
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
+    linkedWordsHtml(state.current)+
     '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
       '<summary>笔记</summary>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
     '</details>';
+
+  bindConfusableControls();
 
   try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
 }
@@ -429,7 +492,7 @@ function resetProgress(){
    "将重置进度学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
    ()=>{
      localStorage.removeItem(KEY);
-     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
+     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},linkedWords:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
      shuffle(state.queue);
      localStorage.setItem("audio_vocab_sprint_just_reset","1");
      save();
@@ -501,6 +564,7 @@ async function importProgress(file){
       customWords: Array.isArray(incoming.customWords) ? incoming.customWords : [],
       customPronunciations: (incoming.customPronunciations && typeof incoming.customPronunciations === "object" && !Array.isArray(incoming.customPronunciations)) ? incoming.customPronunciations : {},
       notes: (incoming.notes && typeof incoming.notes === "object") ? incoming.notes : {},
+      linkedWords: (incoming.linkedWords && typeof incoming.linkedWords === "object" && !Array.isArray(incoming.linkedWords)) ? incoming.linkedWords : {},
       removedWords: (incoming.removedWords && typeof incoming.removedWords === "object" && !Array.isArray(incoming.removedWords)) ? incoming.removedWords : {},
       current: incoming.current || null,
       queue: Array.isArray(incoming.queue) ? incoming.queue : [],
