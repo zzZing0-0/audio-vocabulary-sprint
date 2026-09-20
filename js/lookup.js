@@ -6,7 +6,7 @@ function findKey(obj,k){return Object.keys(obj||{}).find(x=>x.toLowerCase()===k)
 function canonicalWord(q){const k=q.toLowerCase();return allWords().find(w=>w.toLowerCase()===k)||null;}
 function removedWord(q){const k=q.toLowerCase();return Object.keys(state.removedWords||{}).find(w=>w.toLowerCase()===k)||null;}
 function pronunciationHtml(w){const k=w.toLowerCase(),p=(state.customPronunciations&&state.customPronunciations[k])||lookupPronunciations[k];if(!p)return "";const a=[];if(p.uk)a.push('<span class="ipaChip ipaUk" title="UK" dir="ltr" lang="en">'+esc(p.uk)+'</span>');if(p.us)a.push('<span class="ipaChip ipaUs" title="US" dir="ltr" lang="en">'+esc(p.us)+'</span>');if(!a.length&&p.fallback)a.push('<span class="ipaChip ipaGeneric" title="IPA" dir="ltr" lang="en">'+esc(p.fallback)+'</span>');return a.length?'<div class="ipaLine">'+a.join('')+'</div>':"";}
-async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.28.5",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
+async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.28.6",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
 function preferredVoices(){const all=speechSynthesis.getVoices(),en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;const p=en.filter(v=>!novelty.test(v.name||""));return p.length>=2?p:(en.length?en:all);}
 function refreshVoices(){lookupVoices=preferredVoices();}
 speechSynthesis.onvoiceschanged=refreshVoices;refreshVoices();
@@ -18,5 +18,6 @@ function renderFound(w){const s=statusFor(w),nk=findKey(state.notes,w.toLowerCas
 function validNew(q){return q&& !/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/.test(q) && !new Set(["a","an","the"]).has(q.toLowerCase());}
 function renderMissing(q){const rem=removedWord(q);if(rem){$("lookupResult").innerHTML='<div class="lookupMissing"><b>'+esc(rem)+'</b><p>当前已从学习词库移除，学习历史和笔记仍保留。</p><button class="action" id="restoreLookup">恢复到词库</button></div>';$("restoreLookup").onclick=()=>{delete state.removedWords[rem];save();runLookup(rem);};return;}const ok=validNew(q);$("lookupResult").innerHTML='<div class="lookupMissing"><b>'+esc(q)+'</b><p>'+(ok?'不在当前词库中。':'不是可添加的英文词条。')+'</p>'+(ok?'<button class="action" id="addLookup">添加到词库</button>':'')+'</div>';if(ok)$("addLookup").onclick=()=>{state.customWords.push(q);save();runLookup(q);};}
 function runLookup(raw){const q=String(raw||"").trim();if(!q)return;$("lookupInput").value=q;const w=canonicalWord(q);if(w)renderFound(w);else renderMissing(q);history.replaceState(null,"","lookup.html?word="+encodeURIComponent(q));}
+$("lookupSubmit").onclick=()=>runLookup($("lookupInput").value);
 $("lookupForm").onsubmit=e=>{e.preventDefault();runLookup($("lookupInput").value);};
 loadPron();

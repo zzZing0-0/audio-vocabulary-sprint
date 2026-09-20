@@ -8,10 +8,11 @@ function renderNotesPagination(totalPages){
   const el=document.getElementById("pagination");if(!el)return;
   if(totalPages<=1){el.innerHTML="";return;}
   const page=notesPage;
-  el.innerHTML='<button class="miniBtn pageFirst" '+(page<=1?'disabled':'')+'>« 首页</button><button class="miniBtn pagePrev" '+(page<=1?'disabled':'')+'>‹ 上一页</button><span class="pageInfo">'+page+' / '+totalPages+'</span><form class="pageJump"><input class="pageJumpInput" type="number" inputmode="numeric" min="1" max="'+totalPages+'" value="'+page+'" aria-label="页码"><button class="miniBtn" type="submit" aria-label="跳转">跳转</button></form><button class="miniBtn pageNext" '+(page>=totalPages?'disabled':'')+'>下一页 ›</button><button class="miniBtn pageLast" '+(page>=totalPages?'disabled':'')+'>尾页 »</button>';
+  el.innerHTML='<button class="miniBtn pageFirst" '+(page<=1?'disabled':'')+'>« 首页</button><button class="miniBtn pagePrev" '+(page<=1?'disabled':'')+'>‹ 上一页</button><span class="pageInfo">'+page+' / '+totalPages+'</span><div class="pageJump"><input class="pageJumpInput" type="number" inputmode="numeric" min="1" max="'+totalPages+'" value="'+page+'" aria-label="页码"><button class="miniBtn pageGo" type="button">跳转</button></div><button class="miniBtn pageNext" '+(page>=totalPages?'disabled':'')+'>下一页 ›</button><button class="miniBtn pageLast" '+(page>=totalPages?'disabled':'')+'>尾页 »</button>';
   const go=n=>{notesPage=Math.min(Math.max(1,n),totalPages);renderNotes();window.scrollTo({top:0,behavior:"smooth"});};
   el.querySelector('.pageFirst').onclick=()=>go(1);el.querySelector('.pagePrev').onclick=()=>go(page-1);el.querySelector('.pageNext').onclick=()=>go(page+1);el.querySelector('.pageLast').onclick=()=>go(totalPages);
-  el.querySelector('.pageJump').onsubmit=e=>{e.preventDefault();const n=parseInt(el.querySelector('.pageJumpInput').value,10);if(Number.isFinite(n))go(n);};
+  el.querySelector('.pageGo').onclick=()=>{const n=parseInt(el.querySelector('.pageJumpInput').value,10);if(Number.isFinite(n))go(n);};
+  el.querySelector('.pageJumpInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.querySelector('.pageGo').click();}};
 }
 function renderNotes(){
   const rows=Object.entries(state.notes||{}).filter(([w,n])=>String(n||"").trim()).sort((a,b)=>{const ar=isRemovedWord(a[0])?1:0,br=isRemovedWord(b[0])?1:0;return ar-br||a[0].localeCompare(b[0]);});
