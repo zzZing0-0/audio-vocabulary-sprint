@@ -6,14 +6,27 @@ function findKey(obj,k){return Object.keys(obj||{}).find(x=>x.toLowerCase()===k)
 function canonicalWord(q){const k=q.toLowerCase();return allWords().find(w=>w.toLowerCase()===k)||null;}
 function removedWord(q){const k=q.toLowerCase();return Object.keys(state.removedWords||{}).find(w=>w.toLowerCase()===k)||null;}
 function pronunciationHtml(w){const k=w.toLowerCase(),p=(state.customPronunciations&&state.customPronunciations[k])||lookupPronunciations[k];if(!p)return "";const a=[];if(p.uk)a.push('<span class="ipaChip ipaUk" title="UK" dir="ltr" lang="en">'+esc(p.uk)+'</span>');if(p.us)a.push('<span class="ipaChip ipaUs" title="US" dir="ltr" lang="en">'+esc(p.us)+'</span>');if(!a.length&&p.fallback)a.push('<span class="ipaChip ipaGeneric" title="IPA" dir="ltr" lang="en">'+esc(p.fallback)+'</span>');return a.length?'<div class="ipaLine">'+a.join('')+'</div>':"";}
-async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.29.1",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
+async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.29.2",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
 function preferredVoices(){const all=speechSynthesis.getVoices(),en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;const p=en.filter(v=>!novelty.test(v.name||""));return p.length>=2?p:(en.length?en:all);}
 function refreshVoices(){lookupVoices=preferredVoices();updateLookupVoiceInfo();}
 speechSynthesis.onvoiceschanged=refreshVoices;refreshVoices();
 function lookupSelectedVoice(){if(!lookupVoices.length)return null;return lookupVoices[(Number(state.voiceIndex)||0)%lookupVoices.length];}
 function updateLookupVoiceInfo(){const el=$("lookupVoiceInfo");if(!el)return;const v=lookupSelectedVoice();el.textContent=v?"Voice: "+v.name:"";}
 function speak(w){try{if("audioSession" in navigator&&navigator.audioSession)navigator.audioSession.type="playback";}catch(e){} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang="en-US";u.rate=.86;const v=lookupSelectedVoice();if(v)u.voice=v;speechSynthesis.speak(u);}
-function changeLookupVoice(step,w){if(!lookupVoices.length)return;const n=lookupVoices.length;state.voiceIndex=((Number(state.voiceIndex)||0)+step+n)%n;save();updateLookupVoiceInfo();speak(w);}
+function changeLookupVoice(step,w){
+  // Re-read the browser voice pool at the moment of interaction. Safari/iOS can
+  // populate speechSynthesis voices after the page has already rendered.
+  const latest=preferredVoices();
+  if(latest.length) lookupVoices=latest;
+  if(!lookupVoices.length)return;
+  const n=lookupVoices.length;
+  state.voiceIndex=((Number(state.voiceIndex)||0)+step+n)%n;
+  save();
+  updateLookupVoiceInfo();
+  // Arrow taps are a listening action: immediately audition the main lookup word
+  // with the newly selected voice. Linked-word speakers use the same voiceIndex.
+  requestAnimationFrame(()=>speak(w));
+}
 function statusFor(w){const mk=findKey(state.mastered,w.toLowerCase()),dk=findKey(state.debts,w.toLowerCase());if(mk)return {label:"已掌握",debt:0,peak:Number(state.highestDebt[mk]||0)};if(dk&&Number(state.debts[dk])>0)return {label:"学习中",debt:Number(state.debts[dk]),peak:Number(state.highestDebt[dk]||state.debts[dk])};return {label:"未学习",debt:1,peak:Number(state.highestDebt[w]||0)};}
 function sourceFor(w){return (state.customWords||[]).some(x=>String(x).toLowerCase()===w.toLowerCase())?"自定义词库":"内置词库";}
 function links(w){const yd=matchMedia&&matchMedia("(max-width:700px)").matches?"https://m.youdao.com/dict?le=eng&q="+encodeURIComponent(w):"https://dict.youdao.com/w/eng/"+encodeURIComponent(w);return '<div class="note lookupLinks"><a href="https://www.oxfordlearnersdictionaries.com/definition/english/'+encodeURIComponent(w.toLowerCase().replace(/\s+/g,"-"))+'" target="vocabLookup">📖 Oxford 英英</a><a href="'+yd+'" target="vocabLookup">📘 有道英中</a><a href="https://youglish.com/pronounce/'+encodeURIComponent(w)+'/english" target="vocabLookup">🎧 YouGlish 语境</a><a href="https://www.playphrase.me/#/search?q='+encodeURIComponent(w)+'" target="vocabLookup">🎬 PlayPhrase 影视</a><a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(w)+'&typeofrhyme=sim" target="vocabLookup">🔎 RhymeZone 近音</a></div>';}
