@@ -1,1 +1,18 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="css/style.css?v=3.28.4"><title>查看笔记 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>查看笔记</h1><div class="sub">汇总所有非空笔记，可统一编辑</div></div><a class="backLink" href="index.html">← 返回背词</a></div><section class="listCard"><div class="listSummary">共 <b id="count">0</b> 个有笔记的词条。</div><div id="notesRoot"></div><div id="pagination" class="pagination" aria-label="分页"></div></section></main><script src="data/vocabulary.js?v=3.28.4"></script><script src="js/storage.js?v=3.28.4"></script><script src="js/notes.js?v=3.28.4"></script></body></html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="app-build" content="3.28.5"><link rel="stylesheet" href="css/style.css?v=3.28.5"><title>查看笔记 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>查看笔记</h1><div class="sub">汇总所有非空笔记，可统一编辑</div></div><a class="backLink" href="index.html?v=3.28.5">← 返回背词</a></div><section class="listCard"><div class="listSummary">共 <b id="count">0</b> 个有笔记的词条。</div><div id="notesRoot"></div><div id="pagination" class="pagination" aria-label="分页"></div></section></main><script src="data/vocabulary.js?v=3.28.5"></script><script src="js/storage.js?v=3.28.5"></script><script src="js/notes.js?v=3.28.5"></script><script>
+(()=>{
+  const CURRENT_BUILD="3.28.5";
+  async function fresh(){
+    try{
+      const r=await fetch("index.html?buildcheck="+Date.now(),{cache:"no-store"});
+      const h=await r.text();
+      const m=h.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i);
+      if(m&&m[1]&&m[1]!==CURRENT_BUILD){
+        const u=new URL(location.href);u.searchParams.set("v",m[1]);u.searchParams.set("_reload",Date.now());
+        location.replace(u.toString());
+      }
+    }catch(_){}
+  }
+  addEventListener("pageshow",fresh);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")fresh();});
+})();
+</script></body></html>

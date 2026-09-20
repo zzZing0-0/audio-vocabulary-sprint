@@ -1,1 +1,18 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="css/style.css?v=3.28.4"><title>已掌握 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>✓ 已掌握</h1><div class="sub">按历史最高 peak 排列</div></div><a class="backLink" href="index.html">← 返回背词</a></div><section class="listCard"><div class="listSummary">共 <b id="count">0</b> 个。这里才会渲染完整列表，主背词页不再生成它。</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="miniBtn" onclick="reAddTop(10)">重刷 Top 10</button><button class="miniBtn" onclick="reAddTop(50)">重刷 Top 50</button></div><div id="listRoot"></div><div id="pagination" class="pagination" aria-label="分页"></div></section></main><script src="js/list-pages.js?v=3.28.4"></script><script>renderMastered();</script></body></html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="app-build" content="3.28.5"><link rel="stylesheet" href="css/style.css?v=3.28.5"><title>已掌握 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>✓ 已掌握</h1><div class="sub">按历史最高 peak 排列</div></div><a class="backLink" href="index.html?v=3.28.5">← 返回背词</a></div><section class="listCard"><div class="listSummary">共 <b id="count">0</b> 个。这里才会渲染完整列表，主背词页不再生成它。</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="miniBtn" onclick="reAddTop(10)">重刷 Top 10</button><button class="miniBtn" onclick="reAddTop(50)">重刷 Top 50</button></div><div id="listRoot"></div><div id="pagination" class="pagination" aria-label="分页"></div></section></main><script src="js/list-pages.js?v=3.28.5"></script><script>renderMastered();</script><script>
+(()=>{
+  const CURRENT_BUILD="3.28.5";
+  async function fresh(){
+    try{
+      const r=await fetch("index.html?buildcheck="+Date.now(),{cache:"no-store"});
+      const h=await r.text();
+      const m=h.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i);
+      if(m&&m[1]&&m[1]!==CURRENT_BUILD){
+        const u=new URL(location.href);u.searchParams.set("v",m[1]);u.searchParams.set("_reload",Date.now());
+        location.replace(u.toString());
+      }
+    }catch(_){}
+  }
+  addEventListener("pageshow",fresh);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")fresh();});
+})();
+</script></body></html>

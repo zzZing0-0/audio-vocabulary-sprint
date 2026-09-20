@@ -1,1 +1,18 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="css/style.css?v=3.28.4"><title>查询词条 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>查询词条</h1><div class="sub">查询、定向学习或直接加入单个词条</div></div><a class="backLink" href="index.html">← 返回背词</a></div><section class="listCard lookupCard"><form id="lookupForm" class="lookupSearch"><input id="lookupInput" class="lookupInput" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入单词或词组"><button class="miniBtn lookupSearchBtn" type="submit" aria-label="查询"><span class="lookupSearchText">查询</span></button></form><div id="lookupResult" class="lookupResult"><div class="lookupEmpty">输入一个单词或词组查询。</div></div></section></main><script src="data/vocabulary.js?v=3.28.4"></script><script src="js/storage.js?v=3.28.4"></script><script src="js/lookup.js?v=3.28.4"></script></body></html>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="app-build" content="3.28.5"><link rel="stylesheet" href="css/style.css?v=3.28.5"><title>查询词条 · Audio Vocabulary Sprint</title></head><body><main class="listPage"><div class="listPageHead"><div><h1>查询词条</h1><div class="sub">查询、定向学习或直接加入单个词条</div></div><a class="backLink" href="index.html?v=3.28.5">← 返回背词</a></div><section class="listCard lookupCard"><form id="lookupForm" class="lookupSearch"><input id="lookupInput" class="lookupInput" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="输入单词或词组"><button class="miniBtn lookupSearchBtn" type="submit" aria-label="查询">查询</button></form><div id="lookupResult" class="lookupResult"><div class="lookupEmpty">输入一个单词或词组查询。</div></div></section></main><script src="data/vocabulary.js?v=3.28.5"></script><script src="js/storage.js?v=3.28.5"></script><script src="js/lookup.js?v=3.28.5"></script><script>
+(()=>{
+  const CURRENT_BUILD="3.28.5";
+  async function fresh(){
+    try{
+      const r=await fetch("index.html?buildcheck="+Date.now(),{cache:"no-store"});
+      const h=await r.text();
+      const m=h.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i);
+      if(m&&m[1]&&m[1]!==CURRENT_BUILD){
+        const u=new URL(location.href);u.searchParams.set("v",m[1]);u.searchParams.set("_reload",Date.now());
+        location.replace(u.toString());
+      }
+    }catch(_){}
+  }
+  addEventListener("pageshow",fresh);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")fresh();});
+})();
+</script></body></html>
