@@ -1,4 +1,10 @@
-# Audio Vocabulary Sprint v3.31.3
+# Audio Vocabulary Sprint v3.31.4
+
+## v3.31.4 emergency sync safety patch
+- Startup auto-sync disabled: opening the app never writes to GitHub.
+- Added explicit read-only “restore GitHub to local” recovery action with double confirmation.
+- Added rolling local pre-sync snapshots (latest 10) while retaining the legacy single backup.
+
 
 
 ## v3.31.3

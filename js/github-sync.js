@@ -1,9 +1,9 @@
-// ===== GitHub Sync v4: startup sync + explicit learning-state conflict resolution =====
+// ===== GitHub Sync v5: manual write sync + rolling snapshots + explicit recovery =====
 const SYNC = {
   owner:"zzZing0-0", repo:"audio-vocabulary-sprint-data", path:"progress.json", branch:"main",
   tokenKey:"audio_vocab_sprint_github_token", backupKey:"audio_vocab_sprint_universal_v3_backup",
   baseKey:"audio_vocab_sprint_sync_base_v1", lastSyncAtKey:"audio_vocab_sprint_last_sync_at", lastSyncActionKey:"audio_vocab_sprint_last_sync_action",
-  pendingKey:"audio_vocab_sprint_pending_conflicts_v1"
+  pendingKey:"audio_vocab_sprint_pending_conflicts_v1", snapshotsKey:"audio_vocab_sprint_sync_snapshots_v1"
 };
 function updateLastSyncInfo(){const el=document.getElementById("lastSyncInfo");if(!el)return;const iso=localStorage.getItem(SYNC.lastSyncAtKey);el.textContent=iso?"上次同步："+new Date(iso).toLocaleString():"上次同步：尚未同步";}
 function markSyncSuccess(){localStorage.setItem(SYNC.lastSyncAtKey,new Date().toISOString());localStorage.setItem(SYNC.lastSyncActionKey,"merge");updateLastSyncInfo();}
@@ -17,6 +17,16 @@ function clone(v){return v===undefined?undefined:JSON.parse(JSON.stringify(v));}
 function same(a,b){return JSON.stringify(a)===JSON.stringify(b);}
 async function githubGetProgress(){const r=await fetch(syncApiUrl(),{headers:syncHeaders(),cache:"no-store"});if(r.status===404)return null;if(!r.ok){let detail="";try{detail=(await r.json()).message||"";}catch(_){}throw new Error(`GitHub ${r.status}${detail?": "+detail:""}`);}return await r.json();}
 function cloudState(file){if(!file||!file.content)return null;const payload=JSON.parse(base64ToUtf8(file.content));return payload.state||payload;}
+
+function saveSyncSnapshot(label,stateValue){
+  try{
+    const raw=localStorage.getItem(SYNC.snapshotsKey);
+    const arr=raw?JSON.parse(raw):[];
+    const next=Array.isArray(arr)?arr:[];
+    next.unshift({savedAt:new Date().toISOString(),label:label||"sync",state:clone(stateValue)});
+    localStorage.setItem(SYNC.snapshotsKey,JSON.stringify(next.slice(0,10)));
+  }catch(e){console.warn("Could not save sync snapshot",e);}
+}
 function readBase(){try{return JSON.parse(localStorage.getItem(SYNC.baseKey)||"null");}catch(_){return null;}}
 function setBase(s){localStorage.setItem(SYNC.baseKey,JSON.stringify(s));}
 function map3(base={},local={},remote={},resolver){const out={};const keys=new Set([...Object.keys(base||{}),...Object.keys(local||{}),...Object.keys(remote||{})]);for(const k of keys){const b=base?.[k],l=local?.[k],r=remote?.[k];let v;if(same(l,r))v=l;else if(same(l,b))v=r;else if(same(r,b))v=l;else v=resolver?resolver(k,b,l,r):l;if(v!==undefined)out[k]=clone(v);}return out;}
@@ -78,11 +88,29 @@ async function syncNow(retry=0,opts={}){
     if(!base)base=clone(remote||{});
     const result=mergeStates(base,local,remote),merged=result.merged,conflicts=result.conflicts,mergedCount=countMergedChanges(local,merged);
     localStorage.setItem(SYNC.backupKey,JSON.stringify({backedUpAt:new Date().toISOString(),state:local}));
+    saveSyncSnapshot("before-manual-sync",local);
     if(conflicts.length){const pkg={createdAt:new Date().toISOString(),sha:existing?.sha||null,merged,conflicts,mergedCount};localStorage.setItem(SYNC.pendingKey,JSON.stringify(pkg));setSyncStatus(`已检查 · 自动合并 ${mergedCount} 项 · ${conflicts.length} 项需要确认`);renderConflicts(pkg);if(opts.openPanel||opts.startup)syncOverlay.style.display="flex";showTransientToast(`⚠ 同步发现 ${conflicts.length} 项冲突，请确认`);return {ok:false,conflicts:conflicts.length};}
     clearConflictUI();localStorage.removeItem(SYNC.pendingKey);
     try{await putMerged(merged,existing);}catch(e){if((e.status===409||e.status===422)&&retry<1){setSyncStatus("云端刚有新变化，正在重新合并…");return syncNow(retry+1,opts);}throw e;}
     state=normalizeState(merged);ensureLinkedWordsInVocabulary();for(const [w,d] of Object.entries(state.debts))state.highestDebt[w]=Math.max(state.highestDebt[w]||0,Number(d)||0);save();setBase(state);localStorage.removeItem("audio_vocab_sprint_just_reset");markSyncSuccess();setSyncStatus(`同步成功 · 已合并 ${mergedCount} 项更新 · ${new Date().toLocaleString()}`);showTransientToast(mergedCount?`✓ 同步成功 · 已合并 ${mergedCount} 项更新`:"✓ 同步成功 · 无新变化");return {ok:true,mergedCount};
   }catch(e){console.error(e);setSyncStatus("同步失败 · "+e.message);showTransientToast("⚠ 自动同步失败 · 当前继续使用本地数据");return {ok:false,error:e};}
+}
+
+async function restoreCloudToLocal(){
+  if(!getSyncToken()){showTransientToast("请先保存 GitHub Token");return;}
+  const btn=document.getElementById("syncRestoreCloud");
+  if(btn && btn.dataset.confirm!=="yes"){btn.dataset.confirm="yes";btn.textContent="再次点击确认：用 GitHub 覆盖本机";setTimeout(()=>{if(btn){btn.dataset.confirm="";btn.textContent="↓ 用 GitHub 数据恢复本机";}},5000);return;}
+  try{
+    setSyncStatus("正在只读获取 GitHub 数据…");
+    const file=await githubGetProgress(), remote=cloudState(file);
+    if(!remote)throw new Error("GitHub progress.json 为空");
+    saveSyncSnapshot("before-cloud-restore",state);
+    state=normalizeState(clone(remote));ensureLinkedWordsInVocabulary();save();setBase(state);
+    localStorage.removeItem(SYNC.pendingKey);clearConflictUI();updateStats();showWord();
+    setSyncStatus("已用 GitHub 数据恢复本机；此操作没有向 GitHub 写入任何内容。");
+    showTransientToast("✓ 已从 GitHub 恢复到本机");
+  }catch(e){console.error(e);setSyncStatus("恢复失败 · "+e.message);showTransientToast("恢复失败："+e.message);}
+  finally{if(btn){btn.dataset.confirm="";btn.textContent="↓ 用 GitHub 数据恢复本机";}}
 }
 
 function restorePreSyncBackup(){
@@ -105,7 +133,8 @@ const syncBtn=document.getElementById("syncBtn"),syncOverlay=document.getElement
 const syncClose=document.getElementById("syncClose"),syncNowBtn=document.getElementById("syncNow");if(syncClose)syncClose.onclick=()=>syncOverlay.style.display="none";if(syncNowBtn)syncNowBtn.onclick=()=>syncNow(0,{openPanel:true});
 document.getElementById("syncSaveToken").onclick=()=>{const v=document.getElementById("syncTokenInput").value.trim();if(!v){showTransientToast("请先粘贴 Token");return;}localStorage.setItem(SYNC.tokenKey,v);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已保存到此浏览器。");showTransientToast("Token 已保存到此浏览器");};
 const syncRestoreBackup=document.getElementById("syncRestoreBackup");if(syncRestoreBackup)syncRestoreBackup.onclick=restorePreSyncBackup;
+const syncRestoreCloud=document.getElementById("syncRestoreCloud");if(syncRestoreCloud)syncRestoreCloud.onclick=restoreCloudToLocal;
 document.getElementById("syncClearToken").onclick=()=>{localStorage.removeItem(SYNC.tokenKey);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已清除。");showTransientToast("Token 已清除");};
 updateLastSyncInfo();
-// Every entry to the main learning page performs one visible startup sync when a token exists.
-if(getSyncToken())setTimeout(()=>syncNow(0,{startup:true}),180);
+// Safety mode: opening the app never writes to GitHub. Sync is manual only.
+if(getSyncToken())setSyncStatus("自动同步已暂停；打开页面不会写入 GitHub。需要时请手动同步。");
