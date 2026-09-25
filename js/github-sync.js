@@ -106,9 +106,10 @@ async function restoreCloudToLocal(){
     if(!remote)throw new Error("GitHub progress.json 为空");
     saveSyncSnapshot("before-cloud-restore",state);
     state=normalizeState(clone(remote));ensureLinkedWordsInVocabulary();save();setBase(state);
-    localStorage.removeItem(SYNC.pendingKey);clearConflictUI();updateStats();showWord();
-    setSyncStatus("已用 GitHub 数据恢复本机；此操作没有向 GitHub 写入任何内容。");
-    showTransientToast("✓ 已从 GitHub 恢复到本机");
+    localStorage.removeItem(SYNC.pendingKey);clearConflictUI();
+    // State is already persisted by save(). Reload so every module re-reads the restored state cleanly.
+    window.location.reload();
+    return;
   }catch(e){console.error(e);setSyncStatus("恢复失败 · "+e.message);showTransientToast("恢复失败："+e.message);}
   finally{if(btn){btn.dataset.confirm="";btn.textContent="↓ 用 GitHub 数据恢复本机";}}
 }
@@ -124,9 +125,10 @@ function restorePreSyncBackup(){
     // Force the next manual sync to establish a fresh baseline from cloud while preserving restored local progress.
     localStorage.removeItem(SYNC.baseKey);
     localStorage.removeItem(SYNC.pendingKey);
-    clearConflictUI(); updateStats(); showWord();
-    setSyncStatus(`已恢复同步前备份 · ${pack?.backedUpAt?new Date(pack.backedUpAt).toLocaleString():""}。请核对数量后再手动同步。`);
-    showTransientToast("✓ 已恢复同步前本地备份");
+    clearConflictUI();
+    // State is already persisted by save(). Reload instead of calling a private app.js renderer.
+    window.location.reload();
+    return;
   }catch(e){console.error(e);showTransientToast("恢复失败："+e.message);}
 }
 const syncBtn=document.getElementById("syncBtn"),syncOverlay=document.getElementById("syncOverlay");if(syncBtn)syncBtn.onclick=()=>{syncOverlay.style.display="flex";document.getElementById("syncTokenInput").value="";setSyncStatus(getSyncToken()?"Token 已保存。点击同步即可自动合并。":"此设备尚未保存 Token。");updateLastSyncInfo();try{const p=JSON.parse(localStorage.getItem(SYNC.pendingKey)||"null");if(p?.conflicts?.length)renderConflicts(p);}catch(_){}};
