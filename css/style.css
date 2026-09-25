@@ -1404,3 +1404,23 @@ main{padding-top:18px;}
 .yearDay{width:12px;height:12px;border:0;border-radius:3px;padding:0;cursor:pointer;}
 .yearDay.outside{background:transparent!important;cursor:default;}
 @media(max-width:600px){.historyPage{padding:calc(18px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom));}.historyCard{padding:18px 12px;border-radius:20px}.monthGrid,.weekHead{gap:4px}.monthCell{min-height:58px;border-radius:11px;padding:7px}.monthTotal{font-size:17px;margin-top:7px}.dayMetrics{gap:14px}.historyPage .listPageHead{align-items:flex-start;gap:10px}.historyPage h1{font-size:24px}}
+
+
+/* ===== v3.31 history links + unified sync ===== */
+.sync-row-single{grid-template-columns:1fr;}
+.monthLinks{display:block;margin-top:5px;text-align:center;color:#6e8575;font-size:10px;font-weight:650;white-space:nowrap;}
+.yearDay.hasLink{box-shadow:inset 0 0 0 1px rgba(72,105,82,.48);}
+.historyLinks{max-width:620px;margin:18px auto 0;padding-top:16px;border-top:1px solid #eee;text-align:left;}
+.historyLinksHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#555;font-size:13px;}
+.historyLinksHead span{color:#aaa;font-size:11px;}
+.historyLinkList{display:grid;gap:7px;}
+.historyLinkItem{display:flex;align-items:center;gap:8px;background:#f6f6f3;border-radius:11px;padding:9px 10px;}
+.historyLinkItem a{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#4f6957;text-decoration:none;font-size:13px;}
+.historyLinkDelete{border:0;background:transparent;color:#aaa;font-size:20px;line-height:1;cursor:pointer;padding:2px 5px;}
+.historyLinkEmpty,.historyLinkLimit{color:#aaa;font-size:12px;padding:4px 0 8px;}
+.historyLinkForm{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) auto;gap:7px;margin-top:10px;}
+.historyLinkForm input{min-width:0;border:1px solid #ddd;border-radius:10px;background:#fff;padding:9px 10px;font-size:13px;}
+.historyLinkForm button{border:0;border-radius:10px;background:#dcebdd;color:#405a47;padding:8px 14px;font-weight:700;cursor:pointer;}
+.friendLinks{display:flex;justify-content:center;align-items:center;gap:10px;margin:18px 0 0;color:#aaa;font-size:12px;}
+.friendLinks a{color:#6e8575;text-decoration:none;font-weight:650;}
+@media(max-width:600px){.monthLinks{font-size:9px;margin-top:3px}.historyLinkForm{grid-template-columns:1fr}.historyLinkForm button{min-height:40px}.historyLinks{margin-top:14px}.dayDetail{padding:16px 8px}.friendLinks{margin-top:16px}}

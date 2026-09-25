@@ -37,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.30.0",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.31.0",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -492,7 +492,7 @@ function resetProgress(){
    "将重置进度学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
    ()=>{
      localStorage.removeItem(KEY);
-     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},linkedWords:{},removedWords:{},current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
+     state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},linkedWords:{},removedWords:{},dailyStats:{},historyLinks:{},statsStartDate:localDateKey(),current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
      shuffle(state.queue);
      localStorage.setItem("audio_vocab_sprint_just_reset","1");
      save();

@@ -17,6 +17,7 @@ state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" 
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
 state.dailyStats = (state.dailyStats && typeof state.dailyStats === "object" && !Array.isArray(state.dailyStats)) ? state.dailyStats : {}; // v3.30: learning log
+state.historyLinks = (state.historyLinks && typeof state.historyLinks === "object" && !Array.isArray(state.historyLinks)) ? state.historyLinks : {}; // v3.31: up to 3 learning links per day
 state.statsStartDate = (typeof state.statsStartDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(state.statsStartDate)) ? state.statsStartDate : null;
 if(!state.statsStartDate){
   const _statsNow=new Date();

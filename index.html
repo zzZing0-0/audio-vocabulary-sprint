@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="3.30.0">
+<meta name="app-build" content="3.31.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Audio Vocabulary Sprint">
-<link rel="manifest" href="manifest.webmanifest?v=3.30.0">
-<title>Audio Vocabulary Sprint v3.30.0</title>
-<link rel="stylesheet" href="css/style.css?v=3.30.0">
-</head>
+<link rel="manifest" href="manifest.webmanifest?v=3.31.0">
+<title>Audio Vocabulary Sprint v3.31.0</title>
+<link rel="stylesheet" href="css/style.css?v=3.31.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🔊%3C/text%3E%3C/svg%3E"></head>
 <body>
 <main>
 <section class="studyStatus" aria-label="词库学习状态">
@@ -65,11 +65,11 @@
   <span class="footerSep">｜</span>
   <label class="footerLink footerImport" for="importWordsFile">导入新词表<input id="importWordsFile" type="file" accept=".txt,.csv,text/plain,text/csv" style="display:none"></label>
   <span class="footerSep">｜</span>
-  <a class="footerLink" href="lookup.html?v=3.30.0">查询词条</a>
+  <a class="footerLink" href="lookup.html?v=3.31.0">查询词条</a>
   <span class="footerSep">｜</span>
-  <a class="footerLink" href="history.html?v=3.30.0">学习记录</a>
+  <a class="footerLink" href="history.html?v=3.31.0">学习记录</a>
   <span class="footerSep">｜</span>
-  <span class="footerVersion">v3.30.0</span>
+  <span class="footerVersion">v3.31.0</span>
  </div>
 </footer>
 
@@ -88,9 +88,8 @@
     <div class="sync-box">
       <div class="sync-status sync-last" id="lastSyncInfo">上次同步：尚未同步</div>
 
-      <div class="sync-row">
-        <button class="action" id="syncUpload">↑ 上传到 GitHub</button>
-        <button class="action" id="syncDownload">↓ 从 GitHub 下载</button>
+      <div class="sync-row sync-row-single">
+        <button class="action" id="syncNow">↕ 同步 GitHub</button>
       </div>
 
       <div class="sync-status" id="syncStatus">尚未同步</div>
@@ -112,8 +111,8 @@
       </details>
 
       <div class="sub" style="margin-top:16px;line-height:1.55">
-        ↑ 当前设备 → GitHub。<br>
-        ↓ GitHub → 当前设备；下载前自动保存一份本地备份。
+        同步会自动合并本机与 GitHub 的变化；不再需要判断上传或下载方向。<br>
+        同步前仍会自动保存一份本机备份；发生网络并发更新时会重新读取并合并。
       </div>
     </div>
   </div>
@@ -121,7 +120,7 @@
 
 <script>
 (()=>{
-  const CURRENT_BUILD="3.30.0";
+  const CURRENT_BUILD="3.31.0";
   let checking=false;
 
   async function checkForFreshBuild(){
@@ -158,11 +157,11 @@
   });
 })();
 </script>
-<script src="data/vocabulary.js?v=3.30.0"></script>
-<script src="js/storage.js?v=3.30.0"></script>
-<script src="js/scheduler.js?v=3.30.0"></script>
-<script src="js/app.js?v=3.30.0"></script>
-<script src="js/github-sync.js?v=3.30.0"></script>
+<script src="data/vocabulary.js?v=3.31.0"></script>
+<script src="js/storage.js?v=3.31.0"></script>
+<script src="js/scheduler.js?v=3.31.0"></script>
+<script src="js/app.js?v=3.31.0"></script>
+<script src="js/github-sync.js?v=3.31.0"></script>
 
 
 
