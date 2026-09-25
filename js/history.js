@@ -38,7 +38,16 @@ function renderDayDetail(key){
   };
   detail.querySelectorAll('[data-link-delete]').forEach(btn=>btn.onclick=()=>{const arr=linksFor(key);arr.splice(Number(btn.dataset.linkDelete),1);if(arr.length)historyState.historyLinks[key]=arr;else delete historyState.historyLinks[key];saveHistory();rerenderKeepDay();});
 }
-function showDay(key){renderDayDetail(key);}
+function showDay(key){
+  if(selectedDay===key&&!detail.hidden){
+    selectedDay=null;
+    detail.hidden=true;
+    detail.innerHTML="";
+    document.querySelectorAll('[data-day]').forEach(el=>el.classList.remove('selected'));
+    return;
+  }
+  renderDayDetail(key);
+}
 function rerenderKeepDay(){const k=selectedDay;if(view==='month')renderMonth(true);else renderYear(true);if(k)renderDayDetail(k);}
 function navHead(label){return '<div class="historyNav"><button class="historyArrow" id="historyPrev" type="button" aria-label="上一段">‹</button><div class="historyPeriod">'+esc(label)+'</div><button class="historyArrow" id="historyNext" type="button" aria-label="下一段">›</button></div>';}
 function bindNav(prev,next){document.getElementById("historyPrev").onclick=prev;document.getElementById("historyNext").onclick=next;root.querySelectorAll('[data-day]').forEach(el=>el.onclick=()=>showDay(el.dataset.day));}

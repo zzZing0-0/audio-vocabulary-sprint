@@ -1,7 +1,7 @@
-# Audio Vocabulary Sprint v3.31.1
+# Audio Vocabulary Sprint v3.31.2
 
 
-## v3.31.1
+## v3.31.2
 - Fix: linked confusable words are now guaranteed to exist in the actual vocabulary.
 - Older/orphaned `linkedWords` references are repaired into `state.customWords` without changing debt, seen, or mastery state.
 - GitHub upload/download runs the same repair so linked words remain searchable on every device after sync.
@@ -348,7 +348,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Secondary pages now carry build metadata and freshness checks.
 
 
-## v3.31.1
+## v3.31.2
 - 学习记录支持每天最多 3 条链接笔记，月历显示链接数量，日详情可添加/删除。
 - 学习记录页底部加入 Zing Calendar 友情链接。
 - GitHub 同步改为单一“同步”操作，使用设备本地同步基线进行三方合并，减少跨设备覆盖风险。
