@@ -86,7 +86,7 @@ function tokenState(){
 }
 function countTable(local,remote,merged){
   const L=studyCounts(local),R=studyCounts(remote),M=studyCounts(merged);
-  const row=(label,key)=>`<div class="syncCountRow"><b>${label}</b><span>${L[key]}</span><span>${R[key]}</span><span>${M[key]} <small>${escapeHtml(deltaText(L[key],M[key]))}</small></span></div>`;
+  const row=(label,key)=>`<div class="syncCountRow"><b>${label}</b><span>${L[key]}</span><span>${R[key]}</span><span>${M[key]}</span></div>`;
   return `<div class="syncCountTable"><div class="syncCountRow syncCountHead"><b></b><span>本机同步前</span><span>GitHub 当前</span><span>合并后</span></div>${row("已掌握","mastered")}${row("学习中","active")}${row("未学习","unseen")}</div>`;
 }
 function renderPreview(pkg){

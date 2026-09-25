@@ -1,13 +1,13 @@
-# Audio Vocabulary Sprint v3.31.8
+# Audio Vocabulary Sprint v3.31.9
 
-## v3.31.8 emergency sync safety patch
+## v3.31.9 emergency sync safety patch
 - Startup auto-sync disabled: opening the app never writes to GitHub.
 - Added explicit read-only “restore GitHub to local” recovery action with double confirmation.
 - Added rolling local pre-sync snapshots (latest 10) while retaining the legacy single backup.
 
 
 
-## v3.31.8
+## v3.31.9
 - Fix: linked confusable words are now guaranteed to exist in the actual vocabulary.
 - Older/orphaned `linkedWords` references are repaired into `state.customWords` without changing debt, seen, or mastery state.
 - GitHub upload/download runs the same repair so linked words remain searchable on every device after sync.
@@ -354,14 +354,20 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Secondary pages now carry build metadata and freshness checks.
 
 
-## v3.31.8
+## v3.31.9
 - 学习记录支持每天最多 3 条链接笔记，月历显示链接数量，日详情可添加/删除。
 - 学习记录页底部加入 Zing Calendar 友情链接。
 - GitHub 同步改为单一“同步”操作，使用设备本地同步基线进行三方合并，减少跨设备覆盖风险。
 - 使用喇叭 emoji SVG favicon，替代浏览器默认字母图标。
 
 
-## v3.31.8
+## v3.31.9
 - Adds real PNG app icons / Apple touch icon for home-screen installation.
 - Adds one-click restore of the latest pre-sync local backup.
 - Treats learned→unseen cross-device regressions as conflicts instead of silently accepting them.
+
+
+### v3.31.9
+- Sync preview now shows only absolute counts for Local / GitHub / Merged; removed ambiguous change labels.
+- Mobile learning-history month cells use fixed date/indicator/total rows; link notes are shown as a small dot below the date.
+- Lookup prefix suggestions use a classic vertical search suggestion list, one result per row.

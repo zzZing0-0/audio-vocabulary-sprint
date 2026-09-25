@@ -1429,7 +1429,7 @@ main{padding-top:18px;}
 .syncResultHead{margin-top:14px;padding:12px 13px;border-radius:12px;background:#fff7df;color:#685c38;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}.syncResultHead span{font-size:11px;color:#948765}.syncConflictList{display:grid;gap:10px;margin-top:10px;max-height:46vh;overflow:auto;padding-right:2px}.syncConflictItem{border:1px solid #e7e2d5;border-radius:14px;padding:12px;background:#fff}.syncConflictTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.syncConflictTitle b{font-size:17px}.syncConflictTitle span{font-size:11px;color:#aaa}.syncChoice{display:flex;align-items:center;gap:9px;padding:9px;border-radius:10px;cursor:pointer}.syncChoice:has(input:checked){background:#e8f2ea}.syncChoice input{width:18px;height:18px;flex:0 0 auto}.syncChoice span{display:grid;gap:2px}.syncChoice b{font-size:13px;color:#3f5145}.syncChoice small{font-size:10px;color:#999}.syncResolveAll{width:100%;margin-top:12px}.syncResolveAll:disabled{opacity:.48;cursor:not-allowed}.syncConflictHint{text-align:center;margin-top:8px}@media(max-width:600px){.syncResultHead{align-items:flex-start;flex-direction:column}.syncConflictList{max-height:52vh}.syncChoice{padding:10px 7px}}
 
 
-/* ===== v3.31.8 history toggle + lookup prefix suggestions ===== */
+/* ===== v3.31.9 history toggle + lookup prefix suggestions ===== */
 .lookupSuggestions{margin-top:8px;border:1px solid #e6e4df;border-radius:12px;background:#fff;padding:9px 10px;}
 .lookupSuggestLabel{color:#999;font-size:11px;margin-bottom:7px;}
 .lookupSuggestList{display:flex;gap:6px;flex-wrap:wrap;}
@@ -1437,5 +1437,29 @@ main{padding-top:18px;}
 .lookupSuggestItem:hover{background:#e3eee5;}
 @media(max-width:600px){.lookupSuggestions{padding:8px}.lookupSuggestItem{padding:7px 9px}}
 
-/* ===== v3.31.8 simplified, explicit sync panel ===== */
+/* ===== v3.31.9 simplified, explicit sync panel ===== */
 .sync-token-state{margin:12px 0;padding:11px 13px;border-radius:12px;font-size:14px;font-weight:700}.sync-token-state.is-saved{background:#eaf4ec;color:#47604e}.sync-token-state.is-missing{background:#fff2e7;color:#7b5b42}.syncPreviewCard{margin-top:12px;padding:13px;border:1px solid #e2e4e7;border-radius:14px;background:#fff}.syncPreviewTitle{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}.syncPreviewTitle span{font-size:11px;color:#8b8f95;text-align:right}.syncCountTable{display:grid;gap:0;border:1px solid #eceef0;border-radius:12px;overflow:hidden}.syncCountRow{display:grid;grid-template-columns:1.05fr .95fr .95fr 1.15fr;align-items:center;gap:6px;padding:10px;border-top:1px solid #f0f1f2;font-size:13px}.syncCountRow:first-child{border-top:0}.syncCountHead{background:#f7f8f9;color:#888;font-size:11px}.syncCountRow span{text-align:center}.syncCountRow small{display:block;margin-top:2px;color:#708176}.syncPreviewNote{margin:10px 2px}.syncConfirmBtn{width:100%;margin-top:10px}@media(max-width:600px){.syncCountRow{grid-template-columns:1fr .9fr .9fr 1fr;font-size:12px;padding:9px 6px}.syncCountHead{font-size:10px}.syncPreviewTitle{flex-direction:column}.syncPreviewTitle span{text-align:left}}
+
+
+/* ===== v3.31.9 mobile history alignment + classic lookup suggestions ===== */
+.monthCell{display:grid;grid-template-rows:18px 8px 1fr;align-items:start;justify-items:stretch;}
+.monthDate{grid-row:1;align-self:start;}
+.monthLinkDot{grid-row:2;justify-self:center;align-self:center;width:5px;height:5px;border-radius:50%;background:#6e8575;}
+.monthLinkDot[hidden]{display:block!important;visibility:hidden;}
+.monthTotal{grid-row:3;align-self:center;justify-self:center;margin-top:0;line-height:1;min-height:1em;}
+.lookupSuggestions{margin-top:0;border:1px solid #deddd9;border-top:0;border-radius:0 0 12px 12px;background:#fff;padding:0;overflow:hidden;}
+.lookupSuggestList{display:block;}
+.lookupSuggestItem{width:100%;min-height:44px;border:0;border-bottom:1px solid #ecebe7;border-radius:0;background:#fff;color:var(--text);padding:10px 13px;font:inherit;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left;}
+.lookupSuggestItem:last-child{border-bottom:0;}
+.lookupSuggestIcon{width:18px;flex:0 0 18px;color:#aaa;font-size:18px;line-height:1;text-align:center;}
+.lookupSuggestItem:focus-visible{outline:2px solid #8aa995;outline-offset:-2px;}
+@media(hover:hover) and (pointer:fine){.lookupSuggestItem:hover{background:#f6f6f3;}}
+@media(max-width:600px){
+  .monthGrid,.weekHead{gap:4px;}
+  .monthCell{min-height:64px;padding:6px 5px;grid-template-rows:18px 8px 1fr;}
+  .monthDate{font-size:12px;}
+  .monthTotal{font-size:17px;margin-top:0;}
+  .monthLinkDot{width:5px;height:5px;}
+  .lookupSuggestions{padding:0;}
+  .lookupSuggestItem{padding:10px 12px;font-size:16px;}
+}

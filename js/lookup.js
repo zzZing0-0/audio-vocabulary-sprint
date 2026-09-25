@@ -13,14 +13,14 @@ function renderLookupSuggestions(raw){
   const box=$("lookupSuggestions");if(!box)return;
   const q=String(raw||"").trim(),matches=prefixMatches(q);
   if(!q||!matches.length){box.hidden=true;box.innerHTML="";return;}
-  box.innerHTML='<div class="lookupSuggestLabel">词库中以 “'+esc(q)+'” 开头</div><div class="lookupSuggestList">'+matches.map(w=>'<button type="button" class="lookupSuggestItem" data-suggest="'+esc(w)+'">'+esc(w)+'</button>').join('')+'</div>';
+  box.innerHTML='<div class="lookupSuggestList">'+matches.map(w=>'<button type="button" class="lookupSuggestItem" data-suggest="'+esc(w)+'"><span class="lookupSuggestIcon" aria-hidden="true">⌕</span><span>'+esc(w)+'</span></button>').join('')+'</div>';
   box.hidden=false;
   box.querySelectorAll('[data-suggest]').forEach(b=>b.onclick=()=>{box.hidden=true;runLookup(b.dataset.suggest);});
 }
 
 function removedWord(q){const k=q.toLowerCase();return Object.keys(state.removedWords||{}).find(w=>w.toLowerCase()===k)||null;}
 function pronunciationHtml(w){const k=w.toLowerCase(),p=(state.customPronunciations&&state.customPronunciations[k])||lookupPronunciations[k];if(!p)return "";const a=[];if(p.uk)a.push('<span class="ipaChip ipaUk" title="UK" dir="ltr" lang="en">'+esc(p.uk)+'</span>');if(p.us)a.push('<span class="ipaChip ipaUs" title="US" dir="ltr" lang="en">'+esc(p.us)+'</span>');if(!a.length&&p.fallback)a.push('<span class="ipaChip ipaGeneric" title="IPA" dir="ltr" lang="en">'+esc(p.fallback)+'</span>');return a.length?'<div class="ipaLine">'+a.join('')+'</div>':"";}
-async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.31.8",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
+async function loadPron(){try{const r=await fetch("data/pronunciations.json?v=3.31.9",{cache:"no-cache"});const j=await r.json();lookupPronunciations=j?.words||{};}catch(e){} const q=new URLSearchParams(location.search).get("word");if(q)runLookup(q);}
 function preferredVoices(){const all=speechSynthesis.getVoices(),en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;const p=en.filter(v=>!novelty.test(v.name||""));return p.length>=2?p:(en.length?en:all);}
 function refreshVoices(){lookupVoices=preferredVoices();updateLookupVoiceInfo();}
 speechSynthesis.onvoiceschanged=refreshVoices;refreshVoices();
