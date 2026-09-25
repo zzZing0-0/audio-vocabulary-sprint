@@ -133,7 +133,24 @@ function restorePreSyncBackup(){
 }
 const syncBtn=document.getElementById("syncBtn"),syncOverlay=document.getElementById("syncOverlay");if(syncBtn)syncBtn.onclick=()=>{syncOverlay.style.display="flex";document.getElementById("syncTokenInput").value="";setSyncStatus(getSyncToken()?"Token 已保存。点击同步即可自动合并。":"此设备尚未保存 Token。");updateLastSyncInfo();try{const p=JSON.parse(localStorage.getItem(SYNC.pendingKey)||"null");if(p?.conflicts?.length)renderConflicts(p);}catch(_){}};
 const syncClose=document.getElementById("syncClose"),syncNowBtn=document.getElementById("syncNow");if(syncClose)syncClose.onclick=()=>syncOverlay.style.display="none";if(syncNowBtn)syncNowBtn.onclick=()=>syncNow(0,{openPanel:true});
-document.getElementById("syncSaveToken").onclick=()=>{const v=document.getElementById("syncTokenInput").value.trim();if(!v){showTransientToast("请先粘贴 Token");return;}localStorage.setItem(SYNC.tokenKey,v);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已保存到此浏览器。");showTransientToast("Token 已保存到此浏览器");};
+const syncSaveToken=document.getElementById("syncSaveToken");
+if(syncSaveToken)syncSaveToken.onclick=()=>{
+  const input=document.getElementById("syncTokenInput");
+  const v=(input?.value||"").trim();
+  if(!v){showTransientToast("请先粘贴 Token");return;}
+  try{
+    localStorage.setItem(SYNC.tokenKey,v);
+    const verified=localStorage.getItem(SYNC.tokenKey);
+    if(verified!==v)throw new Error("浏览器未能持久保存 Token");
+    if(input)input.value="";
+    setSyncStatus("Token 已保存到此浏览器。关闭并重新打开同步窗口后仍会保留。");
+    showTransientToast("✓ Token 已保存");
+  }catch(e){
+    console.error("Could not save GitHub token",e);
+    setSyncStatus("Token 保存失败 · "+(e?.name||"")+" "+(e?.message||e));
+    showTransientToast("Token 保存失败："+(e?.message||e));
+  }
+};
 const syncRestoreBackup=document.getElementById("syncRestoreBackup");if(syncRestoreBackup)syncRestoreBackup.onclick=restorePreSyncBackup;
 const syncRestoreCloud=document.getElementById("syncRestoreCloud");if(syncRestoreCloud)syncRestoreCloud.onclick=restoreCloudToLocal;
 document.getElementById("syncClearToken").onclick=()=>{localStorage.removeItem(SYNC.tokenKey);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已清除。");showTransientToast("Token 已清除");};
