@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="app-build" content="3.31.7">
+<meta name="app-build" content="3.31.8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Audio Vocabulary Sprint">
-<link rel="manifest" href="manifest.webmanifest?v=3.31.7">
-<title>Audio Vocabulary Sprint v3.31.7</title>
-<link rel="stylesheet" href="css/style.css?v=3.31.7">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3.31.7">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.31.7"></head>
+<link rel="manifest" href="manifest.webmanifest?v=3.31.8">
+<title>Audio Vocabulary Sprint v3.31.8</title>
+<link rel="stylesheet" href="css/style.css?v=3.31.8">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3.31.8">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3.31.8"></head>
 <body>
 <main>
 <section class="studyStatus" aria-label="词库学习状态">
@@ -66,11 +66,11 @@
   <span class="footerSep">｜</span>
   <label class="footerLink footerImport" for="importWordsFile">导入新词表<input id="importWordsFile" type="file" accept=".txt,.csv,text/plain,text/csv" style="display:none"></label>
   <span class="footerSep">｜</span>
-  <a class="footerLink" href="lookup.html?v=3.31.7">查询词条</a>
+  <a class="footerLink" href="lookup.html?v=3.31.8">查询词条</a>
   <span class="footerSep">｜</span>
-  <a class="footerLink" href="history.html?v=3.31.7">学习记录</a>
+  <a class="footerLink" href="history.html?v=3.31.8">学习记录</a>
   <span class="footerSep">｜</span>
-  <span class="footerVersion">v3.31.7</span>
+  <span class="footerVersion">v3.31.8</span>
  </div>
 </footer>
 
@@ -89,41 +89,34 @@
     <div class="sync-box">
       <div class="sync-status sync-last" id="lastSyncInfo">上次同步：尚未同步</div>
 
+      <div class="sync-token-state" id="syncTokenState">Token 状态：检查中…</div>
+
       <div class="sync-row sync-row-single">
-        <button class="action" id="syncNow">↕ 手动同步 GitHub</button>
+        <button class="action" id="syncNow">检查同步变化</button>
       </div>
 
-      <div class="sync-status" id="syncStatus">自动同步已暂停；打开页面不会写入 GitHub。</div>
+      <div class="sync-status" id="syncStatus">点击“检查同步变化”后，只读取并比较；确认前不会写入 GitHub。</div>
+      <div id="syncPreviewRoot"></div>
 
-      <div class="sync-row sync-row-single" style="margin-top:10px">
-        <button class="small" id="syncRestoreCloud">↓ 用 GitHub 数据恢复本机</button>
-      </div>
-      <div class="sub" style="margin-top:6px">只读取 GitHub 的 progress.json 并覆盖本机；不会向 GitHub 写入。首次点击后需再次确认。</div>
-
-      <div class="sync-row sync-row-single" style="margin-top:10px">
-        <button class="small" id="syncRestoreBackup">恢复本次同步前备份</button>
-      </div>
-      <div class="sub" style="margin-top:6px">如果同步结果异常，可先恢复这台设备最近一次同步前的本地数据。</div>
-
-      <details style="margin-top:16px">
+      <details style="margin-top:16px" id="syncTokenDetails">
         <summary>🔑 Token 设置</summary>
         <div style="margin-top:12px">
           <input id="syncTokenInput" type="password" autocomplete="off"
                  placeholder="粘贴 fine-grained token"
                  style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #d7dbe0;border-radius:12px;font-size:15px;">
           <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="small" id="syncSaveToken">保存 Token</button>
+            <button class="small" id="syncSaveToken">保存 / 更换 Token</button>
             <button class="small" id="syncClearToken">清除 Token</button>
           </div>
-          <div class="sub" style="margin-top:8px">
-            Token 只保存在此浏览器的 localStorage 中，不会写入网页源码或 progress.json。
+          <div class="sub" id="syncTokenHelp" style="margin-top:8px">
+            Token 仅保存在此浏览器的 localStorage。出于安全原因，已保存的 Token 不会回填到输入框。
           </div>
         </div>
       </details>
 
       <div class="sub" style="margin-top:16px;line-height:1.55">
-        同步会自动合并本机与 GitHub 的变化；不再需要判断上传或下载方向。<br>
-        同步前仍会自动保存一份本机备份；发生网络并发更新时会重新读取并合并。
+        同步分两步：先读取 GitHub 并显示“本机同步前 → 合并后”的已掌握 / 学习中 / 未学习数量；你确认后才写入 GitHub。<br>
+        如果同一单词两端发生不兼容变化，会单独列出，由你选择后再确认。
       </div>
     </div>
   </div>
@@ -131,7 +124,7 @@
 
 <script>
 (()=>{
-  const CURRENT_BUILD="3.31.7";
+  const CURRENT_BUILD="3.31.8";
   let checking=false;
 
   async function checkForFreshBuild(){
@@ -168,11 +161,11 @@
   });
 })();
 </script>
-<script src="data/vocabulary.js?v=3.31.7"></script>
-<script src="js/storage.js?v=3.31.7"></script>
-<script src="js/scheduler.js?v=3.31.7"></script>
-<script src="js/app.js?v=3.31.7"></script>
-<script src="js/github-sync.js?v=3.31.7"></script>
+<script src="data/vocabulary.js?v=3.31.8"></script>
+<script src="js/storage.js?v=3.31.8"></script>
+<script src="js/scheduler.js?v=3.31.8"></script>
+<script src="js/app.js?v=3.31.8"></script>
+<script src="js/github-sync.js?v=3.31.8"></script>
 
 
 
