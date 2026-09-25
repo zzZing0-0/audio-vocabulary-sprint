@@ -35,7 +35,7 @@ function mergeStates(base,local,remote){
   // Learning state is a coherent per-word unit. Incompatible edits on both sides are never guessed.
   out.debts={};out.mastered={};out.lastReviewedDate={};
   const learningWords=new Set([...Object.keys(base.debts),...Object.keys(base.mastered),...Object.keys(base.lastReviewedDate),...Object.keys(local.debts),...Object.keys(local.mastered),...Object.keys(local.lastReviewedDate),...Object.keys(remote.debts),...Object.keys(remote.mastered),...Object.keys(remote.lastReviewedDate)]);
-  for(const w of learningWords){const b=learningBundle(base,w),l=learningBundle(local,w),r=learningBundle(remote,w);let chosen;if(same(l,r))chosen=l;else if(same(l,b))chosen=r;else if(same(r,b))chosen=l;else{chosen=l;conflicts.push({word:w,base:b,local:l,remote:r});}applyLearningBundle(out,w,chosen);}
+  for(const w of learningWords){const b=learningBundle(base,w),l=learningBundle(local,w),r=learningBundle(remote,w);let chosen;const learned=x=>!!x.mastered||Number(x.debt)>0||!!x.lastReviewedDate;const suspiciousRegression=learned(b)&&((learned(l)&&!learned(r))||(!learned(l)&&learned(r)));if(same(l,r))chosen=l;else if(suspiciousRegression){chosen=l;conflicts.push({word:w,base:b,local:l,remote:r});}else if(same(l,b))chosen=r;else if(same(r,b))chosen=l;else{chosen=l;conflicts.push({word:w,base:b,local:l,remote:r});}applyLearningBundle(out,w,chosen);}
   out.seen=map3(base.seen,local.seen,remote.seen,boolResolver);
   out.highestDebt=map3(base.highestDebt,local.highestDebt,remote.highestDebt,maxResolver);
   for(const key of ["customPronunciations","notes","removedWords"]){out[key]=map3(base[key],local[key],remote[key]);}
@@ -84,9 +84,27 @@ async function syncNow(retry=0,opts={}){
     state=normalizeState(merged);ensureLinkedWordsInVocabulary();for(const [w,d] of Object.entries(state.debts))state.highestDebt[w]=Math.max(state.highestDebt[w]||0,Number(d)||0);save();setBase(state);localStorage.removeItem("audio_vocab_sprint_just_reset");markSyncSuccess();setSyncStatus(`同步成功 · 已合并 ${mergedCount} 项更新 · ${new Date().toLocaleString()}`);showTransientToast(mergedCount?`✓ 同步成功 · 已合并 ${mergedCount} 项更新`:"✓ 同步成功 · 无新变化");return {ok:true,mergedCount};
   }catch(e){console.error(e);setSyncStatus("同步失败 · "+e.message);showTransientToast("⚠ 自动同步失败 · 当前继续使用本地数据");return {ok:false,error:e};}
 }
+
+function restorePreSyncBackup(){
+  try{
+    const raw=localStorage.getItem(SYNC.backupKey);
+    if(!raw){showTransientToast("没有找到同步前备份");return;}
+    const pack=JSON.parse(raw), restored=normalizeState(clone(pack?.state||pack));
+    if(!restored||typeof restored!=="object")throw new Error("备份格式无效");
+    state=restored; ensureLinkedWordsInVocabulary(); save();
+    // The old common base may be exactly what caused a stale cloud state to be treated as a deletion.
+    // Force the next manual sync to establish a fresh baseline from cloud while preserving restored local progress.
+    localStorage.removeItem(SYNC.baseKey);
+    localStorage.removeItem(SYNC.pendingKey);
+    clearConflictUI(); updateStats(); showWord();
+    setSyncStatus(`已恢复同步前备份 · ${pack?.backedUpAt?new Date(pack.backedUpAt).toLocaleString():""}。请核对数量后再手动同步。`);
+    showTransientToast("✓ 已恢复同步前本地备份");
+  }catch(e){console.error(e);showTransientToast("恢复失败："+e.message);}
+}
 const syncBtn=document.getElementById("syncBtn"),syncOverlay=document.getElementById("syncOverlay");if(syncBtn)syncBtn.onclick=()=>{syncOverlay.style.display="flex";document.getElementById("syncTokenInput").value="";setSyncStatus(getSyncToken()?"Token 已保存。点击同步即可自动合并。":"此设备尚未保存 Token。");updateLastSyncInfo();try{const p=JSON.parse(localStorage.getItem(SYNC.pendingKey)||"null");if(p?.conflicts?.length)renderConflicts(p);}catch(_){}};
 const syncClose=document.getElementById("syncClose"),syncNowBtn=document.getElementById("syncNow");if(syncClose)syncClose.onclick=()=>syncOverlay.style.display="none";if(syncNowBtn)syncNowBtn.onclick=()=>syncNow(0,{openPanel:true});
 document.getElementById("syncSaveToken").onclick=()=>{const v=document.getElementById("syncTokenInput").value.trim();if(!v){showTransientToast("请先粘贴 Token");return;}localStorage.setItem(SYNC.tokenKey,v);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已保存到此浏览器。");showTransientToast("Token 已保存到此浏览器");};
+const syncRestoreBackup=document.getElementById("syncRestoreBackup");if(syncRestoreBackup)syncRestoreBackup.onclick=restorePreSyncBackup;
 document.getElementById("syncClearToken").onclick=()=>{localStorage.removeItem(SYNC.tokenKey);document.getElementById("syncTokenInput").value="";setSyncStatus("Token 已清除。");showTransientToast("Token 已清除");};
 updateLastSyncInfo();
 // Every entry to the main learning page performs one visible startup sync when a token exists.
