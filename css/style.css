@@ -1429,7 +1429,7 @@ main{padding-top:18px;}
 .syncResultHead{margin-top:14px;padding:12px 13px;border-radius:12px;background:#fff7df;color:#685c38;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}.syncResultHead span{font-size:11px;color:#948765}.syncConflictList{display:grid;gap:10px;margin-top:10px;max-height:46vh;overflow:auto;padding-right:2px}.syncConflictItem{border:1px solid #e7e2d5;border-radius:14px;padding:12px;background:#fff}.syncConflictTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.syncConflictTitle b{font-size:17px}.syncConflictTitle span{font-size:11px;color:#aaa}.syncChoice{display:flex;align-items:center;gap:9px;padding:9px;border-radius:10px;cursor:pointer}.syncChoice:has(input:checked){background:#e8f2ea}.syncChoice input{width:18px;height:18px;flex:0 0 auto}.syncChoice span{display:grid;gap:2px}.syncChoice b{font-size:13px;color:#3f5145}.syncChoice small{font-size:10px;color:#999}.syncResolveAll{width:100%;margin-top:12px}.syncResolveAll:disabled{opacity:.48;cursor:not-allowed}.syncConflictHint{text-align:center;margin-top:8px}@media(max-width:600px){.syncResultHead{align-items:flex-start;flex-direction:column}.syncConflictList{max-height:52vh}.syncChoice{padding:10px 7px}}
 
 
-/* ===== v3.31.3 history toggle + lookup prefix suggestions ===== */
+/* ===== v3.31.6 history toggle + lookup prefix suggestions ===== */
 .lookupSuggestions{margin-top:8px;border:1px solid #e6e4df;border-radius:12px;background:#fff;padding:9px 10px;}
 .lookupSuggestLabel{color:#999;font-size:11px;margin-bottom:7px;}
 .lookupSuggestList{display:flex;gap:6px;flex-wrap:wrap;}
