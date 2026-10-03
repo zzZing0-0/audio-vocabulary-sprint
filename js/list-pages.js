@@ -114,7 +114,7 @@ function removeListWord(w,rerender){
 }
 
 const PAGE_SIZE=20;
-const pageState={active:1,mastered:1,removed:1};
+const pageState={active:1,mastered:1,confusable:1,removed:1};
 function lookupHref(w){return "lookup.html?word="+encodeURIComponent(w);}
 function pageSlice(rows,key){
   const totalPages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));
@@ -158,6 +158,40 @@ function renderMastered(){
   root.innerHTML=pg.items.length?pg.items.map(([w,peak])=>{const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">peak '+peak+'</div><div class="listRowActions"><button class="miniBtn" data-word="'+encodeURIComponent(w)+'">重新学习</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button></div>'+note+'</div>';}).join(''):'<p>还没有已掌握单词。</p>';
   root.querySelectorAll('[data-word]').forEach(btn=>btn.onclick=()=>reAddWord(decodeURIComponent(btn.dataset.word))); root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderMastered)); renderPagination("mastered",pg.totalPages,renderMastered);
 }
+
+function confusableRows(){
+  const removed=removedSet();
+  const rows=[];
+  const seenWords=new Set();
+  for(const [rawWord,rawLinks] of Object.entries(listState.linkedWords||{})){
+    const word=String(rawWord||"").trim();
+    const wordLower=word.toLowerCase();
+    if(!word||removed.has(wordLower)||seenWords.has(wordLower)||!Array.isArray(rawLinks))continue;
+    const links=[];
+    const seenLinks=new Set();
+    for(const rawLink of rawLinks){
+      const link=String(rawLink||"").trim();
+      const low=link.toLowerCase();
+      if(!link||low===wordLower||removed.has(low)||seenLinks.has(low))continue;
+      seenLinks.add(low);
+      links.push(link);
+    }
+    if(links.length){seenWords.add(wordLower);rows.push([word,links]);}
+  }
+  return rows.sort((a,b)=>a[0].localeCompare(b[0],undefined,{sensitivity:"base"}));
+}
+function renderConfusable(){
+  const root=document.getElementById("listRoot");
+  const rows=confusableRows();
+  document.getElementById("count").textContent=rows.length;
+  const pg=pageSlice(rows,"confusable");
+  root.innerHTML=pg.items.length?pg.items.map(([w,links])=>{
+    const linked=links.map(x=>'<a class="confusableListChip" href="'+lookupHref(x)+'">'+h(x)+'</a>').join('');
+    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">'+links.length+' 个易混词</div><div class="confusableListLinks">'+linked+'</div></div>';
+  }).join(''):'<p>还没有设置易混词。</p>';
+  renderPagination("confusable",pg.totalPages,renderConfusable);
+}
+
 function restoreRemovedWord(w){
   const key=Object.keys(listState.removedWords||{}).find(k=>k.toLowerCase()===String(w).toLowerCase()); if(!key)return; delete listState.removedWords[key]; const alreadyQueued=(listState.queue||[]).some(x=>String(x).toLowerCase()===String(w).toLowerCase()); const mastered=!!listState.mastered[w]; if(!mastered&&!alreadyQueued)listState.queue.push(w); persist(); renderRemoved(); listToast(`已恢复 “${w}” 到学习词库`);
 }
