@@ -11,7 +11,13 @@ state.seen = state.seen || {};
 state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
-state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {};
+state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {}; // imported pronunciation layer (e.g. Eudic)
+state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v3.32.3: explicit manual override layer
+// v3.32.3 briefly stored manual edits in customPronunciations. Move only entries
+// explicitly marked source=manual; imported Eudic entries remain in customPronunciations.
+for(const [k,p] of Object.entries(state.customPronunciations)){
+  if(p && p.source==="manual"){ state.manualPronunciations[k]=p; delete state.customPronunciations[k]; }
+}
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
 state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};

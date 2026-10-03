@@ -10,6 +10,7 @@ listState.removedWords=(listState.removedWords&&typeof listState.removedWords===
 listState.queue=Array.isArray(listState.queue)?listState.queue:[];
 listState.customWords=Array.isArray(listState.customWords)?listState.customWords:[];
 listState.customPronunciations=(listState.customPronunciations&&typeof listState.customPronunciations==="object"&&!Array.isArray(listState.customPronunciations))?listState.customPronunciations:{};
+listState.manualPronunciations=(listState.manualPronunciations&&typeof listState.manualPronunciations==="object"&&!Array.isArray(listState.manualPronunciations))?listState.manualPronunciations:{};
 listState.linkedWords=(listState.linkedWords&&typeof listState.linkedWords==="object"&&!Array.isArray(listState.linkedWords))?listState.linkedWords:{};
 
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
@@ -180,7 +181,7 @@ function permanentlyDeleteRemovedWord(w){
     ()=>{
       const target=String(w).toLowerCase();
       listState.customWords=(listState.customWords||[]).filter(x=>String(x).toLowerCase()!==target);
-      for(const obj of [listState.customPronunciations,listState.debts,listState.mastered,listState.seen,listState.highestDebt,listState.lastReviewedDate,listState.notes,listState.removedWords])deleteCaseInsensitiveKey(obj,w);
+      for(const obj of [listState.customPronunciations,listState.manualPronunciations,listState.debts,listState.mastered,listState.seen,listState.highestDebt,listState.lastReviewedDate,listState.notes,listState.removedWords])deleteCaseInsensitiveKey(obj,w);
       // Remove both the word's own linkedWords entry and every reverse reference to it.
       deleteCaseInsensitiveKey(listState.linkedWords,w);
       for(const key of Object.keys(listState.linkedWords||{})){

@@ -1,6 +1,6 @@
-# Audio Vocabulary Sprint v3.32.2
+# Audio Vocabulary Sprint v3.32.3
 
-## v3.32.2 information architecture
+## v3.32.3 information architecture
 - Main study page keeps only the learning workflow, a vocabulary search box, and three navigation entries: 词库 / 学习记录 / 设置.
 - 词库 groups 学习中（钉子户）, 已掌握, 笔记, 已移除.
 - 设置 groups GitHub 同步, 导入新词表, and the destructive 清空词库 action.
@@ -338,7 +338,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 
 ## v3.29.3
 - Mobile Lookup search button uses a compact 🔍 icon while desktop keeps “查询”.
-- Historical note: this version placed 查询词条 in the footer and 重置进度 in 规则 / 进度; v3.32.2 later replaces that navigation with 词库 / 学习记录 / 设置.
+- Historical note: this version placed 查询词条 in the footer and 重置进度 in 规则 / 进度; v3.32.3 later replaces that navigation with 词库 / 学习记录 / 设置.
 - Active and Mastered word names link directly to Lookup.
 - Notes sort removed entries after all current-library entries.
 - Notes, Active, Mastered, and Removed lists paginate at 20 entries per page.
@@ -362,31 +362,35 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Secondary pages now carry build metadata and freshness checks.
 
 
-## v3.32.2
+## v3.32.3
 - 学习记录支持每天最多 3 条链接笔记，月历显示链接数量，日详情可添加/删除。
 - 学习记录页底部加入 Zing Calendar 友情链接。
 - GitHub 同步改为单一“同步”操作，使用设备本地同步基线进行三方合并，减少跨设备覆盖风险。
 - 使用喇叭 emoji SVG favicon，替代浏览器默认字母图标。
 
 
-## v3.32.2
+## v3.32.3
 - Adds real PNG app icons / Apple touch icon for home-screen installation.
 - Adds one-click restore of the latest pre-sync local backup.
 - Treats learned→unseen cross-device regressions as conflicts instead of silently accepting them.
 
 
-### v3.32.2
+### v3.32.3
 - Sync preview now shows only absolute counts for Local / GitHub / Merged; removed ambiguous change labels.
 - Mobile learning-history month cells use fixed date/indicator/total rows; link notes are shown as a small dot below the date.
 - Lookup prefix suggestions use a classic vertical search suggestion list, one result per row.
 
 
-## v3.32.2
+## v3.32.3
 - 首页搜索框移至学习进度条下方；桌面端靠右，移动端铺满。
 - 学习记录在月/年切换旁显示当前期间的完成、新词、复习总量，直接汇总 `dailyStats`。
 
-## v3.32.2
+## v3.32.3
 - Added manual pronunciation correction UI on the study answer and lookup detail views.
 - Manual pronunciation metadata uses the existing `state.customPronunciations` syncable state.
 - Each word is limited to three fixed IPA fields: UK, US, and optional generic IPA override; no unbounded pronunciation list is created.
 - Regional IPA takes display priority. Clearing manual correction restores the public pronunciation database without modifying it.
+
+
+### v3.32.3
+Pronunciation layers are separated: manual override > imported Eudic > Wiktionary. Clearing a manual correction now reveals the imported Eudic pronunciation when present, otherwise the original Wiktionary pronunciation. Existing v3.32.2 manual entries are migrated automatically by `source: "manual"`.
