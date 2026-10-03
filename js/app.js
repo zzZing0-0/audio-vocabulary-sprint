@@ -37,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.32.0",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.32.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -479,10 +479,10 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=3.32.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=3.32.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=3.32.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=3.32.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=3.32.1"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.32.1"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.32.1"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.32.1"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
@@ -517,12 +517,12 @@ function renderHomeSearch(raw){
  if(!q||!items.length){box.hidden=true;box.innerHTML="";return;}
  box.innerHTML=items.map(w=>'<button type="button" class="homeSearchSuggestion" data-word="'+escapeHtml(w)+'"><span>'+escapeHtml(w)+'</span><i>›</i></button>').join("");
  box.hidden=false;
- box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.32.0";});
+ box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.32.1";});
 }
 const homeSearchInput=document.getElementById("homeSearchInput");
 if(homeSearchInput){
  homeSearchInput.oninput=e=>renderHomeSearch(e.target.value);
- homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.32.0";}};
+ homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.32.1";}};
 }
 
 

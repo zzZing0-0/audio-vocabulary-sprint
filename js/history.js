@@ -12,7 +12,28 @@ let view="month";
 const now=new Date();
 let cursorYear=now.getFullYear(),cursorMonth=now.getMonth();
 let selectedDay=null;
-const root=document.getElementById("historyRoot"),detail=document.getElementById("dayDetail");
+const root=document.getElementById("historyRoot"),detail=document.getElementById("dayDetail"),summary=document.getElementById("historySummary");
+
+function periodTotals(){
+  let total=0,newCount=0,review=0;
+  for(const [key,raw] of Object.entries(historyState.dailyStats||{})){
+    if(!raw||typeof raw!=="object")continue;
+    const parts=key.split("-").map(Number);
+    if(parts.length!==3)continue;
+    const [y,m]=parts;
+    if(y!==cursorYear)continue;
+    if(view==="month"&&m!==cursorMonth+1)continue;
+    total+=Number(raw.total)||0;
+    newCount+=Number(raw.new)||0;
+    review+=Number(raw.review)||0;
+  }
+  return {total,newCount,review};
+}
+function renderSummary(){
+  if(!summary)return;
+  const x=periodTotals();
+  summary.innerHTML='<span><b>'+x.total+'</b> 完成</span><span><b>'+x.newCount+'</b> 新词</span><span><b>'+x.review+'</b> 复习</span>';
+}
 function rowFor(key){const r=historyState.dailyStats[key];return r&&typeof r==="object"?{total:Number(r.total)||0,new:Number(r.new)||0,review:Number(r.review)||0}:null;}
 function linksFor(key){const a=historyState.historyLinks[key];return Array.isArray(a)?a.slice(0,3):[];}
 function level(total){if(total>=50)return 4;if(total>=25)return 3;if(total>=10)return 2;if(total>0)return 1;return 0;}
@@ -52,6 +73,7 @@ function rerenderKeepDay(){const k=selectedDay;if(view==='month')renderMonth(tru
 function navHead(label){return '<div class="historyNav"><button class="historyArrow" id="historyPrev" type="button" aria-label="上一段">‹</button><div class="historyPeriod">'+esc(label)+'</div><button class="historyArrow" id="historyNext" type="button" aria-label="下一段">›</button></div>';}
 function bindNav(prev,next){document.getElementById("historyPrev").onclick=prev;document.getElementById("historyNext").onclick=next;root.querySelectorAll('[data-day]').forEach(el=>el.onclick=()=>showDay(el.dataset.day));}
 function renderMonth(keep=false){
+  renderSummary();
   if(!keep){detail.hidden=true;selectedDay=null;}
   const first=new Date(cursorYear,cursorMonth,1),days=new Date(cursorYear,cursorMonth+1,0).getDate();const offset=(first.getDay()+6)%7;let cells='';
   for(let i=0;i<offset;i++)cells+='<div class="monthCell outside" aria-hidden="true"></div>';
@@ -61,6 +83,7 @@ function renderMonth(keep=false){
   bindNav(()=>{cursorMonth--;if(cursorMonth<0){cursorMonth=11;cursorYear--;}renderMonth();},()=>{cursorMonth++;if(cursorMonth>11){cursorMonth=0;cursorYear++;}renderMonth();});
 }
 function renderYear(keep=false){
+  renderSummary();
   if(!keep){detail.hidden=true;selectedDay=null;}const start=new Date(cursorYear,0,1),end=new Date(cursorYear,11,31),firstMonday=new Date(start);firstMonday.setDate(start.getDate()-((start.getDay()+6)%7));const lastSunday=new Date(end);lastSunday.setDate(end.getDate()+(7-((end.getDay()+6)%7)-1));const weeks=[];let d=new Date(firstMonday);
   while(d<=lastSunday){const week=[];for(let i=0;i<7;i++){const x=new Date(d),key=dateKey(x),inYear=x.getFullYear()===cursorYear,r=rowFor(key),total=r?r.total:0,before=key<historyState.statsStartDate;week.push({key,day:x.getDate(),month:x.getMonth(),inYear,total,before,links:linksFor(key).length});d.setDate(d.getDate()+1);}weeks.push(week);}
   const monthLabels=[];let last=-1;weeks.forEach((w,i)=>{const hit=w.find(x=>x.inYear&&x.day<=7);if(hit&&hit.month!==last){monthLabels.push('<span style="grid-column:'+(i+1)+'">'+(hit.month+1)+'月</span>');last=hit.month;}});let cols='';
