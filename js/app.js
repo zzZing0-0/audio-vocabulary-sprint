@@ -2,10 +2,10 @@
 function getPreferredEnglishVoices(){
   const all=speechSynthesis.getVoices();
   const english=all.filter(v => /^en([-_]|$)/i.test(v.lang || ""));
-  if(!english.length) return all;
+  if(!english.length) return filterBlockedVoices(all);
   const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;
   const preferred=english.filter(v => !novelty.test(v.name || ""));
-  return preferred.length>=2 ? preferred : english;
+  return filterBlockedVoices(preferred.length>=2 ? preferred : english);
 }
 
 let voices=[], revealed=false, started=false;
@@ -54,7 +54,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.33.7",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.33.8",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -86,7 +86,8 @@ function updateVoiceInfo(){
   const el=document.getElementById("voiceInfo");
   if(!el) return;
   const v=selectedVoice();
-  el.textContent=v ? "Voice: "+v.name : "";
+  el.innerHTML=v ? '<span>Voice: '+escapeHtml(v.name)+'</span><button class="voiceBlockBtn" id="voiceBlockBtn" type="button" aria-label="屏蔽 ' + escapeHtml(v.name) + '" title="屏蔽这个 Voice">×</button>' : "";
+  const b=document.getElementById("voiceBlockBtn");if(b)b.onclick=blockCurrentVoice;
 }
 
 function updateAnswerControls(){
@@ -121,6 +122,26 @@ function updateAnswerControls(){
   }
 }
 
+function blockCurrentVoice(){
+  const v=selectedVoice();if(!v)return;
+  if(voices.length<=1){alert("至少保留一个可用 Voice。可以先到设置里恢复其他 Voice。");return;}
+  speechSynthesis.cancel();blockVoice(v);
+  voices=getPreferredEnglishVoices();
+  state.voiceIndex=Math.min(Number(state.voiceIndex)||0,Math.max(0,voices.length-1));save();updateVoiceInfo();
+  if(state.current)speakCurrent();
+}
+
+function openBlockedVoiceManager(){
+  const rows=blockedVoiceRecords();
+  const items=rows.length ? rows.map(x=>'<div class="blockedVoiceRow"><span><b>'+escapeHtml(x.name||"Voice")+'</b><small>'+escapeHtml(x.lang||"")+'</small></span><button class="miniBtn" type="button" data-restore-voice="'+encodeURIComponent(x.key||"")+'">恢复</button></div>').join('') : '<div class="utilityEmpty">目前没有屏蔽 Voice。</div>';
+  openUtilityPanel(
+    '<div class="utilityPanelHead"><div><h2>管理屏蔽 Voice</h2><div class="sub">只影响当前设备；恢复后会重新加入 Voice 轮换。</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
+    '<div class="blockedVoiceList">'+items+'</div>'
+  );
+  document.getElementById("utilityClose")?.addEventListener("click",closePanel);
+  document.querySelectorAll("[data-restore-voice]").forEach(btn=>btn.onclick=()=>{restoreBlockedVoice(decodeURIComponent(btn.dataset.restoreVoice));loadVoices();openBlockedVoiceManager();});
+}
+
 function changeVoice(step){
   if(!voices.length)return;
   const n=voices.length;
@@ -146,7 +167,7 @@ function rememberHomeBeforeLookup(){
 function goToLookup(word){
   const w=String(word||"").trim();if(!w)return;
   rememberHomeBeforeLookup();
-  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=3.33.7";
+  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=3.33.8";
 }
 function restoreHomeAfterLookup(){
   let raw=null;try{raw=sessionStorage.getItem(LOOKUP_RETURN_KEY);sessionStorage.removeItem(LOOKUP_RETURN_KEY);}catch(_){}
@@ -161,7 +182,7 @@ addEventListener("pageshow",()=>{try{sessionStorage.removeItem(LOOKUP_RETURN_KEY
 function linkedWordsHtml(word){
   const linked=getLinkedWords(word);
   const chips=linked.map(w=>
-    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=3.33.7" onclick="event.stopPropagation();rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
+    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=3.33.8" onclick="event.stopPropagation();rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
   ).join('');
   return '<section class="confusableSection confusableCompact" id="confusableCompact" role="button" tabindex="0" aria-label="管理易混词"><div class="confusableHead"><span>易混词</span><span class="confusableManageHint">管理 ›</span></div>'+
     (chips?'<div class="confusableList">'+chips+'</div>':'<div class="confusableEmpty">还没有链接易混词 · 点击添加</div>')+'</section>';
@@ -216,7 +237,7 @@ function openWordTagEditor(word,onDone){
   const old=document.getElementById('wordTagBackdrop');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='wordTagBackdrop';wrap.className='ipaEditorBackdrop';
   const selected=new Set(getWordTagIds(word)),tags=tagList();
-  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.7">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
+  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.8">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
   document.body.appendChild(wrap);const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#saveWordTags').onclick=()=>{setWordTagIds(word,[...wrap.querySelectorAll('.tagChoice input:checked')].map(x=>x.value));save();close();if(onDone)onDone();};
 }
@@ -535,12 +556,12 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=3.33.7"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=3.33.7"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=3.33.7"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=3.33.7"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=3.33.7"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=3.33.7"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=3.33.8"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.33.8"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=3.33.8"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=3.33.8"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.33.8"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.33.8"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
@@ -551,13 +572,15 @@ if(settingsBtn)settingsBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>设置</h2><div class="sub">同步、导入与本机数据维护</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<button class="utilityMenuItem utilityMenuButton" id="panelSync" type="button"><span><b>GitHub 同步</b><small>检查本机与 GitHub 的学习数据并确认合并</small></span><i>›</i></button>'+ 
+    '<button class="utilityMenuItem utilityMenuButton" id="panelSync" type="button"><span><b>GitHub 同步</b><small>检查本机与 GitHub 的学习数据并确认合并</small></span><i>›</i></button>'+
+    '<button class="utilityMenuItem utilityMenuButton" id="panelBlockedVoices" type="button"><span><b>管理屏蔽 Voice</b><small>恢复这台设备上被隐藏的 TTS Voice</small></span><i>›</i></button>'+ 
     '<label class="utilityMenuItem utilityMenuButton" for="importWordsFile"><span><b>导入新词表</b><small>支持 TXT 与 CSV</small></span><i>›</i></label>'+ 
    '</div>'+ 
    '<div class="utilityDanger"><button class="utilityDangerButton" id="panelReset" type="button">清空词库</button><div class="sub">清除本机学习进度、自定义词、笔记等本地词库数据；不会直接修改 GitHub。</div></div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
  const sync=document.getElementById("panelSync");if(sync)sync.onclick=()=>{closePanel();document.getElementById("syncBtn").click();};
+ const bv=document.getElementById("panelBlockedVoices");if(bv)bv.onclick=openBlockedVoiceManager;
  const reset=document.getElementById("panelReset");if(reset)reset.onclick=resetProgress;
 };
 

@@ -15,6 +15,12 @@ listState.linkedWords=(listState.linkedWords&&typeof listState.linkedWords==="ob
 listState.tags=(listState.tags&&typeof listState.tags==="object"&&!Array.isArray(listState.tags))?listState.tags:{};
 listState.wordTags=(listState.wordTags&&typeof listState.wordTags==="object"&&!Array.isArray(listState.wordTags))?listState.wordTags:{};
 
+
+const BLOCKED_VOICES_KEY="audio_vocab_sprint_blocked_voices_v1";
+function listVoiceIdentity(v){return [v?.name||"",v?.lang||"",v?.voiceURI||""].join("\u241f");}
+function listBlockedVoiceKeys(){try{const x=JSON.parse(localStorage.getItem(BLOCKED_VOICES_KEY)||"[]");return new Set((Array.isArray(x)?x:[]).map(r=>r.key||[r.name||"",r.lang||"",r.voiceURI||""].join("\u241f")));}catch(_){return new Set();}}
+function listFilterBlockedVoices(a){const b=listBlockedVoiceKeys();return (a||[]).filter(v=>!b.has(listVoiceIdentity(v)));}
+
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
 let listToastTimer=null;
@@ -264,7 +270,7 @@ function renderRemoved(){
 }
 
 
-// v3.33.7: auditory comparison controls with one global voice display.
+// v3.33.8: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
 const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
@@ -273,7 +279,7 @@ function confusablePreferredVoices(){
   const en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));
   const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;
   const preferred=en.filter(v=>!novelty.test(v.name||""));
-  return preferred.length>=2?preferred:(en.length?en:all);
+  return listFilterBlockedVoices(preferred.length>=2?preferred:(en.length?en:all));
 }
 function refreshConfusableVoices(){confusableVoices=confusablePreferredVoices();updateConfusableVoiceLabels();}
 function confusableSelectedVoice(){
@@ -331,7 +337,7 @@ function initConfusableReading(){
 }
 
 
-// v3.33.7: continuous whole-library listening for Active / Mastered.
+// v3.33.8: continuous whole-library listening for Active / Mastered.
 const LIBRARY_PLAYER_PAUSE_KEY="audio_vocab_sprint_library_player_pause_ms";
 const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
 const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";
