@@ -140,8 +140,9 @@ function renderActive(){
   const rows=Object.entries(listState.debts).filter(([w,d])=>Number(d)>0&&!listState.mastered[w]&&!isRemovedListWord(w)).sort((a,b)=>Number(b[1])-Number(a[1])||(listState.highestDebt[b[0]]||0)-(listState.highestDebt[a[0]]||0)||a[0].localeCompare(b[0]));
   document.getElementById("count").textContent=rows.length;
   const pg=pageSlice(rows,"active");
-  root.innerHTML=pg.items.length?pg.items.map(([w,d])=>{const peak=listState.highestDebt[w]||d,note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">debt '+d+' · peak '+peak+'</div><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button>'+note+'</div>';}).join(''):'<p>暂无钉子户 🎉</p>';
+  root.innerHTML=pg.items.length?pg.items.map(([w,d])=>{const peak=listState.highestDebt[w]||d,note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">debt '+d+' · peak '+peak+'</div><div class="listRowActions"><button class="miniBtn listListenFrom" data-listen-from="'+encodeURIComponent(w)+'" title="从这个词开始连续播放">从此播放</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button></div>'+note+'</div>';}).join(''):'<p>暂无钉子户 🎉</p>';
   root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderActive));
+  root.querySelectorAll('[data-listen-from]').forEach(btn=>btn.onclick=()=>openLibraryPlayer('active',decodeURIComponent(btn.dataset.listenFrom)));
   renderPagination("active",pg.totalPages,renderActive);
 }
 function reAddWord(w){
@@ -155,8 +156,8 @@ function reAddTop(n){
 function renderMastered(){
   const root=document.getElementById("listRoot"); const rows=Object.keys(listState.mastered).filter(w=>!isRemovedListWord(w)).map(w=>[w,listState.highestDebt[w]||0]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])); document.getElementById("count").textContent=rows.length;
   const pg=pageSlice(rows,"mastered");
-  root.innerHTML=pg.items.length?pg.items.map(([w,peak])=>{const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">peak '+peak+'</div><div class="listRowActions"><button class="miniBtn" data-word="'+encodeURIComponent(w)+'">重新学习</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button></div>'+note+'</div>';}).join(''):'<p>还没有已掌握单词。</p>';
-  root.querySelectorAll('[data-word]').forEach(btn=>btn.onclick=()=>reAddWord(decodeURIComponent(btn.dataset.word))); root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderMastered)); renderPagination("mastered",pg.totalPages,renderMastered);
+  root.innerHTML=pg.items.length?pg.items.map(([w,peak])=>{const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">peak '+peak+'</div><div class="listRowActions"><button class="miniBtn listListenFrom" data-listen-from="'+encodeURIComponent(w)+'" title="从这个词开始连续播放">从此播放</button><button class="miniBtn" data-word="'+encodeURIComponent(w)+'">重新学习</button><button class="miniBtn dangerLite" data-remove="'+encodeURIComponent(w)+'">删除</button></div>'+note+'</div>';}).join(''):'<p>还没有已掌握单词。</p>';
+  root.querySelectorAll('[data-word]').forEach(btn=>btn.onclick=()=>reAddWord(decodeURIComponent(btn.dataset.word))); root.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>removeListWord(decodeURIComponent(btn.dataset.remove),renderMastered)); root.querySelectorAll('[data-listen-from]').forEach(btn=>btn.onclick=()=>openLibraryPlayer('mastered',decodeURIComponent(btn.dataset.listenFrom))); renderPagination("mastered",pg.totalPages,renderMastered);
 }
 
 function confusableRows(){
@@ -180,6 +181,15 @@ function confusableRows(){
   }
   return rows.sort((a,b)=>a[0].localeCompare(b[0],undefined,{sensitivity:"base"}));
 }
+function audioIcon(kind){
+  const common='viewBox="0 0 24 24" aria-hidden="true" focusable="false"';
+  if(kind==="play")return '<svg '+common+'><path d="M8 5.5v13l10-6.5z"/></svg>';
+  if(kind==="stop")return '<svg '+common+'><path d="M7 7h10v10H7z"/></svg>';
+  if(kind==="prev")return '<svg '+common+'><path d="M15.5 5.5 9 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  if(kind==="next")return '<svg '+common+'><path d="m8.5 5.5 6.5 6.5-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  if(kind==="restart")return '<svg '+common+'><path d="M5.5 8.5V4.8M5.5 4.8h3.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.1 5.4A8 8 0 1 1 4.4 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  return '';
+}
 function renderConfusable(){
   const root=document.getElementById("listRoot");
   const rows=confusableRows();
@@ -188,7 +198,7 @@ function renderConfusable(){
   root.innerHTML=pg.items.length?pg.items.map(([w,links])=>{
     const linked=links.map(x=>'<a class="confusableListChip" href="'+lookupHref(x)+'">'+h(x)+'</a>').join('');
     const encodedGroup=encodeURIComponent(JSON.stringify([w,...links]));
-    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="confusableGroupControls" data-confusable-group="'+encodedGroup+'"><button class="voiceArrow confusableVoicePrev" type="button" aria-label="切换到上一个语音并朗读这一组">‹</button><button class="confusableGroupPlay" type="button" aria-label="依次朗读这一组">▶️</button><button class="voiceArrow confusableVoiceNext" type="button" aria-label="切换到下一个语音并朗读这一组">›</button></div><div class="confusableListLinks">'+linked+'</div></div>';
+    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="confusableGroupControls" data-confusable-group="'+encodedGroup+'"><button class="audioIconBtn confusableVoicePrev" type="button" aria-label="切换到上一个语音并朗读这一组">'+audioIcon('prev')+'</button><button class="audioIconBtn confusableGroupPlay" type="button" aria-label="依次朗读这一组">'+audioIcon('play')+'</button><button class="audioIconBtn confusableVoiceNext" type="button" aria-label="切换到下一个语音并朗读这一组">'+audioIcon('next')+'</button></div><div class="confusableListLinks">'+linked+'</div></div>';
   }).join(''):'<p>还没有设置易混词。</p>';
   renderPagination("confusable",pg.totalPages,renderConfusable);
   root.querySelectorAll('.confusableGroupControls').forEach(box=>{
@@ -251,7 +261,7 @@ function renderRemoved(){
 }
 
 
-// v3.32.6: auditory comparison controls with one global voice display.
+// v3.32.7: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
 const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
@@ -316,3 +326,86 @@ function initConfusableReading(){
   if('speechSynthesis' in window){speechSynthesis.addEventListener?.('voiceschanged',refreshConfusableVoices);}
   const b=document.getElementById('confusableReadSettingsBtn');if(b)b.onclick=openConfusableReadSettings;
 }
+
+
+// v3.32.7: continuous whole-library listening for Active / Mastered.
+const LIBRARY_PLAYER_PAUSE_KEY="audio_vocab_sprint_library_player_pause_ms";
+const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
+const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";
+let libraryPlayer={type:null,words:[],index:0,repeatIndex:0,playing:false,token:0,voices:[],modal:null};
+function libraryWords(type){
+  if(type==='active')return Object.entries(listState.debts).filter(([w,d])=>Number(d)>0&&!listState.mastered[w]&&!isRemovedListWord(w)).sort((a,b)=>Number(b[1])-Number(a[1])||(listState.highestDebt[b[0]]||0)-(listState.highestDebt[a[0]]||0)||a[0].localeCompare(b[0])).map(x=>x[0]);
+  return Object.keys(listState.mastered).filter(w=>!isRemovedListWord(w)).map(w=>[w,listState.highestDebt[w]||0]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(x=>x[0]);
+}
+function libraryPauseMs(){const n=Number(localStorage.getItem(LIBRARY_PLAYER_PAUSE_KEY));return Number.isFinite(n)?Math.min(5000,Math.max(0,n)):700;}
+function libraryRepeat(){const n=Number(localStorage.getItem(LIBRARY_PLAYER_REPEAT_KEY));return Number.isFinite(n)?Math.min(5,Math.max(1,Math.round(n))):1;}
+function libraryPlayerVoice(){
+  if(!libraryPlayer.voices.length)libraryPlayer.voices=confusablePreferredVoices();
+  if(!libraryPlayer.voices.length)return null;
+  const i=((Number(listState.voiceIndex)||0)%libraryPlayer.voices.length+libraryPlayer.voices.length)%libraryPlayer.voices.length;
+  return libraryPlayer.voices[i];
+}
+function saveLibraryPosition(){if(libraryPlayer.type)localStorage.setItem(LIBRARY_PLAYER_POS_PREFIX+libraryPlayer.type,String(libraryPlayer.index));}
+function renderLibraryPlayer(){
+  const m=libraryPlayer.modal;if(!m)return;
+  const word=libraryPlayer.words[libraryPlayer.index]||'—',v=libraryPlayerVoice();
+  m.querySelector('#libraryPlayerCount').textContent=libraryPlayer.words.length?(libraryPlayer.index+1)+' / '+libraryPlayer.words.length:'0 / 0';
+  m.querySelector('#libraryPlayerWord').textContent=word;
+  m.querySelector('#libraryPlayerVoice').textContent=v?(v.name+(v.lang?' · '+v.lang:'')):'—';
+  m.querySelector('#libraryPlayerToggle').innerHTML=audioIcon(libraryPlayer.playing?'stop':'play');
+  m.querySelector('#libraryPlayerToggle').setAttribute('aria-label',libraryPlayer.playing?'停止连续播放':'开始连续播放');
+  m.querySelector('#libraryPlayerPrev').disabled=libraryPlayer.index<=0;
+  m.querySelector('#libraryPlayerNext').disabled=libraryPlayer.index>=libraryPlayer.words.length-1;
+}
+function stopLibraryPlayer(){libraryPlayer.token++;libraryPlayer.playing=false;speechSynthesis.cancel();renderLibraryPlayer();}
+function speakLibraryCurrent(resetRepeat=true){
+  if(!libraryPlayer.words.length)return;
+  if(resetRepeat)libraryPlayer.repeatIndex=0;
+  libraryPlayer.playing=true;const token=++libraryPlayer.token;renderLibraryPlayer();saveLibraryPosition();
+  const speakOne=()=>{
+    if(token!==libraryPlayer.token||!libraryPlayer.playing)return;
+    const word=libraryPlayer.words[libraryPlayer.index];if(!word){stopLibraryPlayer();return;}
+    const voice=libraryPlayerVoice(),u=new SpeechSynthesisUtterance(word);u.lang=(voice&&voice.lang)||'en-US';u.rate=.86;if(voice)u.voice=voice;
+    u.onend=u.onerror=()=>{
+      if(token!==libraryPlayer.token||!libraryPlayer.playing)return;
+      const pause=libraryPauseMs(),repeat=libraryRepeat();
+      if(libraryPlayer.repeatIndex+1<repeat){libraryPlayer.repeatIndex++;setTimeout(speakOne,pause);return;}
+      if(libraryPlayer.index>=libraryPlayer.words.length-1){libraryPlayer.playing=false;libraryPlayer.repeatIndex=0;renderLibraryPlayer();return;}
+      libraryPlayer.index++;libraryPlayer.repeatIndex=0;saveLibraryPosition();renderLibraryPlayer();setTimeout(speakOne,pause);
+    };
+    speechSynthesis.speak(u);
+  };
+  speechSynthesis.cancel();speakOne();
+}
+function moveLibraryPlayer(step){
+  if(!libraryPlayer.words.length)return;
+  const wasPlaying=libraryPlayer.playing;libraryPlayer.token++;speechSynthesis.cancel();
+  libraryPlayer.index=Math.min(libraryPlayer.words.length-1,Math.max(0,libraryPlayer.index+step));libraryPlayer.repeatIndex=0;saveLibraryPosition();renderLibraryPlayer();
+  if(wasPlaying)speakLibraryCurrent(true);else{libraryPlayer.playing=true;speakLibraryCurrent(true);}
+}
+function restartLibraryPlayer(){
+  if(!libraryPlayer.words.length)return;libraryPlayer.token++;speechSynthesis.cancel();libraryPlayer.index=0;libraryPlayer.repeatIndex=0;saveLibraryPosition();speakLibraryCurrent(true);
+}
+function changeLibraryPlayerVoice(step){
+  libraryPlayer.voices=confusablePreferredVoices();if(!libraryPlayer.voices.length)return;
+  const n=libraryPlayer.voices.length;listState.voiceIndex=((Number(listState.voiceIndex)||0)+step+n)%n;persist();updateConfusableVoiceLabels();
+  const wasPlaying=libraryPlayer.playing;libraryPlayer.token++;speechSynthesis.cancel();renderLibraryPlayer();
+  if(wasPlaying)speakLibraryCurrent(true);
+}
+function openLibraryPlayer(type,startWord){
+  const words=libraryWords(type);if(!words.length){listToast('这个词库目前没有可播放的单词');return;}
+  const old=document.getElementById('libraryPlayerBackdrop');if(old)old.remove();
+  let idx=-1;if(startWord)idx=words.findIndex(w=>String(w).toLowerCase()===String(startWord).toLowerCase());
+  if(idx<0){const saved=parseInt(localStorage.getItem(LIBRARY_PLAYER_POS_PREFIX+type)||'0',10);idx=Number.isFinite(saved)?Math.min(words.length-1,Math.max(0,saved)):0;}
+  libraryPlayer={type,words,index:idx,repeatIndex:0,playing:false,token:libraryPlayer.token+1,voices:confusablePreferredVoices(),modal:null};
+  const wrap=document.createElement('div');wrap.id='libraryPlayerBackdrop';wrap.className='ipaEditorBackdrop';
+  wrap.innerHTML='<div class="ipaEditor libraryPlayer" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+(type==='active'?'学习中':'已掌握')+' · 连续播放</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="libraryPlayerCount" id="libraryPlayerCount"></div><div class="libraryPlayerWord" id="libraryPlayerWord"></div><div class="libraryVoiceRow"><button class="audioIconBtn" id="libraryVoicePrev" type="button" aria-label="上一个语音">'+audioIcon('prev')+'</button><div class="libraryPlayerVoice" id="libraryPlayerVoice"></div><button class="audioIconBtn" id="libraryVoiceNext" type="button" aria-label="下一个语音">'+audioIcon('next')+'</button></div><div class="libraryTransport"><button class="audioIconBtn" id="libraryPlayerRestart" type="button" aria-label="从头播放" title="从头播放">'+audioIcon('restart')+'</button><button class="audioIconBtn" id="libraryPlayerPrev" type="button" aria-label="上一个单词">'+audioIcon('prev')+'</button><button class="audioIconBtn audioIconPrimary" id="libraryPlayerToggle" type="button" aria-label="开始连续播放">'+audioIcon('play')+'</button><button class="audioIconBtn" id="libraryPlayerNext" type="button" aria-label="下一个单词">'+audioIcon('next')+'</button></div><div class="libraryTransportLabels"><span>从头</span><span>上一个</span><span>播放 / 停止</span><span>下一个</span></div><div class="librarySettings"><div class="librarySetting"><label for="libraryRepeatInput">每词朗读次数</label><input id="libraryRepeatInput" type="number" min="1" max="5" step="1" value="'+libraryRepeat()+'"><span>次</span></div><div class="librarySetting"><label for="libraryPauseInput">词间停顿</label><input id="libraryPauseInput" type="number" min="0" max="5000" step="100" value="'+libraryPauseMs()+'"><span>ms</span></div></div><div class="ipaEditorHint">设置保存在本机。连续播放会跨越分页，一直播放到这个词库的最后一个词。</div></div>';
+  document.body.appendChild(wrap);libraryPlayer.modal=wrap;renderLibraryPlayer();
+  const close=()=>{stopLibraryPlayer();wrap.remove();libraryPlayer.modal=null;};wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
+  wrap.querySelector('#libraryPlayerToggle').onclick=()=>{if(libraryPlayer.playing)stopLibraryPlayer();else speakLibraryCurrent(true);};
+  wrap.querySelector('#libraryPlayerRestart').onclick=restartLibraryPlayer;wrap.querySelector('#libraryPlayerPrev').onclick=()=>moveLibraryPlayer(-1);wrap.querySelector('#libraryPlayerNext').onclick=()=>moveLibraryPlayer(1);
+  wrap.querySelector('#libraryVoicePrev').onclick=()=>changeLibraryPlayerVoice(-1);wrap.querySelector('#libraryVoiceNext').onclick=()=>changeLibraryPlayerVoice(1);
+  wrap.querySelector('#libraryRepeatInput').onchange=e=>{const v=Math.min(5,Math.max(1,Math.round(Number(e.target.value)||1)));e.target.value=v;localStorage.setItem(LIBRARY_PLAYER_REPEAT_KEY,String(v));};
+  wrap.querySelector('#libraryPauseInput').onchange=e=>{const v=Math.min(5000,Math.max(0,Math.round(Number(e.target.value)||0)));e.target.value=v;localStorage.setItem(LIBRARY_PLAYER_PAUSE_KEY,String(v));};
+}
+function initLibraryPlayerButton(type){const b=document.getElementById('continuousPlayBtn');if(b)b.onclick=()=>openLibraryPlayer(type);}
