@@ -54,7 +54,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.33.0",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.33.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -199,12 +199,12 @@ function addConfusable(raw){
   save();refreshConfusableSection(true);
 }
 
-function tagChipsHtml(word){const ids=getWordTagIds(word),tags=ids.map(id=>({id,...state.tags[id]})).filter(t=>t.name);return '<section class="wordTagsSection"><div class="wordTagsHead"><span>标签</span><button class="tagManageBtn" id="currentTagManage" type="button">管理标签</button></div><div class="wordTagChips">'+(tags.length?tags.map(t=>'<span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color||'#8b7cf6')+'">'+escapeHtml(t.name)+'</span>').join(''):'<span class="tagEmpty">还没有标签</span>')+'</div></section>';}
+function compactTagBadgesHtml(word){const ids=getWordTagIds(word),tags=ids.map(id=>({id,...state.tags[id]})).filter(t=>t.name);return tags.map(t=>'<span class="topTagBadge" style="--tag-color:'+escapeHtml(t.color||'#8b7cf6')+'">'+escapeHtml(t.name)+'</span>').join('')+'<button class="topTagAdd" id="currentTagManage" type="button" aria-label="管理标签" title="管理标签">＋</button>';}
 function openWordTagEditor(word,onDone){
   const old=document.getElementById('wordTagBackdrop');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='wordTagBackdrop';wrap.className='ipaEditorBackdrop';
   const selected=new Set(getWordTagIds(word)),tags=tagList();
-  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>管理标签 · '+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.0">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
+  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>管理标签 · '+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.1">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
   document.body.appendChild(wrap);const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#saveWordTags').onclick=()=>{setWordTagIds(word,[...wrap.querySelectorAll('.tagChoice input:checked')].map(x=>x.value));save();close();if(onDone)onDone();};
 }
@@ -223,6 +223,7 @@ function reveal(debtOverride=null, firstOverride=null){
     '<div class="topLeftInfo">'+
       '<div class="debtBadge">debt: '+d+'</div>'+
       (isFirst?'<div class="firstBadge">首次出现</div>':'')+
+      compactTagBadgesHtml(state.current)+
     '</div>'+
     '<div class="word">'+escapeHtml(state.current)+'</div>'+
     '<div id="pronunciationSlot">'+pronunciationHtml(state.current)+'</div>'+
@@ -234,7 +235,6 @@ function reveal(debtOverride=null, firstOverride=null){
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
     linkedWordsHtml(state.current)+
-    tagChipsHtml(state.current)+
     '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
       '<summary>笔记</summary>'+
       '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
@@ -507,12 +507,12 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=3.33.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=3.33.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=3.33.0"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=3.33.0"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=3.33.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=3.33.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=3.33.1"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.33.1"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=3.33.1"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=3.33.1"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.33.1"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.33.1"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
@@ -547,12 +547,12 @@ function renderHomeSearch(raw){
  if(!q||!items.length){box.hidden=true;box.innerHTML="";return;}
  box.innerHTML=items.map(w=>'<button type="button" class="homeSearchSuggestion" data-word="'+escapeHtml(w)+'"><span>'+escapeHtml(w)+'</span><i>›</i></button>').join("");
  box.hidden=false;
- box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.33.0";});
+ box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.33.1";});
 }
 const homeSearchInput=document.getElementById("homeSearchInput");
 if(homeSearchInput){
  homeSearchInput.oninput=e=>renderHomeSearch(e.target.value);
- homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.33.0";}};
+ homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.33.1";}};
 }
 
 
