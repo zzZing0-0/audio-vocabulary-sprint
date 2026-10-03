@@ -26,7 +26,22 @@ function pronunciationHtml(word){
   if(!parts.length && item.fallback) parts.push('<span class="ipaChip ipaGeneric" title="IPA" dir="ltr" lang="en">'+escapeHtml(item.fallback)+'</span>');
   if(!parts.length)return "";
 
-  return '<div class="ipaLine">'+parts.join('')+'</div>';
+  return '<div class="ipaWrap"><div class="ipaLine">'+parts.join('')+'</div><button type="button" class="ipaEditBtn" onclick="openPronunciationEditor(state.current)">编辑</button></div>';
+}
+
+function openPronunciationEditor(word){
+  const key=String(word||"").toLowerCase();
+  if(!key)return;
+  const base=pronunciationWords[key]||{};
+  const custom=(state.customPronunciations&&state.customPronunciations[key])||{};
+  const effective=Object.keys(custom).length?custom:base;
+  const old=document.getElementById("ipaEditorBackdrop");if(old)old.remove();
+  const wrap=document.createElement("div");wrap.id="ipaEditorBackdrop";wrap.className="ipaEditorBackdrop";
+  wrap.innerHTML='<div class="ipaEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>编辑音标 · '+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="ipaEditorSource">原始来源：'+escapeHtml(base.source||"无公共音标")+(base.fallback?' · '+escapeHtml(base.fallback):'')+'</div><div class="ipaEditorRow"><label>🇬🇧 英音</label><input class="ipaEditorInput" id="ipaEditUk" value="'+escapeHtml(effective.uk||'')+'" placeholder="例如 /.../"></div><div class="ipaEditorRow"><label>🇺🇸 美音</label><input class="ipaEditorInput" id="ipaEditUs" value="'+escapeHtml(effective.us||'')+'" placeholder="例如 /.../"></div><div class="ipaEditorRow"><label>通用 IPA（可选覆盖）</label><input class="ipaEditorInput" id="ipaEditFallback" value="'+escapeHtml(custom.fallback||'')+'" placeholder="留空则保留原始通用 IPA"></div><div class="ipaEditorHint">最多固定三项：英音、美音、通用 IPA。填写英/美音后，页面优先显示地区音标；原始 Wiktionary 音标不会被修改。</div><div class="ipaEditorActions"><button type="button" id="ipaResetManual">清除手动修正</button><button type="button" class="ipaSave" id="ipaSaveManual">保存</button></div></div>';
+  document.body.appendChild(wrap);
+  const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
+  document.getElementById('ipaSaveManual').onclick=()=>{const uk=document.getElementById('ipaEditUk').value.trim(),us=document.getElementById('ipaEditUs').value.trim(),fallback=document.getElementById('ipaEditFallback').value.trim();state.customPronunciations=state.customPronunciations||{};if(uk||us||fallback){state.customPronunciations[key]={uk:uk||null,us:us||null,fallback:fallback||base.fallback||null,source:'manual'};}else delete state.customPronunciations[key];save();close();refreshCurrentPronunciation();};
+  document.getElementById('ipaResetManual').onclick=()=>{state.customPronunciations=state.customPronunciations||{};delete state.customPronunciations[key];save();close();refreshCurrentPronunciation();};
 }
 
 function refreshCurrentPronunciation(){
@@ -37,7 +52,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.32.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.32.2",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -479,10 +494,10 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=3.32.1"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=3.32.1"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=3.32.1"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=3.32.1"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=3.32.2"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.32.2"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.32.2"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.32.2"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
@@ -517,12 +532,12 @@ function renderHomeSearch(raw){
  if(!q||!items.length){box.hidden=true;box.innerHTML="";return;}
  box.innerHTML=items.map(w=>'<button type="button" class="homeSearchSuggestion" data-word="'+escapeHtml(w)+'"><span>'+escapeHtml(w)+'</span><i>›</i></button>').join("");
  box.hidden=false;
- box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.32.1";});
+ box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.32.2";});
 }
 const homeSearchInput=document.getElementById("homeSearchInput");
 if(homeSearchInput){
  homeSearchInput.oninput=e=>renderHomeSearch(e.target.value);
- homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.32.1";}};
+ homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.32.2";}};
 }
 
 
