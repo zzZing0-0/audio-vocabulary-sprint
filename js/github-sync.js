@@ -36,7 +36,7 @@ function linksResolver(k,b,l,r){const byId=new Map();for(const item of [...(Arra
 function linkedResolver(k,b,l,r){const out=[];const seen=new Set();for(const x of [...(Array.isArray(l)?l:[]),...(Array.isArray(r)?r:[])]){const q=String(x||"").trim(),z=q.toLowerCase();if(q&&!seen.has(z)){seen.add(z);out.push(q);}}return out.slice(0,3);}
 function maxResolver(k,b,l,r){return Math.max(Number(b)||0,Number(l)||0,Number(r)||0)||undefined;}
 function boolResolver(k,b,l,r){return (b||l||r)?true:undefined;}
-function normalizeState(s){s=s&&typeof s==="object"?s:{};s.debts=s.debts||{};s.mastered=s.mastered||{};s.seen=s.seen||{};s.highestDebt=s.highestDebt||{};s.lastReviewedDate=s.lastReviewedDate||{};s.customWords=Array.isArray(s.customWords)?s.customWords:[];s.customPronunciations=s.customPronunciations||{};s.manualPronunciations=s.manualPronunciations||{};s.notes=s.notes||{};s.linkedWords=s.linkedWords||{};s.tags=s.tags||{};s.wordTags=s.wordTags||{};s.removedWords=s.removedWords||{};s.dailyStats=s.dailyStats||{};s.historyLinks=s.historyLinks||{};s.queue=Array.isArray(s.queue)?s.queue:[];return s;}
+function normalizeState(s){s=s&&typeof s==="object"?s:{};s.debts=s.debts||{};s.mastered=s.mastered||{};s.seen=s.seen||{};s.highestDebt=s.highestDebt||{};s.lastReviewedDate=s.lastReviewedDate||{};s.customWords=Array.isArray(s.customWords)?s.customWords:[];s.customPronunciations=s.customPronunciations||{};s.manualPronunciations=s.manualPronunciations||{};s.notes=s.notes||{};s.noteUpdatedAt=s.noteUpdatedAt||{};s.linkedWords=s.linkedWords||{};s.tags=s.tags||{};s.wordTags=s.wordTags||{};s.removedWords=s.removedWords||{};s.dailyStats=s.dailyStats||{};s.historyLinks=s.historyLinks||{};s.queue=Array.isArray(s.queue)?s.queue:[];return s;}
 function learningBundle(s,w){return {debt:Number(s.debts?.[w])||0,mastered:!!s.mastered?.[w],lastReviewedDate:s.lastReviewedDate?.[w]||null};}
 function applyLearningBundle(out,w,b){delete out.debts[w];delete out.mastered[w];delete out.lastReviewedDate[w];if(b.mastered)out.mastered[w]=true;else if(Number(b.debt)>0)out.debts[w]=Number(b.debt);if(!b.mastered&&b.lastReviewedDate)out.lastReviewedDate[w]=b.lastReviewedDate;}
 function describeLearning(b){if(b.mastered)return "已掌握 · debt 0";if(Number(b.debt)>0)return `继续复习 · debt ${b.debt}${b.lastReviewedDate?" · 最近 "+b.lastReviewedDate:""}`;return "未处于复习队列";}
@@ -48,7 +48,20 @@ function mergeStates(base,local,remote){
   for(const w of learningWords){const b=learningBundle(base,w),l=learningBundle(local,w),r=learningBundle(remote,w);let chosen;const learned=x=>!!x.mastered||Number(x.debt)>0||!!x.lastReviewedDate;const suspiciousRegression=learned(b)&&((learned(l)&&!learned(r))||(!learned(l)&&learned(r)));if(same(l,r))chosen=l;else if(suspiciousRegression){chosen=l;conflicts.push({word:w,base:b,local:l,remote:r});}else if(same(l,b))chosen=r;else if(same(r,b))chosen=l;else{chosen=l;conflicts.push({word:w,base:b,local:l,remote:r});}applyLearningBundle(out,w,chosen);}
   out.seen=map3(base.seen,local.seen,remote.seen,boolResolver);
   out.highestDebt=map3(base.highestDebt,local.highestDebt,remote.highestDebt,maxResolver);
-  for(const key of ["customPronunciations","manualPronunciations","notes","tags","removedWords"]){out[key]=map3(base[key],local[key],remote[key]);}
+
+  // Scalar metadata: preserve one-sided edits automatically; surface true same-key divergence.
+  const scalarFields=["customPronunciations","manualPronunciations","tags","removedWords"];
+  for(const key of scalarFields){
+    out[key]=map3(base[key],local[key],remote[key],(item,b,l,r)=>{conflicts.push({type:"metadata",field:key,key:item,base:b,local:l,remote:r});return l;});
+  }
+  // Notes get the same conflict protection plus an explicit lossless merge option.
+  out.notes=map3(base.notes,local.notes,remote.notes,(word,b,l,r)=>{
+    conflicts.push({type:"note",field:"notes",key:word,word,base:b,local:l,remote:r,localAt:local.noteUpdatedAt?.[word]||null,remoteAt:remote.noteUpdatedAt?.[word]||null});
+    return l;
+  });
+  out.noteUpdatedAt=map3(base.noteUpdatedAt,local.noteUpdatedAt,remote.noteUpdatedAt,(word,b,l,r)=>{
+    const vals=[l,r,b].filter(Boolean).sort();return vals[vals.length-1];
+  });
   out.customWords=set3(base.customWords,local.customWords,remote.customWords);
   out.linkedWords=map3(base.linkedWords,local.linkedWords,remote.linkedWords,linkedResolver);
   out.wordTags=map3(base.wordTags,local.wordTags,remote.wordTags,(k,b,l,r)=>set3(Array.isArray(b)?b:[],Array.isArray(l)?l:[],Array.isArray(r)?r:[]));
@@ -59,7 +72,7 @@ function mergeStates(base,local,remote){
   out.voiceIndex=local.voiceIndex;out.current=local.current;out.queue=local.queue;out.queueDate=local.queueDate;
   return {merged:out,conflicts};
 }
-function countMergedChanges(local,merged){let n=0;for(const key of ["debts","mastered","lastReviewedDate","seen","highestDebt","customPronunciations","manualPronunciations","notes","tags","wordTags","removedWords","linkedWords","dailyStats","historyLinks"]){const a=local[key]||{},b=merged[key]||{};for(const k of new Set([...Object.keys(a),...Object.keys(b)]))if(!same(a[k],b[k]))n++;}if(!same(local.customWords||[],merged.customWords||[]))n++;return n;}
+function countMergedChanges(local,merged){let n=0;for(const key of ["debts","mastered","lastReviewedDate","seen","highestDebt","customPronunciations","manualPronunciations","notes","noteUpdatedAt","tags","wordTags","removedWords","linkedWords","dailyStats","historyLinks"]){const a=local[key]||{},b=merged[key]||{};for(const k of new Set([...Object.keys(a),...Object.keys(b)]))if(!same(a[k],b[k]))n++;}if(!same(local.customWords||[],merged.customWords||[]))n++;return n;}
 async function putMerged(merged,existing){const payload={app:"Audio Vocabulary Sprint",version:11,syncedAt:new Date().toISOString(),source:"merged",state:merged};const body={message:"Merge Audio Vocabulary Sprint progress",content:bytesToBase64(JSON.stringify(payload,null,2)),branch:SYNC.branch};if(existing?.sha)body.sha=existing.sha;const r=await fetch(syncApiUrl(),{method:"PUT",headers:{...syncHeaders(),"Content-Type":"application/json"},body:JSON.stringify(body)});if(!r.ok){let detail="";try{detail=(await r.json()).message||"";}catch(_){}const e=new Error(`GitHub ${r.status}${detail?": "+detail:""}`);e.status=r.status;throw e;}return r.json();}
 function studyCounts(s){
   s=normalizeState(clone(s||{}));
@@ -95,11 +108,49 @@ function renderPreview(pkg){
   root.innerHTML=`<div class="syncPreviewCard"><div class="syncPreviewTitle"><b>同步预览</b><span>现在还没有写入 GitHub</span></div>${countTable(pkg.local,pkg.remote,pkg.merged)}<div class="sub syncPreviewNote">确认后：本机会采用“合并后”状态，GitHub progress.json 也会更新为同一份学习数据。</div><button class="action syncConfirmBtn" id="syncConfirmBtn">确认同步</button></div>`;
   document.getElementById("syncConfirmBtn").onclick=()=>confirmPreview(pkg);
 }
+function conflictLabel(c){
+  if(c.type==="note")return `笔记 · ${c.word}`;
+  const names={customPronunciations:"导入发音",manualPronunciations:"手动发音",tags:"标签定义",removedWords:"移除状态"};
+  return `${names[c.field]||c.field} · ${c.key}`;
+}
+function conflictValue(v){
+  if(v===undefined)return "（删除 / 无）";
+  if(typeof v==="string")return v||"（空）";
+  try{return JSON.stringify(v);}catch(_){return String(v);}
+}
+function mergedNoteValue(c){
+  const parts=[];
+  const add=v=>{const q=String(v||"").trim();if(q&&!parts.includes(q))parts.push(q);};
+  const a={v:c.local,t:c.localAt||""},b={v:c.remote,t:c.remoteAt||""};
+  if(a.t&&b.t){[a,b].sort((x,y)=>x.t.localeCompare(y.t)).forEach(x=>add(x.v));}
+  else{add(c.local);add(c.remote);}
+  return parts.join(" · ");
+}
+function applyConflictChoice(final,c,choice){
+  if(!c.type||c.type==="learning"){applyLearningBundle(final,c.word,choice==="remote"?c.remote:c.local);return;}
+  if(c.type==="note"){
+    let v,at;if(choice==="merge"){v=mergedNoteValue(c);at=[c.localAt,c.remoteAt].filter(Boolean).sort().pop()||new Date().toISOString();}
+    else if(choice==="remote"){v=c.remote;at=c.remoteAt||new Date().toISOString();}
+    else{v=c.local;at=c.localAt||new Date().toISOString();}
+    if(v===undefined||String(v).trim()==="")delete final.notes[c.key];else final.notes[c.key]=v;
+    final.noteUpdatedAt=final.noteUpdatedAt||{};final.noteUpdatedAt[c.key]=at;return;
+  }
+  const v=choice==="remote"?c.remote:c.local;final[c.field]=final[c.field]||{};if(v===undefined)delete final[c.field][c.key];else final[c.field][c.key]=clone(v);
+}
 function renderConflicts(pkg){
   const root=previewRoot();if(!root)return;const cs=pkg.conflicts||[];
   root.innerHTML=`<div class="syncPreviewCard"><div class="syncPreviewTitle"><b>同步预览</b><span>⚠ ${cs.length} 项需要确认；现在还没有写入 GitHub</span></div>${countTable(pkg.local,pkg.remote,pkg.merged)}<div class="syncConflictList"></div><button class="action syncResolveAll" id="syncResolveAll" disabled>确认选择并同步（还剩 ${cs.length} 项）</button></div>`;
   const list=root.querySelector(".syncConflictList");
-  cs.forEach((c,i)=>{const item=document.createElement("section");item.className="syncConflictItem";item.innerHTML=`<div class="syncConflictTitle"><b>${escapeHtml(c.word)}</b><span>${i+1} / ${cs.length}</span></div><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="local"><span><b>${escapeHtml(describeLearning(c.local))}</b><small>保留本机</small></span></label><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="remote"><span><b>${escapeHtml(describeLearning(c.remote))}</b><small>采用 GitHub</small></span></label>`;list.appendChild(item);});
+  cs.forEach((c,i)=>{
+    const item=document.createElement("section");item.className="syncConflictItem";
+    if(!c.type||c.type==="learning"){
+      item.innerHTML=`<div class="syncConflictTitle"><b>${escapeHtml(c.word)}</b><span>${i+1} / ${cs.length}</span></div><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="local"><span><b>${escapeHtml(describeLearning(c.local))}</b><small>保留本机</small></span></label><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="remote"><span><b>${escapeHtml(describeLearning(c.remote))}</b><small>采用 GitHub</small></span></label>`;
+    }else{
+      const merge=c.type==="note"?`<label class="syncChoice"><input type="radio" name="syncConflict${i}" value="merge"><span><b>${escapeHtml(mergedNoteValue(c)||"（两边都为空）")}</b><small>合并两边笔记${c.localAt&&c.remoteAt?" · 按修改时间排序":" · 旧笔记无时间记录时按本机 → GitHub"}</small></span></label>`:"";
+      item.innerHTML=`<div class="syncConflictTitle"><b>${escapeHtml(conflictLabel(c))}</b><span>${i+1} / ${cs.length}</span></div><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="local"><span><b>${escapeHtml(conflictValue(c.local))}</b><small>保留本机</small></span></label><label class="syncChoice"><input type="radio" name="syncConflict${i}" value="remote"><span><b>${escapeHtml(conflictValue(c.remote))}</b><small>采用 GitHub</small></span></label>${merge}`;
+    }
+    list.appendChild(item);
+  });
   const btn=root.querySelector("#syncResolveAll");
   const refresh=()=>{let left=0;cs.forEach((_,i)=>{if(!root.querySelector(`input[name="syncConflict${i}"]:checked`))left++;});btn.disabled=left>0;btn.textContent=left?`确认选择并同步（还剩 ${left} 项）`:`确认 ${cs.length} 项并同步`;};
   root.addEventListener("change",refresh);btn.onclick=()=>confirmConflicts(pkg,root,btn);refresh();
@@ -110,7 +161,7 @@ async function inspectSync(){
   try{
     ensureLinkedWordsInVocabulary();const local=clone(state);let base=readBase();const existing=await githubGetProgress(),remote=cloudState(existing)||{};if(!base)base=clone(remote||{});
     const result=mergeStates(base,local,remote);const pkg={sha:existing?.sha||null,local,remote,merged:result.merged,conflicts:result.conflicts||[]};
-    setSyncStatus(pkg.conflicts.length?`检查完成：${pkg.conflicts.length} 项学习状态需要你选择。确认前不会写入 GitHub。`:"检查完成：请核对下方数量变化。确认前不会写入 GitHub。");
+    setSyncStatus(pkg.conflicts.length?`检查完成：${pkg.conflicts.length} 项冲突需要你选择。确认前不会写入 GitHub。`:"检查完成：请核对下方数量变化。确认前不会写入 GitHub。");
     if(pkg.conflicts.length)renderConflicts(pkg);else renderPreview(pkg);
   }catch(e){console.error(e);setSyncStatus("检查失败 · "+e.message);showTransientToast("检查同步失败："+e.message);}
 }
@@ -125,7 +176,7 @@ async function confirmPreview(pkg){
 }
 async function confirmConflicts(pkg,root,btn){
   btn.disabled=true;setSyncStatus("正在确认选择并重新检查 GitHub…");
-  try{const latest=await ensureStillCurrent(pkg);const final=clone(pkg.merged);pkg.conflicts.forEach((c,i)=>{const choice=root.querySelector(`input[name="syncConflict${i}"]:checked`)?.value;applyLearningBundle(final,c.word,choice==="remote"?c.remote:c.local);});const before=studyCounts(state);await finishSync(final,latest,before);}catch(e){console.error(e);setSyncStatus("同步未完成 · "+e.message);showTransientToast("同步未完成："+e.message);btn.disabled=false;}
+  try{const latest=await ensureStillCurrent(pkg);const final=clone(pkg.merged);pkg.conflicts.forEach((c,i)=>{const choice=root.querySelector(`input[name="syncConflict${i}"]:checked`)?.value;applyConflictChoice(final,c,choice);});const before=studyCounts(state);await finishSync(final,latest,before);}catch(e){console.error(e);setSyncStatus("同步未完成 · "+e.message);showTransientToast("同步未完成："+e.message);btn.disabled=false;}
 }
 const syncBtn=document.getElementById("syncBtn"),syncOverlay=document.getElementById("syncOverlay");
 if(syncBtn)syncBtn.onclick=()=>{syncOverlay.style.display="flex";const input=document.getElementById("syncTokenInput");if(input)input.value="";tokenState();clearPreview();setSyncStatus(getSyncToken()?"点击“检查同步变化”：先预览数量变化，确认后才会写入 GitHub。":"此设备尚未保存 Token。请先展开 Token 设置。");updateLastSyncInfo();};

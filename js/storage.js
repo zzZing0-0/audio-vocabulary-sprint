@@ -12,13 +12,14 @@ state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
 state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {}; // imported pronunciation layer (e.g. Eudic)
-state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v3.33.5: explicit manual override layer
-// v3.33.5 briefly stored manual edits in customPronunciations. Move only entries
+state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v3.33.6: explicit manual override layer
+// v3.33.6 briefly stored manual edits in customPronunciations. Move only entries
 // explicitly marked source=manual; imported Eudic entries remain in customPronunciations.
 for(const [k,p] of Object.entries(state.customPronunciations)){
   if(p && p.source==="manual"){ state.manualPronunciations[k]=p; delete state.customPronunciations[k]; }
 }
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
+state.noteUpdatedAt = (state.noteUpdatedAt && typeof state.noteUpdatedAt === "object" && !Array.isArray(state.noteUpdatedAt)) ? state.noteUpdatedAt : {}; // v3.33.6: per-note edit timestamps for deterministic cross-device merge
 state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
 state.tags = (state.tags && typeof state.tags === "object" && !Array.isArray(state.tags)) ? state.tags : {}; // v3.33: tag definitions by id
 state.wordTags = (state.wordTags && typeof state.wordTags === "object" && !Array.isArray(state.wordTags)) ? state.wordTags : {}; // v3.33: lowercase word -> tag ids
@@ -31,6 +32,15 @@ if(!state.statsStartDate){
   const _statsNow=new Date();
   state.statsStartDate=_statsNow.getFullYear()+"-"+String(_statsNow.getMonth()+1).padStart(2,"0")+"-"+String(_statsNow.getDate()).padStart(2,"0");
   localStorage.setItem(KEY,JSON.stringify(state));
+}
+
+
+function setWordNote(word,text){
+  const w=String(word||"").trim();
+  if(!w)return;
+  const v=String(text||"").trim();
+  if(v)state.notes[w]=v;else delete state.notes[w];
+  state.noteUpdatedAt[w]=new Date().toISOString();
 }
 
 // v3.29.6: linkedWords is only a relationship map; every referenced word must

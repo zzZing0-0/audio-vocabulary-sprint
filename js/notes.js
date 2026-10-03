@@ -19,7 +19,7 @@ function renderNotes(){
   document.getElementById("count").textContent=rows.length;
   const totalPages=Math.max(1,Math.ceil(rows.length/NOTES_PAGE_SIZE));notesPage=Math.min(Math.max(1,notesPage),totalPages);const pageRows=rows.slice((notesPage-1)*NOTES_PAGE_SIZE,notesPage*NOTES_PAGE_SIZE);
   notesRoot.innerHTML=pageRows.length?pageRows.map(([w,n])=>'<div class="noteManageRow" data-word="'+encodeURIComponent(w)+'"><div class="noteManageHead"><a class="noteWordLink" href="lookup.html?word='+encodeURIComponent(w)+'">'+ne(w)+'</a><span class="wordListMeta">'+ne(nstatus(w))+'</span></div><input class="wordNoteInput noteManageInput" type="text" value="'+ne(n)+'"><button class="miniBtn dangerLite noteDelete" type="button">删除笔记</button></div>').join(''):'<p>目前还没有笔记。</p>';
-  notesRoot.querySelectorAll(".noteManageRow").forEach(row=>{const w=decodeURIComponent(row.dataset.word),input=row.querySelector(".noteManageInput");input.onchange=input.onblur=()=>{const v=input.value.trim();if(v)state.notes[w]=v;else delete state.notes[w];save();};row.querySelector(".noteDelete").onclick=()=>{delete state.notes[w];save();renderNotes();};});
+  notesRoot.querySelectorAll(".noteManageRow").forEach(row=>{const w=decodeURIComponent(row.dataset.word),input=row.querySelector(".noteManageInput");input.onchange=input.onblur=()=>{const v=input.value.trim();setWordNote(w,v);save();};row.querySelector(".noteDelete").onclick=()=>{setWordNote(w,"");save();renderNotes();};});
   renderNotesPagination(totalPages);
 }
 renderNotes();
