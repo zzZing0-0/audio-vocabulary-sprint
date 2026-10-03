@@ -54,7 +54,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.33.4",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.33.5",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -146,7 +146,7 @@ function rememberHomeBeforeLookup(){
 function goToLookup(word){
   const w=String(word||"").trim();if(!w)return;
   rememberHomeBeforeLookup();
-  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=3.33.4";
+  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=3.33.5";
 }
 function restoreHomeAfterLookup(){
   let raw=null;try{raw=sessionStorage.getItem(LOOKUP_RETURN_KEY);sessionStorage.removeItem(LOOKUP_RETURN_KEY);}catch(_){}
@@ -161,7 +161,7 @@ addEventListener("pageshow",()=>{try{sessionStorage.removeItem(LOOKUP_RETURN_KEY
 function linkedWordsHtml(word){
   const linked=getLinkedWords(word);
   const chips=linked.map(w=>
-    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=3.33.4" onclick="rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
+    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=3.33.5" onclick="rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
   ).join('');
   return '<section class="confusableSection"><div class="confusableHead"><span>易混词</span><button class="confusableManageBtn" id="manageConfusables" type="button">管理易混词</button></div>'+
     (chips?'<div class="confusableList">'+chips+'</div>':'<div class="confusableEmpty">还没有链接易混词</div>')+
@@ -223,10 +223,26 @@ function openWordTagEditor(word,onDone){
   const old=document.getElementById('wordTagBackdrop');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='wordTagBackdrop';wrap.className='ipaEditorBackdrop';
   const selected=new Set(getWordTagIds(word)),tags=tagList();
-  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.4">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
+  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=3.33.5">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
   document.body.appendChild(wrap);const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#saveWordTags').onclick=()=>{setWordTagIds(word,[...wrap.querySelectorAll('.tagChoice input:checked')].map(x=>x.value));save();close();if(onDone)onDone();};
 }
+function syncMobileTopInfoLayout(){
+  const card=document.querySelector(".card");
+  if(!card)return;
+  const info=card.querySelector(".topLeftInfo");
+  const mobile=window.matchMedia&&window.matchMedia("(max-width: 600px)").matches;
+  if(!mobile||!info){
+    card.style.removeProperty("--mobile-top-info-height");
+    return;
+  }
+  requestAnimationFrame(()=>{
+    const h=Math.ceil(info.getBoundingClientRect().height||0);
+    card.style.setProperty("--mobile-top-info-height",h+"px");
+  });
+}
+window.addEventListener("resize",syncMobileTopInfoLayout);
+
 function reveal(debtOverride=null, firstOverride=null){
   if(!state.current)return;
   revealed=true;
@@ -260,6 +276,7 @@ function reveal(debtOverride=null, firstOverride=null){
     '</details>';
 
   bindConfusableControls();
+  syncMobileTopInfoLayout();
   const tagBtn=document.getElementById('currentTagManage');if(tagBtn)tagBtn.onclick=()=>openWordTagEditor(state.current,()=>reveal(d,isFirst));
 
   try{ const w=(typeof currentWord!=="undefined"&&currentWord)||state.current; styleDebtBadge(state.debts[w]||1); }catch(e){}
@@ -526,12 +543,12 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=3.33.4"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=3.33.4"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=3.33.4"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=3.33.4"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=3.33.4"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=3.33.4"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=3.33.5"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.33.5"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=3.33.5"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=3.33.5"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.33.5"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.33.5"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
@@ -589,7 +606,7 @@ function resetProgress(){
      save();
      speechSynthesis.cancel();
      revealed=false; started=false;
-     document.getElementById("answer").innerHTML="";
+     document.getElementById("answer").innerHTML=""; syncMobileTopInfoLayout();
      document.getElementById("hint").textContent="";
      updateStats();
      updateAnswerControls();
@@ -671,7 +688,7 @@ async function importProgress(file){
     save();
     speechSynthesis.cancel();
     revealed=false; started=false;
-    document.getElementById("answer").innerHTML="";
+    document.getElementById("answer").innerHTML=""; syncMobileTopInfoLayout();
     document.getElementById("hint").textContent="进度已导入。点击喇叭继续。";
     updateAnswerControls();
     showTransientToast("进度导入成功");
