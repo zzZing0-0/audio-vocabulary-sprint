@@ -1,16 +1,25 @@
-# Audio Vocabulary Sprint v3.31.9
+# Audio Vocabulary Sprint v3.32.0
 
-## v3.31.9 emergency sync safety patch
-- Startup auto-sync disabled: opening the app never writes to GitHub.
-- Added explicit read-only “restore GitHub to local” recovery action with double confirmation.
-- Added rolling local pre-sync snapshots (latest 10) while retaining the legacy single backup.
+## v3.32.0 information architecture
+- Main study page keeps only the learning workflow, a vocabulary search box, and three navigation entries: 词库 / 学习记录 / 设置.
+- 词库 groups 学习中（钉子户）, 已掌握, 笔记, 已移除.
+- 设置 groups GitHub 同步, 导入新词表, and the destructive 清空词库 action.
+- 查询词条 is no longer a main navigation item; search is available directly from the study page and opens the existing lookup detail page.
+- No learning scheduler, GitHub merge, token persistence, or state schema changes in this release.
 
+## Learning rules
+- A new word starts conceptually at debt = 1 when first judged. PASS reduces debt by 1; AGAIN increases debt by 1. debt = 0 means 已掌握.
+- A learning word is judged at most once per local calendar day.
+- `highestDebt` preserves the historical peak debt.
+- Removing a word excludes it from the learning queue without deleting its debt, mastery, notes, or links; it can be restored.
+- TXT/CSV imports add custom vocabulary. Re-importing an active word increases debt; re-importing a mastered word reactivates it at debt = 1.
+- Built-in words cannot be permanently deleted; custom words may be permanently deleted from 已移除.
 
-
-## v3.31.9
-- Fix: linked confusable words are now guaranteed to exist in the actual vocabulary.
-- Older/orphaned `linkedWords` references are repaired into `state.customWords` without changing debt, seen, or mastery state.
-- GitHub upload/download runs the same repair so linked words remain searchable on every device after sync.
+## Sync rules
+- Opening the app does not automatically sync or write GitHub.
+- Manual sync first reads and previews 本机同步前 / GitHub 当前 / 合并后 counts. Nothing is written until confirmation.
+- Incompatible same-word changes require an explicit user choice before confirmation.
+- `current`, `queue`, and `queueDate` are device-local scheduler position and are not merged across devices.
 
 ## Structure
 - `index.html` — page structure
@@ -329,8 +338,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 
 ## v3.29.3
 - Mobile Lookup search button uses a compact 🔍 icon while desktop keeps “查询”.
-- “查询词条” moves to the main footer; “重置进度” moves into 规则 / 进度.
-- 规则 / 进度 actions are ordered: 钉子户 → 笔记 → 已掌握 → 已移除 → 重置进度, before explanatory text.
+- Historical note: this version placed 查询词条 in the footer and 重置进度 in 规则 / 进度; v3.32.0 later replaces that navigation with 词库 / 学习记录 / 设置.
 - Active and Mastered word names link directly to Lookup.
 - Notes sort removed entries after all current-library entries.
 - Notes, Active, Mastered, and Removed lists paginate at 20 entries per page.
@@ -354,20 +362,20 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Secondary pages now carry build metadata and freshness checks.
 
 
-## v3.31.9
+## v3.32.0
 - 学习记录支持每天最多 3 条链接笔记，月历显示链接数量，日详情可添加/删除。
 - 学习记录页底部加入 Zing Calendar 友情链接。
 - GitHub 同步改为单一“同步”操作，使用设备本地同步基线进行三方合并，减少跨设备覆盖风险。
 - 使用喇叭 emoji SVG favicon，替代浏览器默认字母图标。
 
 
-## v3.31.9
+## v3.32.0
 - Adds real PNG app icons / Apple touch icon for home-screen installation.
 - Adds one-click restore of the latest pre-sync local backup.
 - Treats learned→unseen cross-device regressions as conflicts instead of silently accepting them.
 
 
-### v3.31.9
+### v3.32.0
 - Sync preview now shows only absolute counts for Local / GitHub / Merged; removed ambiguous change labels.
 - Mobile learning-history month cells use fixed date/indicator/total rows; link notes are shown as a small dot below the date.
 - Lookup prefix suggestions use a classic vertical search suggestion list, one result per row.

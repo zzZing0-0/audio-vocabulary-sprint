@@ -37,7 +37,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=3.31.9",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=3.32.0",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -469,27 +469,69 @@ document.getElementById("voicePrev").onclick=()=>changeVoice(-1);
 document.getElementById("voiceNext").onclick=()=>changeVoice(1);
 document.getElementById("voicePrevMobile").onclick=()=>changeVoice(-1);
 document.getElementById("voiceNextMobile").onclick=()=>changeVoice(1);
-document.getElementById("info").onclick=()=>{
- document.getElementById("panel").innerHTML=
-   '<h2>规则 / 进度</h2>'+
-   '<div class="listLinks infoPrimaryLinks"><a class="miniBtn linkBtn" href="active.html">⚠️ 查看钉子户</a><a class="miniBtn linkBtn" href="notes.html">📝 查看笔记</a><a class="miniBtn linkBtn" href="mastered.html">✅️ 查看已掌握</a><a class="miniBtn linkBtn" href="removed.html">❌ 查看已移除</a></div>'+
-   '<p>每个新词首次出现时默认 debt = 1。通过：debt −1；再来一次：debt +1。debt 到 0 后进入已掌握。因此首次通过直接清零；首次再来一次会变成 debt = 2。</p>'+
-   '<p>学习中单词每个自然日最多考核一次：再来一次后当天退场；若 debt &gt; 1，通过后也当天退场，下一次最早在下一个自然日出现。</p>'+
-   '<p><b>peak</b>：记录一个词历史上达到过的最高 debt；进入已掌握后仍保存在学习 state 中，并随 GitHub progress.json 一起同步。</p>'+
-   '<p><b>自定义词库</b>：支持 TXT（一行一个词条）和 CSV。欧路词典 CSV 的“单词 / 音标”会同时导入；音标随 GitHub progress.json 私有同步，并优先于内置 Wiktionary 音标。</p><p><b>重复导入</b>：未学习词不增加 debt；学习中词 debt +1；已掌握词重新激活为 debt = 1。同一文件内的重复行只处理一次。</p><p><b>已移除</b>：移出词库只会把单词排除出学习队列，不删除既有 debt / 已掌握 / 笔记 历史；可随时恢复。</p>'+
-   '<div class="resetBottom"><button class="miniBtn linkBtn dangerLite resetEntry" id="panelReset" type="button">🔄 重置进度</button></div>'+
-   '<button class="action" style="margin-top:18px;width:100%" onclick="closePanel()">关闭</button>';
+function openUtilityPanel(html){
+ document.getElementById("panel").innerHTML=html;
  document.getElementById("overlay").style.display="flex";
- const panelReset=document.getElementById("panelReset");
- if(panelReset)panelReset.onclick=resetProgress;
+}
+
+const libraryBtn=document.getElementById("libraryBtn");
+if(libraryBtn)libraryBtn.onclick=()=>{
+ openUtilityPanel(
+   '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
+   '<div class="utilityMenu">'+
+    '<a class="utilityMenuItem" href="active.html?v=3.32.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=3.32.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=3.32.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=3.32.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+   '</div>'
+ );
+ const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
 };
+
+const settingsBtn=document.getElementById("settingsBtn");
+if(settingsBtn)settingsBtn.onclick=()=>{
+ openUtilityPanel(
+   '<div class="utilityPanelHead"><div><h2>设置</h2><div class="sub">同步、导入与本机数据维护</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
+   '<div class="utilityMenu">'+
+    '<button class="utilityMenuItem utilityMenuButton" id="panelSync" type="button"><span><b>GitHub 同步</b><small>检查本机与 GitHub 的学习数据并确认合并</small></span><i>›</i></button>'+ 
+    '<label class="utilityMenuItem utilityMenuButton" for="importWordsFile"><span><b>导入新词表</b><small>支持 TXT 与 CSV</small></span><i>›</i></label>'+ 
+   '</div>'+ 
+   '<div class="utilityDanger"><button class="utilityDangerButton" id="panelReset" type="button">清空词库</button><div class="sub">清除本机学习进度、自定义词、笔记等本地词库数据；不会直接修改 GitHub。</div></div>'
+ );
+ const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
+ const sync=document.getElementById("panelSync");if(sync)sync.onclick=()=>{closePanel();document.getElementById("syncBtn").click();};
+ const reset=document.getElementById("panelReset");if(reset)reset.onclick=resetProgress;
+};
+
+function homeSearchWords(raw){
+ const q=String(raw||"").trim().toLowerCase();
+ if(!q)return [];
+ const words=allWords();
+ const starts=[],contains=[];
+ for(const w of words){const k=String(w).toLowerCase();if(k.startsWith(q))starts.push(w);else if(k.includes(q))contains.push(w);}
+ return starts.concat(contains).slice(0,8);
+}
+function renderHomeSearch(raw){
+ const box=document.getElementById("homeSearchSuggestions");if(!box)return;
+ const q=String(raw||"").trim(),items=homeSearchWords(q);
+ if(!q||!items.length){box.hidden=true;box.innerHTML="";return;}
+ box.innerHTML=items.map(w=>'<button type="button" class="homeSearchSuggestion" data-word="'+escapeHtml(w)+'"><span>'+escapeHtml(w)+'</span><i>›</i></button>').join("");
+ box.hidden=false;
+ box.querySelectorAll("[data-word]").forEach(btn=>btn.onclick=()=>{location.href="lookup.html?word="+encodeURIComponent(btn.dataset.word)+"&v=3.32.0";});
+}
+const homeSearchInput=document.getElementById("homeSearchInput");
+if(homeSearchInput){
+ homeSearchInput.oninput=e=>renderHomeSearch(e.target.value);
+ homeSearchInput.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();const q=homeSearchInput.value.trim();if(q)location.href="lookup.html?word="+encodeURIComponent(q)+"&v=3.32.0";}};
+}
+
 
 function closePanel(){document.getElementById("overlay").style.display="none"}
 document.getElementById("overlay").onclick=e=>{if(e.target.id==="overlay")closePanel()};
 function resetProgress(){
  requireSecondClick(
    "reset-local",
-   "将重置进度学习进度；不会修改 GitHub 云端，但之后上传会覆盖云端",
+   "将清空本机词库数据，包括学习进度、自定义词、笔记、易混词和学习记录；不会直接修改 GitHub。再次点击确认",
    ()=>{
      localStorage.removeItem(KEY);
      state={debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},notes:{},linkedWords:{},removedWords:{},dailyStats:{},historyLinks:{},statsStartDate:localDateKey(),current:null,queue:BASE_WORDS.slice(),queueDate:null,voiceIndex:state.voiceIndex||0};
@@ -502,7 +544,7 @@ function resetProgress(){
      document.getElementById("hint").textContent="";
      updateStats();
      updateAnswerControls();
-     showTransientToast("本机学习进度已重置；此时上传会覆盖 GitHub 云端进度");
+     showTransientToast("本机词库已清空；GitHub 云端尚未修改");
    }
  );
 }
