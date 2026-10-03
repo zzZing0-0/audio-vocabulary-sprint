@@ -261,7 +261,7 @@ function renderRemoved(){
 }
 
 
-// v3.32.7: auditory comparison controls with one global voice display.
+// v3.32.8: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
 const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
@@ -328,7 +328,7 @@ function initConfusableReading(){
 }
 
 
-// v3.32.7: continuous whole-library listening for Active / Mastered.
+// v3.32.8: continuous whole-library listening for Active / Mastered.
 const LIBRARY_PLAYER_PAUSE_KEY="audio_vocab_sprint_library_player_pause_ms";
 const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
 const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";
