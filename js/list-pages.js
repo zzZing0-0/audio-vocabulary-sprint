@@ -12,6 +12,8 @@ listState.customWords=Array.isArray(listState.customWords)?listState.customWords
 listState.customPronunciations=(listState.customPronunciations&&typeof listState.customPronunciations==="object"&&!Array.isArray(listState.customPronunciations))?listState.customPronunciations:{};
 listState.manualPronunciations=(listState.manualPronunciations&&typeof listState.manualPronunciations==="object"&&!Array.isArray(listState.manualPronunciations))?listState.manualPronunciations:{};
 listState.linkedWords=(listState.linkedWords&&typeof listState.linkedWords==="object"&&!Array.isArray(listState.linkedWords))?listState.linkedWords:{};
+listState.tags=(listState.tags&&typeof listState.tags==="object"&&!Array.isArray(listState.tags))?listState.tags:{};
+listState.wordTags=(listState.wordTags&&typeof listState.wordTags==="object"&&!Array.isArray(listState.wordTags))?listState.wordTags:{};
 
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
 function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
@@ -234,6 +236,7 @@ function permanentlyDeleteRemovedWord(w){
     ()=>{
       const target=String(w).toLowerCase();
       listState.customWords=(listState.customWords||[]).filter(x=>String(x).toLowerCase()!==target);
+      delete listState.wordTags[target];
       for(const obj of [listState.customPronunciations,listState.manualPronunciations,listState.debts,listState.mastered,listState.seen,listState.highestDebt,listState.lastReviewedDate,listState.notes,listState.removedWords])deleteCaseInsensitiveKey(obj,w);
       // Remove both the word's own linkedWords entry and every reverse reference to it.
       deleteCaseInsensitiveKey(listState.linkedWords,w);
@@ -261,7 +264,7 @@ function renderRemoved(){
 }
 
 
-// v3.32.8: auditory comparison controls with one global voice display.
+// v3.33.0: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
 const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
@@ -328,7 +331,7 @@ function initConfusableReading(){
 }
 
 
-// v3.32.8: continuous whole-library listening for Active / Mastered.
+// v3.33.0: continuous whole-library listening for Active / Mastered.
 const LIBRARY_PLAYER_PAUSE_KEY="audio_vocab_sprint_library_player_pause_ms";
 const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
 const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";

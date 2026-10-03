@@ -12,14 +12,16 @@ state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
 state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {}; // imported pronunciation layer (e.g. Eudic)
-state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v3.32.8: explicit manual override layer
-// v3.32.8 briefly stored manual edits in customPronunciations. Move only entries
+state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v3.33.0: explicit manual override layer
+// v3.33.0 briefly stored manual edits in customPronunciations. Move only entries
 // explicitly marked source=manual; imported Eudic entries remain in customPronunciations.
 for(const [k,p] of Object.entries(state.customPronunciations)){
   if(p && p.source==="manual"){ state.manualPronunciations[k]=p; delete state.customPronunciations[k]; }
 }
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
 state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
+state.tags = (state.tags && typeof state.tags === "object" && !Array.isArray(state.tags)) ? state.tags : {}; // v3.33: tag definitions by id
+state.wordTags = (state.wordTags && typeof state.wordTags === "object" && !Array.isArray(state.wordTags)) ? state.wordTags : {}; // v3.33: lowercase word -> tag ids
 state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
 state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
 state.dailyStats = (state.dailyStats && typeof state.dailyStats === "object" && !Array.isArray(state.dailyStats)) ? state.dailyStats : {}; // v3.30: learning log
@@ -149,6 +151,16 @@ function unlinkWords(a,b){
   setLinkedList(B,getLinkedWords(B).filter(w=>w.toLowerCase()!==A.toLowerCase()));
 }
 
+function cleanTagIds(ids){
+  const out=[],seen=new Set();
+  for(const raw of Array.isArray(ids)?ids:[]){const id=String(raw||"");if(id&&state.tags[id]&&!seen.has(id)){seen.add(id);out.push(id);}}
+  return out;
+}
+function getWordTagIds(word){const k=String(word||"").trim().toLowerCase();return cleanTagIds(state.wordTags[k]);}
+function setWordTagIds(word,ids){const k=String(word||"").trim().toLowerCase();if(!k)return;const clean=cleanTagIds(ids);if(clean.length)state.wordTags[k]=clean;else delete state.wordTags[k];}
+function tagList(){return Object.entries(state.tags||{}).map(([id,t])=>({id,name:String(t?.name||"").trim(),color:String(t?.color||"#8b7cf6")})).filter(t=>t.name).sort((a,b)=>a.name.localeCompare(b.name,'zh-CN'));}
+function createTag(name,color){name=String(name||"").trim();if(!name)return {ok:false,reason:"empty"};if(tagList().some(t=>t.name.toLowerCase()===name.toLowerCase()))return {ok:false,reason:"duplicate"};const id='tag_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);state.tags[id]={name,color:/^#[0-9a-f]{6}$/i.test(color||'')?color:'#8b7cf6'};return {ok:true,id};}
+function deleteTag(id){delete state.tags[id];for(const [w,ids] of Object.entries(state.wordTags||{})){const next=(Array.isArray(ids)?ids:[]).filter(x=>x!==id);if(next.length)state.wordTags[w]=next;else delete state.wordTags[w];}}
 function shuffle(a){ for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
 
 function save(){ ensureLinkedWordsInVocabulary(); localStorage.setItem(KEY,JSON.stringify(state)); if(typeof updateStats==="function") updateStats(); }
