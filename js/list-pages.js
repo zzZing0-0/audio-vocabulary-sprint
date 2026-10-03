@@ -188,12 +188,16 @@ function renderConfusable(){
   root.innerHTML=pg.items.length?pg.items.map(([w,links])=>{
     const linked=links.map(x=>'<a class="confusableListChip" href="'+lookupHref(x)+'">'+h(x)+'</a>').join('');
     const encodedGroup=encodeURIComponent(JSON.stringify([w,...links]));
-    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="confusableGroupControls"><button class="voiceArrow confusableVoicePrev" type="button" aria-label="上一个语音">‹</button><button class="confusableGroupPlay" type="button" aria-label="依次朗读这一组" data-confusable-group="'+encodedGroup+'">▶️</button><button class="voiceArrow confusableVoiceNext" type="button" aria-label="下一个语音">›</button></div><div class="confusableListLinks">'+linked+'</div><div class="confusableVoiceInfo" data-confusable-voice-info></div></div>';
+    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="confusableGroupControls" data-confusable-group="'+encodedGroup+'"><button class="voiceArrow confusableVoicePrev" type="button" aria-label="切换到上一个语音并朗读这一组">‹</button><button class="confusableGroupPlay" type="button" aria-label="依次朗读这一组">▶️</button><button class="voiceArrow confusableVoiceNext" type="button" aria-label="切换到下一个语音并朗读这一组">›</button></div><div class="confusableListLinks">'+linked+'</div></div>';
   }).join(''):'<p>还没有设置易混词。</p>';
   renderPagination("confusable",pg.totalPages,renderConfusable);
-  root.querySelectorAll('.confusableGroupPlay').forEach(b=>b.onclick=()=>{try{playConfusableGroup(JSON.parse(decodeURIComponent(b.dataset.confusableGroup||"%5B%5D")));}catch(_){}});
-  root.querySelectorAll('.confusableVoicePrev').forEach(b=>b.onclick=()=>changeConfusableVoice(-1));
-  root.querySelectorAll('.confusableVoiceNext').forEach(b=>b.onclick=()=>changeConfusableVoice(1));
+  root.querySelectorAll('.confusableGroupControls').forEach(box=>{
+    let group=[];try{group=JSON.parse(decodeURIComponent(box.dataset.confusableGroup||"%5B%5D"));}catch(_){}
+    const play=box.querySelector('.confusableGroupPlay'),prev=box.querySelector('.confusableVoicePrev'),next=box.querySelector('.confusableVoiceNext');
+    if(play)play.onclick=()=>playConfusableGroup(group);
+    if(prev)prev.onclick=()=>changeConfusableVoice(-1,group);
+    if(next)next.onclick=()=>changeConfusableVoice(1,group);
+  });
   updateConfusableVoiceLabels();
 }
 
@@ -247,7 +251,7 @@ function renderRemoved(){
 }
 
 
-// v3.32.5: auditory comparison controls for confusable-word groups.
+// v3.32.6: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
 const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
@@ -265,16 +269,18 @@ function confusableSelectedVoice(){
   return confusableVoices[i];
 }
 function updateConfusableVoiceLabels(){
-  const v=confusableSelectedVoice();
-  document.querySelectorAll('[data-confusable-voice-info]').forEach(el=>el.textContent=v?"Voice: "+v.name:"");
+  const v=confusableSelectedVoice(),el=document.getElementById('confusableGlobalVoice');
+  if(!el)return;
+  el.textContent=v?"Voice: "+v.name+(v.lang?"（"+v.lang.replace('-', ' · ')+"）":""):"Voice: —";
 }
-function changeConfusableVoice(step){
+function changeConfusableVoice(step,words){
   refreshConfusableVoices();
   if(!confusableVoices.length)return;
   speechSynthesis.cancel();confusablePlaybackToken++;
   const n=confusableVoices.length;
   listState.voiceIndex=((Number(listState.voiceIndex)||0)+step+n)%n;
   persist();updateConfusableVoiceLabels();
+  if(Array.isArray(words)&&words.length)playConfusableGroup(words);
 }
 function confusablePauseMs(){
   const raw=Number(localStorage.getItem(CONFUSABLE_PAUSE_KEY));
@@ -287,7 +293,7 @@ function playConfusableGroup(words){
   const token=++confusablePlaybackToken, pause=confusablePauseMs(), voice=confusableSelectedVoice();
   const next=i=>{
     if(token!==confusablePlaybackToken||i>=seq.length)return;
-    const u=new SpeechSynthesisUtterance(seq[i]);u.lang="en-US";u.rate=.86;if(voice)u.voice=voice;
+    const u=new SpeechSynthesisUtterance(seq[i]);u.lang=(voice&&voice.lang)||"en-US";u.rate=.86;if(voice)u.voice=voice;
     u.onend=()=>{if(token===confusablePlaybackToken)setTimeout(()=>next(i+1),pause);};
     u.onerror=()=>{if(token===confusablePlaybackToken)setTimeout(()=>next(i+1),pause);};
     speechSynthesis.speak(u);
