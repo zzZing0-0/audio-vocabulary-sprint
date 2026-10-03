@@ -187,9 +187,14 @@ function renderConfusable(){
   const pg=pageSlice(rows,"confusable");
   root.innerHTML=pg.items.length?pg.items.map(([w,links])=>{
     const linked=links.map(x=>'<a class="confusableListChip" href="'+lookupHref(x)+'">'+h(x)+'</a>').join('');
-    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">'+links.length+' 个易混词</div><div class="confusableListLinks">'+linked+'</div></div>';
+    const encodedGroup=encodeURIComponent(JSON.stringify([w,...links]));
+    return '<div class="wordListRow confusableListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="confusableGroupControls"><button class="voiceArrow confusableVoicePrev" type="button" aria-label="上一个语音">‹</button><button class="confusableGroupPlay" type="button" aria-label="依次朗读这一组" data-confusable-group="'+encodedGroup+'">▶️</button><button class="voiceArrow confusableVoiceNext" type="button" aria-label="下一个语音">›</button></div><div class="confusableListLinks">'+linked+'</div><div class="confusableVoiceInfo" data-confusable-voice-info></div></div>';
   }).join(''):'<p>还没有设置易混词。</p>';
   renderPagination("confusable",pg.totalPages,renderConfusable);
+  root.querySelectorAll('.confusableGroupPlay').forEach(b=>b.onclick=()=>{try{playConfusableGroup(JSON.parse(decodeURIComponent(b.dataset.confusableGroup||"%5B%5D")));}catch(_){}});
+  root.querySelectorAll('.confusableVoicePrev').forEach(b=>b.onclick=()=>changeConfusableVoice(-1));
+  root.querySelectorAll('.confusableVoiceNext').forEach(b=>b.onclick=()=>changeConfusableVoice(1));
+  updateConfusableVoiceLabels();
 }
 
 function restoreRemovedWord(w){
@@ -239,4 +244,69 @@ function renderRemoved(){
   root.querySelectorAll('[data-restore]').forEach(btn=>btn.onclick=()=>restoreRemovedWord(decodeURIComponent(btn.dataset.restore)));
   root.querySelectorAll('[data-permanent]').forEach(btn=>btn.onclick=()=>permanentlyDeleteRemovedWord(decodeURIComponent(btn.dataset.permanent)));
   renderPagination("removed",pg.totalPages,renderRemoved);
+}
+
+
+// v3.32.5: auditory comparison controls for confusable-word groups.
+let confusableVoices=[];
+let confusablePlaybackToken=0;
+const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
+function confusablePreferredVoices(){
+  const all=speechSynthesis.getVoices();
+  const en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));
+  const novelty=/(bells?|boing|bubbles?|cellos?|good news|bad news|whisper|wobble|zarvox|trinoids?|organ|superstar|jester|bahh|deranged|hysterical|robot|novelty)/i;
+  const preferred=en.filter(v=>!novelty.test(v.name||""));
+  return preferred.length>=2?preferred:(en.length?en:all);
+}
+function refreshConfusableVoices(){confusableVoices=confusablePreferredVoices();updateConfusableVoiceLabels();}
+function confusableSelectedVoice(){
+  if(!confusableVoices.length)return null;
+  const i=((Number(listState.voiceIndex)||0)%confusableVoices.length+confusableVoices.length)%confusableVoices.length;
+  return confusableVoices[i];
+}
+function updateConfusableVoiceLabels(){
+  const v=confusableSelectedVoice();
+  document.querySelectorAll('[data-confusable-voice-info]').forEach(el=>el.textContent=v?"Voice: "+v.name:"");
+}
+function changeConfusableVoice(step){
+  refreshConfusableVoices();
+  if(!confusableVoices.length)return;
+  speechSynthesis.cancel();confusablePlaybackToken++;
+  const n=confusableVoices.length;
+  listState.voiceIndex=((Number(listState.voiceIndex)||0)+step+n)%n;
+  persist();updateConfusableVoiceLabels();
+}
+function confusablePauseMs(){
+  const raw=Number(localStorage.getItem(CONFUSABLE_PAUSE_KEY));
+  return Number.isFinite(raw)?Math.min(5000,Math.max(0,raw)):700;
+}
+function playConfusableGroup(words){
+  const seq=(words||[]).map(x=>String(x||"").trim()).filter(Boolean);
+  if(!seq.length)return;
+  refreshConfusableVoices();speechSynthesis.cancel();
+  const token=++confusablePlaybackToken, pause=confusablePauseMs(), voice=confusableSelectedVoice();
+  const next=i=>{
+    if(token!==confusablePlaybackToken||i>=seq.length)return;
+    const u=new SpeechSynthesisUtterance(seq[i]);u.lang="en-US";u.rate=.86;if(voice)u.voice=voice;
+    u.onend=()=>{if(token===confusablePlaybackToken)setTimeout(()=>next(i+1),pause);};
+    u.onerror=()=>{if(token===confusablePlaybackToken)setTimeout(()=>next(i+1),pause);};
+    speechSynthesis.speak(u);
+  };next(0);
+}
+function openConfusableReadSettings(){
+  const old=document.getElementById('confusableReadSettingsBackdrop');if(old)old.remove();
+  const wrap=document.createElement('div');wrap.id='confusableReadSettingsBackdrop';wrap.className='ipaEditorBackdrop';
+  const current=confusablePauseMs();
+  wrap.innerHTML='<div class="ipaEditor confusableReadSettings" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>朗读设置</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="ipaEditorSource">设置同一组中每个单词朗读结束后，到下一个单词开始前的停顿时间。</div><div class="ipaEditorRow"><label>单词间停顿</label><div class="pauseSettingRow"><input id="confusablePauseRange" type="range" min="0" max="3000" step="100" value="'+current+'"><input id="confusablePauseNumber" class="ipaEditorInput pauseNumber" type="number" min="0" max="5000" step="100" value="'+current+'"><span>ms</span></div></div><div class="ipaEditorHint">0–5000 ms；默认 700 ms。这个设置只影响易混词整组朗读。</div><div class="ipaEditorActions"><button type="button" id="confusablePauseDefault">恢复默认</button><button type="button" class="ipaSave" id="confusablePauseSave">保存</button></div></div>';
+  document.body.appendChild(wrap);
+  const range=wrap.querySelector('#confusablePauseRange'), num=wrap.querySelector('#confusablePauseNumber');
+  range.oninput=()=>{num.value=range.value;};num.oninput=()=>{const v=Math.min(3000,Math.max(0,Number(num.value)||0));range.value=v;};
+  const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
+  wrap.querySelector('#confusablePauseDefault').onclick=()=>{range.value='700';num.value='700';};
+  wrap.querySelector('#confusablePauseSave').onclick=()=>{const v=Math.min(5000,Math.max(0,Number(num.value)||0));localStorage.setItem(CONFUSABLE_PAUSE_KEY,String(v));close();listToast('易混词朗读停顿已设为 '+v+' ms');};
+}
+function initConfusableReading(){
+  refreshConfusableVoices();
+  if('speechSynthesis' in window){speechSynthesis.addEventListener?.('voiceschanged',refreshConfusableVoices);}
+  const b=document.getElementById('confusableReadSettingsBtn');if(b)b.onclick=openConfusableReadSettings;
 }
