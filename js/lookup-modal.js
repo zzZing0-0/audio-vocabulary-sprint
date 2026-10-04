@@ -1,22 +1,36 @@
-/* Audio Vocabulary Sprint · reusable Lookup modal · v4.1.0 */
+/* Audio Vocabulary Sprint · reusable Lookup modal · v4.1.1 */
 (function(){
   let backdrop=null;
+  let lookupStack=[];
+  function frame(){return backdrop&&backdrop.querySelector('.lookupModalFrame');}
+  function backBtn(){return backdrop&&backdrop.querySelector('.lookupModalBack');}
+  function updateBack(){const b=backBtn();if(!b)return;b.hidden=lookupStack.length<=1;b.disabled=lookupStack.length<=1;}
+  function loadWord(word){const f=frame();if(!f)return;f.src='lookup.html?embed=1&word='+encodeURIComponent(word)+'&v=4.1.1';}
   function closeLookupModal(){
     if(!backdrop)return;
-    const frame=backdrop.querySelector('iframe');
-    if(frame)frame.src='about:blank';
-    backdrop.remove();backdrop=null;
+    const f=frame();if(f)f.src='about:blank';
+    backdrop.remove();backdrop=null;lookupStack=[];
     document.body.classList.remove('lookupModalOpen');
   }
-  function openLookupModal(word){
+  function openLookupModal(word,opts){
     const w=String(word||'').trim();if(!w)return;
-    closeLookupModal();
+    if(backdrop){
+      const current=lookupStack[lookupStack.length-1];
+      if(current!==w)lookupStack.push(w);
+      loadWord(w);updateBack();return;
+    }
+    lookupStack=[w];
     backdrop=document.createElement('div');
     backdrop.className='lookupModalBackdrop';
-    backdrop.innerHTML='<section class="lookupModalShell" role="dialog" aria-modal="true" aria-label="查看单词"><button class="lookupModalClose" type="button" aria-label="关闭 Lookup">×</button><iframe class="lookupModalFrame" title="Lookup" src="lookup.html?embed=1&word='+encodeURIComponent(w)+'&v=4.1.0"></iframe></section>';
+    backdrop.innerHTML='<section class="lookupModalShell" role="dialog" aria-modal="true" aria-label="查看单词"><button class="lookupModalBack" type="button" aria-label="返回上一个词" hidden>← 返回</button><button class="lookupModalClose" type="button" aria-label="关闭 Lookup">×</button><iframe class="lookupModalFrame" title="Lookup" src="lookup.html?embed=1&word='+encodeURIComponent(w)+'&v=4.1.1"></iframe></section>';
     document.body.appendChild(backdrop);document.body.classList.add('lookupModalOpen');
     backdrop.querySelector('.lookupModalClose').onclick=closeLookupModal;
+    backdrop.querySelector('.lookupModalBack').onclick=()=>{
+      if(lookupStack.length<=1)return;
+      lookupStack.pop();loadWord(lookupStack[lookupStack.length-1]);updateBack();
+    };
     backdrop.onclick=e=>{if(e.target===backdrop)closeLookupModal();};
+    updateBack();
   }
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop)closeLookupModal();});
   document.addEventListener('click',e=>{
@@ -26,5 +40,9 @@
     const w=u.searchParams.get('word');if(!w)return;
     e.preventDefault();e.stopPropagation();openLookupModal(w);
   },true);
+  addEventListener('message',e=>{
+    if(!backdrop||e.origin!==location.origin||e.source!==frame()?.contentWindow)return;
+    if(e.data&&e.data.type==='avs-lookup-open'&&e.data.word)openLookupModal(e.data.word);
+  });
   window.openLookupModal=openLookupModal;window.closeLookupModal=closeLookupModal;
 })();

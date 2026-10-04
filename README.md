@@ -1,16 +1,16 @@
-# Audio Vocabulary Sprint v4.1.0
+# Audio Vocabulary Sprint v4.1.1
 
-## v4.1.0 stable release
+## v4.1.1 stable release
 
 - Stable 4.0 baseline after the 3.x feature-completion and QA cycle.
-- No learning-rule or sync-schema change from the validated v3.33.9 baseline; this release formalizes that state as v4.1.0.
+- No learning-rule or sync-schema change from the validated v3.33.9 baseline; this release formalizes that state as v4.1.1.
 
-## v4.1.0
+## v4.1.1
 - 词库新增「易混词」，位于「已掌握」之后、「笔记」之前。
 - 页面列出所有至少存在一个有效易混词关联的单词，并展示其关联词；两者均可进入查询页。
 - 复用现有 `linkedWords`，不新增同步字段，不改变学习调度或同步算法。
 
-## v4.1.0 information architecture
+## v4.1.1 information architecture
 - Main study page keeps only the learning workflow, a vocabulary search box, and three navigation entries: 词库 / 学习记录 / 设置.
 - 词库 groups 学习中（钉子户）, 已掌握, 易混词, 笔记, 已移除.
 - 设置 groups GitHub 同步, 导入新词表, and the destructive 清空词库 action.
@@ -348,7 +348,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 
 ## v3.29.3
 - Mobile Lookup search button uses a compact 🔍 icon while desktop keeps “查询”.
-- Historical note: this version placed 查询词条 in the footer and 重置进度 in 规则 / 进度; v4.1.0 later replaces that navigation with 词库 / 学习记录 / 设置.
+- Historical note: this version placed 查询词条 in the footer and 重置进度 in 规则 / 进度; v4.1.1 later replaces that navigation with 词库 / 学习记录 / 设置.
 - Active and Mastered word names link directly to Lookup.
 - Notes sort removed entries after all current-library entries.
 - Notes, Active, Mastered, and Removed lists paginate at 20 entries per page.
@@ -372,70 +372,70 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Secondary pages now carry build metadata and freshness checks.
 
 
-## v4.1.0
+## v4.1.1
 - 学习记录支持每天最多 3 条链接笔记，月历显示链接数量，日详情可添加/删除。
 - 学习记录页底部加入 Zing Calendar 友情链接。
 - GitHub 同步改为单一“同步”操作，使用设备本地同步基线进行三方合并，减少跨设备覆盖风险。
 - 使用喇叭 emoji SVG favicon，替代浏览器默认字母图标。
 
 
-## v4.1.0
+## v4.1.1
 - Adds real PNG app icons / Apple touch icon for home-screen installation.
 - Adds one-click restore of the latest pre-sync local backup.
 - Treats learned→unseen cross-device regressions as conflicts instead of silently accepting them.
 
 
-### v4.1.0
+### v4.1.1
 - Sync preview now shows only absolute counts for Local / GitHub / Merged; removed ambiguous change labels.
 - Mobile learning-history month cells use fixed date/indicator/total rows; link notes are shown as a small dot below the date.
 - Lookup prefix suggestions use a classic vertical search suggestion list, one result per row.
 
 
-## v4.1.0
+## v4.1.1
 - 首页搜索框移至学习进度条下方；桌面端靠右，移动端铺满。
 - 学习记录在月/年切换旁显示当前期间的完成、新词、复习总量，直接汇总 `dailyStats`。
 
-## v4.1.0
+## v4.1.1
 - Added manual pronunciation correction UI on the study answer and lookup detail views.
 - Manual pronunciation metadata uses the existing `state.customPronunciations` syncable state.
 - Each word is limited to three fixed IPA fields: UK, US, and optional generic IPA override; no unbounded pronunciation list is created.
 - Regional IPA takes display priority. Clearing manual correction restores the public pronunciation database without modifying it.
 
 
-### v4.1.0
+### v4.1.1
 Pronunciation layers are separated: manual override > imported Eudic > Wiktionary. Clearing a manual correction now reveals the imported Eudic pronunciation when present, otherwise the original Wiktionary pronunciation. Existing v3.32.2 manual entries are migrated automatically by `source: "manual"`.
 
 
-## v4.1.0
+## v4.1.1
 - 易混词页新增整组朗读 `< ▶️ >`：依次朗读主词和其易混词，左右箭头与主页共享 voiceIndex。
 - 页头新增“朗读设置”，可自定义组内单词之间的停顿时间；该偏好仅本机保存，不进入学习/同步数据。
 
 
-### v4.1.0
+### v4.1.1
 - 易混词页改为页头仅显示一个全局 Voice。
 - 每组仅保留 ‹ ▶️ ›；左右切换全局 Voice 后立即用新 Voice 重新朗读当前组。
 - 移除每行重复 Voice 文本，并让朗读语言跟随所选 voice.lang。
 
-### v4.1.0
+### v4.1.1
 - 易混词朗读控制改为统一 SVG 图标按钮，避免 emoji/字体造成的错位。
 - 学习中、已掌握新增连续播放弹窗：支持跨分页从任意词开始、从头、上一个/下一个、停止/继续、全局 Voice 切换、每词 1–5 次循环和 0–5000 ms 停顿。
 - 连续播放器的位置与朗读偏好仅保存在本机，不写入学习进度。
 
-### v4.1.0
+### v4.1.1
 - Mobile continuous-player dialog now opens near the top of the viewport instead of bottom/vertical centering.
 - Added viewport-aware max height and internal scrolling so playback settings remain reachable on smaller phones.
 
 
-## v4.1.0
+## v4.1.1
 - Added custom colored tags. Words can have multiple tags.
 - Added Library → Tags for create/edit/delete/browse.
 - Added tag editing on revealed words and Lookup.
 - Tags and word-tag relations participate in GitHub sync; tags never affect scheduler state.
 
 
-### v4.1.0
+### v4.1.1
 - 标签颜色固定为 15 色预设色板，不提供任意颜色选择。
 - 背词主页标签收纳到左上角状态徽章区域，并以“＋”进入管理。
 - Lookup 返回按钮优先回到实际进入 Lookup 前的页面，直接打开时回退到背词主页。
 
-- v4.1.0: compact Lookup tags into inline chips and prevent mobile home tag controls from wrapping into the speaker area.
+- v4.1.1: compact Lookup tags into inline chips and prevent mobile home tag controls from wrapping into the speaker area.
