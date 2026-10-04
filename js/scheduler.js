@@ -358,22 +358,29 @@ function again(){
 }
 
 function revealThenNext(kind,fromDebt,toDebt){
-  // First tap commits the learning result exactly once.
-  // Re-render first so the dissolve targets the actual visible word node.
-  reveal(fromDebt,false);
+  // The learning result has already been committed at this point. Arm the exit
+  // before any visual feedback so a rendering/animation error can never strand
+  // the session on the judged word.
   save();
-
-  const firstBadge=document.querySelector("#answer .firstBadge");
-  if(firstBadge)firstBadge.style.display="none";
-
-  // AGAIN feedback starts immediately after the DOM rebuild: the word disappears
-  // into particles on the same tap instead of being recreated visibly afterward.
-  if(kind==="AGAIN")celebrateAgain();
-
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    animateDebtDelta(kind,fromDebt,toDebt);
-  }));
-
   scheduleJudgmentExit();
+
+  try{
+    // Re-render first so the dissolve targets the actual visible word node.
+    reveal(fromDebt,false);
+
+    const firstBadge=document.querySelector("#answer .firstBadge");
+    if(firstBadge)firstBadge.style.display="none";
+
+    // AGAIN feedback starts immediately after the DOM rebuild: the word disappears
+    // into particles on the same tap instead of being recreated visibly afterward.
+    if(kind==="AGAIN")celebrateAgain();
+
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      try{animateDebtDelta(kind,fromDebt,toDebt);}catch(err){console.error("Debt animation failed",err);}
+    }));
+  }catch(err){
+    // Feedback is non-critical. The scheduled transition above must still happen.
+    console.error("Judgment feedback failed",err);
+  }
 }
 
