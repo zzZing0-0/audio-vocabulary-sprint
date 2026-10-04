@@ -10,10 +10,11 @@ const lookupHtml=readFileSync(new URL('../lookup.html',import.meta.url),'utf8');
 test('dictionary links use the reusable vocabLookup browsing context',()=>{
   assert.match(app,/target="vocabLookup"/);
   assert.match(lookup,/target="vocabLookup"/);
-  assert.match(modal,/window\.open\(u\.href,'vocabLookup'\)/);
+  assert.doesNotMatch(modal,/window\.open\([^)]*vocabLookup/);
 });
 
-test('embedded Lookup delegates external navigation to the host page',()=>{
-  assert.match(lookupHtml,/avs-external-open/);
-  assert.match(modal,/avs-external-open/);
+test('embedded Lookup leaves external dictionary links to native target navigation',()=>{
+  assert.doesNotMatch(lookupHtml,/avs-external-open/);
+  assert.doesNotMatch(modal,/avs-external-open/);
+  assert.match(lookup,/target="vocabLookup"/);
 });

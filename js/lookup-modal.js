@@ -33,16 +33,6 @@
     updateBack();
   }
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop)closeLookupModal();});
-  // External dictionary links always use one reusable auxiliary tab/window.
-  // This keeps the vocabulary app in place and avoids opening a new tab per click.
-  document.addEventListener('click',e=>{
-    const a=e.target.closest&&e.target.closest('a[target="vocabLookup"]');if(!a)return;
-    let u;try{u=new URL(a.href,location.href);}catch(_){return;}
-    if(u.origin===location.origin)return;
-    e.preventDefault();
-    const w=window.open(u.href,'vocabLookup');
-    try{w&&w.focus();}catch(_){}
-  },true);
   document.addEventListener('click',e=>{
     const a=e.target.closest&&e.target.closest('a[href*="lookup.html?word="]');if(!a)return;
     let u;try{u=new URL(a.href,location.href);}catch(_){return;}
@@ -53,12 +43,6 @@
   addEventListener('message',e=>{
     if(!backdrop||e.origin!==location.origin||e.source!==frame()?.contentWindow)return;
     if(e.data&&e.data.type==='avs-lookup-open'&&e.data.word){openLookupModal(e.data.word);return;}
-    if(e.data&&e.data.type==='avs-external-open'&&e.data.url){
-      let u;try{u=new URL(e.data.url,location.href);}catch(_){return;}
-      if(!/^https?:$/.test(u.protocol)||u.origin===location.origin)return;
-      const w=window.open(u.href,'vocabLookup');
-      try{w&&w.focus();}catch(_){}
-    }
   });
   window.openLookupModal=openLookupModal;window.closeLookupModal=closeLookupModal;
 })();
