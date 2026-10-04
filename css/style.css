@@ -1654,3 +1654,6 @@ main{padding-top:18px;}
 .lookupEmbedded .listPageHead{display:none}
 .lookupEmbedded .listCard{box-shadow:none;border:0;padding-top:34px}
 @media(max-width:600px){.lookupModalBackdrop{padding:10px;align-items:flex-end}.lookupModalShell{width:100%;height:min(88vh,820px);border-radius:22px 22px 12px 12px}.lookupModalClose{right:10px;top:9px}.lookupModalBack{left:12px;top:12px;padding:7px 10px}.lookupEmbedded .listPage{padding:18px 14px 28px}.lookupEmbedded .listCard{padding-top:34px}}
+
+/* v4.3.1: grouped playback on the main-card confusable header. */
+.confusableHeadTools{display:inline-flex;align-items:center;gap:8px}.confusableGroupPlayHome{appearance:none;-webkit-appearance:none;border:1px solid #ddd;border-radius:8px;background:#fff;color:#777;width:28px;height:28px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;line-height:1;cursor:pointer}.confusableGroupPlayHome:hover{background:#f6f6f4;color:#333}.confusableGroupPlayHome:active{transform:scale(.96)}

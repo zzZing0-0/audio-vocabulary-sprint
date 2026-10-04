@@ -139,6 +139,17 @@ const cases=[
     if(result.debt!==2||result.mastered)throw new Error('confusable edit changed learning state');
     if(exceptions.length)throw new Error('confusable exception: '+exceptions.join('\n'));
   }],
+  ['main confusable group play reads current word then linked words without opening manager',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2},customWords:['alpha','beta','gamma'],linkedWords:{alpha:['beta','gamma'],beta:['alpha'],gamma:['alpha']}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{localStorage.setItem('audio_vocab_sprint_confusable_pause_ms','0');document.getElementById('reveal').click();window.__spoken=[];window.__voiceCalls=0;window.__expectedVoice=(selectedVoice()&&selectedVoice().name)||null;const originalSelectedVoice=selectedVoice;selectedVoice=()=>{window.__voiceCalls++;return originalSelectedVoice();};Object.defineProperty(SpeechSynthesis.prototype,'speak',{configurable:true,writable:true,value:function(u){window.__spoken.push({text:u.text,voice:u.voice&&u.voice.name});setTimeout(()=>u.onend&&u.onend(),0);}});document.querySelector('.confusableGroupPlayHome').click();return true;})()`);
+    await sleep(120);
+    const result=await evalv(`({spoken:window.__spoken,voiceCalls:window.__voiceCalls,expectedVoice:window.__expectedVoice,manager:Boolean(document.getElementById('confusableManagerBackdrop')),voiceIndex:state.voiceIndex})`);
+    if(exceptions.length)throw new Error('grouped playback exception: '+exceptions.join('\n'));
+    if(result.spoken.map(x=>x.text).join(',')!=='alpha,beta,gamma')throw new Error(`wrong grouped playback order: ${JSON.stringify(result.spoken)}`);
+    if(result.voiceCalls!==1)throw new Error(`grouped playback did not resolve the current voice exactly once: ${result.voiceCalls}`);
+    if(result.expectedVoice&&result.spoken.some(x=>x.voice!==result.expectedVoice))throw new Error(`grouped playback did not keep current voice: ${JSON.stringify(result)}`);
+    if(result.manager)throw new Error('grouped playback click opened confusable manager');
+    if(result.voiceIndex!==0)throw new Error(`grouped playback changed voiceIndex: ${result.voiceIndex}`);
+  }],
   ['Lookup modal close preserves underlying study card',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
     await evalv(`document.getElementById('reveal').click();openLookupModal('beta');true`);
     const opened=await evalv(`Boolean(document.querySelector('.lookupModalBackdrop'))`);
