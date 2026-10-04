@@ -54,7 +54,7 @@ function refreshCurrentPronunciation(){
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=4.0.0",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=4.0.1",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
@@ -167,7 +167,7 @@ function rememberHomeBeforeLookup(){
 function goToLookup(word){
   const w=String(word||"").trim();if(!w)return;
   rememberHomeBeforeLookup();
-  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=4.0.0";
+  location.href="lookup.html?word="+encodeURIComponent(w)+"&v=4.0.1";
 }
 function restoreHomeAfterLookup(){
   let raw=null;try{raw=sessionStorage.getItem(LOOKUP_RETURN_KEY);sessionStorage.removeItem(LOOKUP_RETURN_KEY);}catch(_){}
@@ -182,7 +182,7 @@ addEventListener("pageshow",()=>{clearHomeSearch(false);try{sessionStorage.remov
 function linkedWordsHtml(word){
   const linked=getLinkedWords(word);
   const chips=linked.map(w=>
-    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=4.0.0" onclick="event.stopPropagation();rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
+    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=4.0.1" onclick="event.stopPropagation();rememberHomeBeforeLookup()">'+escapeHtml(w)+'</a></span>'
   ).join('');
   return '<section class="confusableSection confusableCompact" id="confusableCompact" role="button" tabindex="0" aria-label="管理易混词"><div class="confusableHead"><span>易混词</span><span class="confusableManageHint">管理 ›</span></div>'+
     (chips?'<div class="confusableList">'+chips+'</div>':'<div class="confusableEmpty">还没有链接易混词 · 点击添加</div>')+'</section>';
@@ -237,7 +237,7 @@ function openWordTagEditor(word,onDone){
   const old=document.getElementById('wordTagBackdrop');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='wordTagBackdrop';wrap.className='ipaEditorBackdrop';
   const selected=new Set(getWordTagIds(word)),tags=tagList();
-  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=4.0.0">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
+  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=4.0.1">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
   document.body.appendChild(wrap);const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#saveWordTags').onclick=()=>{setWordTagIds(word,[...wrap.querySelectorAll('.tagChoice input:checked')].map(x=>x.value));save();close();if(onDone)onDone();};
 }
@@ -284,9 +284,9 @@ function reveal(debtOverride=null, firstOverride=null){
       '<a href="https://www.rhymezone.com/r/rhyme.cgi?Word='+encodeURIComponent(state.current)+'&typeofrhyme=sim" target="vocabLookup" style="color:#666;text-decoration:none">🔎 RhymeZone 近音</a>'+
     '</div>'+
     linkedWordsHtml(state.current)+
-    '<details class="wordNoteWrap noteDetails"'+(state.notes[state.current]?' open':'')+'>'+
+    '<details class="wordNoteWrap noteDetails'+(String(state.notes[state.current]||'').trim()?' noteHasContent':'')+'">'+
       '<summary>笔记</summary>'+
-      '<input id="wordNoteInput" class="wordNoteInput" type="text" placeholder="例如：容易和另一个词混；重音容易记错" value="'+escapeHtml(state.notes[state.current]||'')+'">'+
+      '<textarea id="wordNoteInput" class="wordNoteInput" rows="2" placeholder="例如：相关词、例句、容易混淆的发音……">'+escapeHtml(state.notes[state.current]||'')+'</textarea>'+
     '</details>';
 
   bindConfusableControls();
@@ -374,6 +374,14 @@ function saveCurrentNote(){
   const text=input.value.trim();
   setWordNote(state.current,text);
   save();
+  const details=input.closest('.noteDetails');
+  if(details) details.classList.toggle('noteHasContent',!!text);
+  autoSizeNote(input);
+}
+function autoSizeNote(input){
+  if(!input) return;
+  input.style.height='auto';
+  input.style.height=Math.max(48,input.scrollHeight)+'px';
 }
 let transientToastTimer=null;
 let transientToastCountdownTimer=null;
@@ -531,6 +539,12 @@ document.getElementById("speak").onclick=()=>{
     speakCurrent();
   }
 };
+document.getElementById("answer").addEventListener("input",e=>{
+  if(e.target && e.target.id==="wordNoteInput") autoSizeNote(e.target);
+});
+document.getElementById("answer").addEventListener("toggle",e=>{
+  if(e.target && e.target.matches && e.target.matches('.noteDetails[open]')) autoSizeNote(e.target.querySelector('.wordNoteInput'));
+},true);
 document.getElementById("answer").addEventListener("change",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 });
@@ -556,12 +570,12 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    '<a class="utilityMenuItem" href="active.html?v=4.0.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=4.0.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=4.0.0"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=4.0.0"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=4.0.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=4.0.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="active.html?v=4.0.1"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=4.0.1"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=4.0.1"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=4.0.1"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=4.0.1"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=4.0.1"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
