@@ -40,6 +40,20 @@ if(!currentBuild)throw new Error('index.html is missing CURRENT_BUILD');
 if(metaBuild!==expectedBuild || currentBuild!==expectedBuild){
   throw new Error(`Build version mismatch: package=${expectedBuild}, app-build=${metaBuild}, CURRENT_BUILD=${currentBuild}`);
 }
+// Every page that carries an app-build marker or refresh guard must agree with the
+// package build. A stale subpage guard can otherwise reload forever.
+for(const file of html){
+  const source=readFileSync(file,'utf8');
+  const pageMeta=source.match(/<meta\s+name=["']app-build["']\s+content=["']([^"']+)["']/i)?.[1];
+  const guards=[...source.matchAll(/const\s+CURRENT_BUILD\s*=\s*["']([^"']+)["']/g)].map(m=>m[1]);
+  if(pageMeta && pageMeta!==expectedBuild)throw new Error(`${relative(root,file)} app-build=${pageMeta}, expected ${expectedBuild}`);
+  for(const guard of guards)if(guard!==expectedBuild)throw new Error(`${relative(root,file)} CURRENT_BUILD=${guard}, expected ${expectedBuild}`);
+}
+const titleBuild=indexHtml.match(/<title>Audio Vocabulary Sprint v([^<]+)<\/title>/i)?.[1];
+const footerBuild=indexHtml.match(/<div class=["']footerVersion["']>v([^<]+)<\/div>/i)?.[1];
+if(titleBuild!==expectedBuild || footerBuild!==expectedBuild){
+  throw new Error(`Visible version mismatch: title=${titleBuild}, footer=${footerBuild}, expected=${expectedBuild}`);
+}
 
 // Removed during the v4.1 Lookup-modal migration. A stale call once aborted app.js
 // initialization and indirectly broke judgment audio/animation/advance.
