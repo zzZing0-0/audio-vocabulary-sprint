@@ -21,3 +21,6 @@ This performs JS syntax/static integrity checks, invariant tests, and a real hea
 
 ## Stop-the-line failures
 Do not release when any of these occur: uncaught startup exception; debt becomes null/NaN; judgment changes data more than once; judgment cannot advance; sync unexpectedly regresses learned words; local state key/schema is changed without migration.
+
+## Browser regression isolation
+`npm run test:browser` runs independent browser cases rather than one chained smoke flow. Each case opens a fresh page with its own seeded localStorage state, continues after other case failures, and prints one aggregate pass/fail report. Current cases cover startup, AGAIN stress-click/advance/persistence, PASS-to-mastered at debt 1, and PASS debt reduction without premature mastery at debt >1.

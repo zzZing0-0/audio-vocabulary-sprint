@@ -24,3 +24,8 @@ Review only after the study path is protected. Keep sync semantics unchanged unl
 
 ## Deferred feature
 Temporary shuffle within the same Active/Mastered sorting tier remains deferred until stabilization is complete.
+
+### Phase 1 hardening notes
+- Browser regression cases are isolated and aggregate failures; one failing case must not hide later failures.
+- Build identity (`package.json`, `app-build`, `CURRENT_BUILD`) is a guarded invariant because drift can trigger reload loops and invalidate browser tests.
+- Browser assertions must follow the existing scheduler semantics. In particular, PASS masters only when the pre-judgment debt is <= 1; higher debt is reduced by one.
