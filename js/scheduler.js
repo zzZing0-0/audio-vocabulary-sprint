@@ -57,8 +57,9 @@ function scheduleJudgmentExit(){
   judgmentTimer=setTimeout(()=>{
     judgmentTimer=null;
     judgmentFinalizing=true;
-    updateAnswerControls();
-    next();
+    // UI feedback must never be able to block the learning state machine.
+    try{ updateAnswerControls(); }
+    finally{ next(); }
   },delay);
 }
 
@@ -293,6 +294,8 @@ function pass(){
 
   judgmentLocked=true;
   judgmentKind="PASS";
+  // Arm the guaranteed advance before any optional UI/audio/animation work.
+  scheduleJudgmentExit();
   updateAnswerControls();
   saveCurrentNote();
   armUndo();
@@ -327,6 +330,8 @@ function again(){
 
   judgmentLocked=true;
   judgmentKind="AGAIN";
+  // Arm the guaranteed advance before any optional UI/audio/animation work.
+  scheduleJudgmentExit();
   updateAnswerControls();
   playAgainSound();
   saveCurrentNote();
@@ -362,7 +367,5 @@ function revealThenNext(kind,fromDebt,toDebt){
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     animateDebtDelta(kind,fromDebt,toDebt);
   }));
-
-  scheduleJudgmentExit();
 }
 

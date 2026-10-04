@@ -536,7 +536,13 @@ document.getElementById("answer").addEventListener("change",e=>{
 document.getElementById("answer").addEventListener("blur",e=>{
   if(e.target && e.target.id==="wordNoteInput") saveCurrentNote();
 },true);
-document.getElementById("reveal").onclick=()=>{if(state.current)reveal();};
+document.getElementById("reveal").onclick=()=>{
+  if(!state.current)return;
+  // Unlock feedback Web Audio while we are definitely inside a direct user gesture.
+  // PASS/AGAIN can then reuse the already-running context without Safari/WebKit races.
+  try{ unlockFeedbackAudio(); }catch(e){}
+  reveal();
+};
 document.getElementById("removeTopBtn").onclick=removeCurrentWord;
 document.getElementById("undoBtn").onclick=undoLastJudgment;
 document.getElementById("pass").onclick=()=>{if(revealed)pass();};
