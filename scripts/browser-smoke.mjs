@@ -48,10 +48,19 @@ async function openCase(name,seedState){
   await send('Page.addScriptToEvaluateOnNewDocument',{source:`if(location.hostname==='127.0.0.1') localStorage.setItem(${JSON.stringify(STORAGE_KEY)},${JSON.stringify(JSON.stringify(seedState))});`});
   await send('Page.navigate',{url:`http://127.0.0.1:${sitePort}/index.html?regression=${encodeURIComponent(name)}`});
   await sleep(900);
-  const evalv=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true})).result.value;
+  const evalv=async (expression,userGesture=false)=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture})).result.value;
   const href=await evalv('location.href');
   if(String(href).startsWith('chrome-error://'))browserUnavailable=true;
   return {ws,evalv,exceptions,close(){try{ws.close();}catch{}}};
+}
+
+async function browserTargets(){
+  return await json(`http://127.0.0.1:${debugPort}/json/list`);
+}
+async function waitFor(predicate,{timeout=2500,step=50}={}){
+  const end=Date.now()+timeout;
+  while(Date.now()<end){const value=await predicate();if(value)return value;await sleep(step);}
+  return null;
 }
 
 const cases=[
@@ -85,6 +94,28 @@ const cases=[
     if(immediate.mastered||immediate.debt!==2)throw new Error(`expected debt 2 and not mastered, got ${JSON.stringify(immediate)}`);
     await sleep(900);
     if(exceptions.length)throw new Error('PASS exception: '+exceptions.join('\n'));
+  }],
+  ['dictionary click keeps app in place and reuses one external tab',seed(),async({evalv,exceptions})=>{
+    const appHref=await evalv('location.href');
+    await evalv(`document.getElementById('reveal').click();true`);
+    const before=(await browserTargets()).filter(t=>t.type==='page');
+    const firstUrl=`http://127.0.0.1:${sitePort}/index.html?dictionaryMock=one`;
+    const firstClicked=await evalv(`(()=>{const a=document.querySelector('a[data-dictionary-link]');if(!a)return false;a.href=${JSON.stringify('PLACEHOLDER_FIRST')};a.click();return true;})()`.replace('PLACEHOLDER_FIRST',firstUrl),true);
+    if(!firstClicked)throw new Error('dictionary link not found on revealed card');
+    const popup=await waitFor(async()=>{const pages=(await browserTargets()).filter(t=>t.type==='page');return pages.find(t=>t.url.includes('dictionaryMock=one'));});
+    if(!popup)throw new Error('first dictionary click did not open an external tab');
+    const afterFirstHref=await evalv('location.href');
+    if(afterFirstHref!==appHref)throw new Error(`main app navigated on first dictionary click: ${afterFirstHref}`);
+    const afterFirst=(await browserTargets()).filter(t=>t.type==='page');
+    const secondUrl=`http://127.0.0.1:${sitePort}/index.html?dictionaryMock=two`;
+    await evalv(`(()=>{const links=document.querySelectorAll('a[data-dictionary-link]');const a=links[1]||links[0];a.href=${JSON.stringify('PLACEHOLDER_SECOND')};a.click();return true;})()`.replace('PLACEHOLDER_SECOND',secondUrl),true);
+    const reused=await waitFor(async()=>{const pages=(await browserTargets()).filter(t=>t.type==='page');return pages.find(t=>t.id===popup.id&&t.url.includes('dictionaryMock=two'));});
+    if(!reused)throw new Error('second dictionary click did not reuse the first external tab');
+    const afterSecond=(await browserTargets()).filter(t=>t.type==='page');
+    if(afterSecond.length!==afterFirst.length)throw new Error(`second dictionary click opened another tab: ${afterFirst.length} -> ${afterSecond.length}`);
+    const afterSecondHref=await evalv('location.href');
+    if(afterSecondHref!==appHref)throw new Error(`main app navigated on second dictionary click: ${afterSecondHref}`);
+    if(exceptions.length)throw new Error('dictionary navigation exception: '+exceptions.join('\n'));
   }]
 ];
 

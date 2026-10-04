@@ -1,6 +1,6 @@
 # Audio Vocabulary Sprint
 
-## Maintainer quick start (v4.1.3 engineering stabilization)
+## Maintainer quick start (v4.1.4 engineering stabilization)
 
 This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
 
