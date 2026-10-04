@@ -975,25 +975,33 @@ function crystalTone(ctx,freq,start,dur,peak){
   o.start(start);o.stop(start+dur+.03);
 }
 
-async function playAgainSound(){
+function playAgainSound(){
   try{
-    const ctx=await unlockFeedbackAudio();
-    if(!ctx||ctx.state!=="running")return;
+    setFeedbackAudioSession();
+    const ctx=getNeutralFeedbackCtx();
+    if(!ctx)return;
 
-    const scale=[523.25,587.33,659.25,698.46,783.99,880,987.77];
-    const f=scale[Math.floor(Math.random()*scale.length)];
-    const now=ctx.currentTime+.025;
+    const play=()=>{
+      if(ctx.state!=="running")return;
+      const scale=[523.25,587.33,659.25,698.46,783.99,880,987.77];
+      const f=scale[Math.floor(Math.random()*scale.length)];
+      const now=ctx.currentTime+.025;
 
-    // Crystal-like main strike.
-    crystalTone(ctx,f,now,.42,.065);
-    crystalTone(ctx,f*2.01,now,.16,.018);
-    crystalTone(ctx,f*3.02,now+.01,.11,.010);
+      // Keep the existing crystal sound; only make startup WebKit-safe.
+      crystalTone(ctx,f,now,.42,.065);
+      crystalTone(ctx,f*2.01,now,.16,.018);
+      crystalTone(ctx,f*3.02,now+.01,.11,.010);
 
-    // A small randomized consonant musical tail.
-    const tails=[1.5,1.25,4/3,2];
-    const ratio=tails[Math.floor(Math.random()*tails.length)];
-    crystalTone(ctx,f*ratio,now+.12,.34,.025);
-    crystalTone(ctx,f*2,now+.19,.24,.012);
+      const tails=[1.5,1.25,4/3,2];
+      const ratio=tails[Math.floor(Math.random()*tails.length)];
+      crystalTone(ctx,f*ratio,now+.12,.34,.025);
+      crystalTone(ctx,f*2,now+.19,.24,.012);
+    };
+
+    // resume() is invoked directly inside the click call stack. Do not await it:
+    // WebKit can otherwise lose the user-gesture audio permission before tones start.
+    if(ctx.state==="suspended") ctx.resume().then(play).catch(()=>{});
+    else play();
   }catch(e){}
 }
 function playMasteredSound(){
