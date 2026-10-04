@@ -3,7 +3,7 @@ import {join,resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const next=process.argv[2];
-if(!/^\d+\.\d+\.\d+$/.test(next||''))throw new Error('Usage: npm run version:set -- 4.2.0');
+if(!/^\d+\.\d+\.\d+$/.test(next||''))throw new Error('Usage: npm run version:set -- x.y.z');
 const pkgPath=join(root,'package.json');const pkg=JSON.parse(readFileSync(pkgPath,'utf8'));const old=pkg.version;
 if(old===next)throw new Error(`Already at ${next}`);
 pkg.version=next;writeFileSync(pkgPath,JSON.stringify(pkg,null,2)+'\n');

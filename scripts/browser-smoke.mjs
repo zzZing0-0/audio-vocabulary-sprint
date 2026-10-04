@@ -116,6 +116,44 @@ const cases=[
     const afterSecondHref=await evalv('location.href');
     if(afterSecondHref!==appHref)throw new Error(`main app navigated on second dictionary click: ${afterSecondHref}`);
     if(exceptions.length)throw new Error('dictionary navigation exception: '+exceptions.join('\n'));
+  }],
+  ['note edit persists without changing learning state',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
+    const before=await evalv(`JSON.stringify({debts:state.debts,mastered:state.mastered,seen:state.seen})`);
+    await evalv(`(()=>{document.getElementById('reveal').click();const n=document.getElementById('wordNoteInput');n.value='persistent note';n.dispatchEvent(new Event('change',{bubbles:true}));return true;})()`);
+    const result=await evalv(`({note:state.notes.alpha,persisted:JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)})).notes.alpha,learning:JSON.stringify({debts:state.debts,mastered:state.mastered,seen:state.seen})})`);
+    if(result.note!=='persistent note'||result.persisted!=='persistent note')throw new Error('note did not persist');
+    if(result.learning!==before)throw new Error('note edit changed learning state');
+    if(exceptions.length)throw new Error('note exception: '+exceptions.join('\n'));
+  }],
+  ['tag edit persists without changing debt',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2},tags:{t1:{name:'Tools',color:'#888888'}},wordTags:{}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{document.getElementById('reveal').click();document.getElementById('currentTagManage').click();const c=document.querySelector('.tagChoice input[value="t1"]');c.checked=true;document.getElementById('saveWordTags').click();return true;})()`);
+    const result=await evalv(`({tags:state.wordTags.alpha,debt:state.debts.alpha,persisted:JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)})).wordTags.alpha})`);
+    if(!result.tags?.includes('t1')||!result.persisted?.includes('t1'))throw new Error('tag did not persist');
+    if(result.debt!==2)throw new Error('tag edit changed debt');
+    if(exceptions.length)throw new Error('tag exception: '+exceptions.join('\n'));
+  }],
+  ['confusable link is bidirectional and does not mutate learning state',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{document.getElementById('reveal').click();document.getElementById('confusableCompact').click();const i=document.getElementById('confusableInput');i.value='beta';document.getElementById('confusableAdd').click();return true;})()`);
+    const result=await evalv(`({a:state.linkedWords.alpha,b:state.linkedWords.beta,debt:state.debts.alpha,mastered:Boolean(state.mastered.alpha)})`);
+    if(!result.a?.includes('beta')||!result.b?.includes('alpha'))throw new Error('confusable link is not bidirectional');
+    if(result.debt!==2||result.mastered)throw new Error('confusable edit changed learning state');
+    if(exceptions.length)throw new Error('confusable exception: '+exceptions.join('\n'));
+  }],
+  ['Lookup modal close preserves underlying study card',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
+    await evalv(`document.getElementById('reveal').click();openLookupModal('beta');true`);
+    const opened=await evalv(`Boolean(document.querySelector('.lookupModalBackdrop'))`);
+    if(!opened)throw new Error('Lookup modal did not open');
+    await evalv(`document.querySelector('.lookupModalClose').click();true`);
+    const result=await evalv(`({modal:Boolean(document.querySelector('.lookupModalBackdrop')),current:state.current,revealed:!document.getElementById('judgmentActions').hidden,word:document.querySelector('#answer .word')?.textContent})`);
+    if(result.modal||result.current!=='alpha'||!result.revealed||result.word!=='alpha')throw new Error(`Lookup close lost study context: ${JSON.stringify(result)}`);
+    if(exceptions.length)throw new Error('Lookup modal exception: '+exceptions.join('\n'));
+  }],
+  ['remove action preserves note and linked-word metadata',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2},notes:{alpha:'keep me'},linkedWords:{alpha:['beta'],beta:['alpha']}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{document.getElementById('reveal').click();const b=document.getElementById('removeTopBtn');b.click();b.click();return true;})()`);
+    const result=await evalv(`({removed:Boolean(state.removedWords.alpha),note:state.notes.alpha,links:state.linkedWords.alpha})`);
+    if(!result.removed)throw new Error('word was not removed');
+    if(result.note!=='keep me'||!result.links?.includes('beta'))throw new Error('remove action discarded metadata');
+    if(exceptions.length)throw new Error('remove exception: '+exceptions.join('\n'));
   }]
 ];
 

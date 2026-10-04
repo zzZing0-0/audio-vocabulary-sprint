@@ -1,6 +1,6 @@
-# Engineering stabilization status — v4.2.0
+# Engineering stabilization status — v4.3.0
 
-v4.1.4 is the behavior baseline. v4.2.0 is an engineering release: no intended learning-rule, sync-semantic, or persisted-schema change.
+v4.1.4 is the behavior baseline. v4.3.0 is an engineering release: no intended learning-rule, sync-semantic, or persisted-schema change.
 
 ## Completed
 - Centralized fresh-build detection in `runtime.js`; removed per-page refresh implementations that previously caused reload loops when versions drifted.
@@ -21,3 +21,15 @@ A release is acceptable only when `npm run check:all` is green on a machine with
 
 ## Deferred product feature
 Temporary shuffle within the same Active/Mastered sorting tier remains deferred until this engineering release is production-verified.
+
+## v4.3.0 stabilization close-out
+
+v4.3.0 is the final planned broad stabilization pass before normal feature development resumes.
+
+- `app.js` is now the home-screen orchestration shell rather than the owner of every UI concern. Pronunciation editing, word metadata UI (tags/confusables), and judgment audiovisual feedback have explicit modules.
+- Judgment feedback is intentionally state-free with respect to learning maps. `scheduler.js` remains the owner of PASS/AGAIN learning transitions.
+- GitHub sync merge semantics were not rewritten. They are protected by contract tests for independent edits, same-word conflicts, device-local session fields, daily-stat deltas, tag sets, and note conflicts.
+- Browser regression covers real user behavior for judgments, reusable dictionary navigation, note persistence, tag editing, confusable links, and soft removal metadata preservation.
+- Version changes remain automated with `npm run version:set -- x.y.z`; deployed version numbers are never reused.
+
+Future work should prefer local feature patches plus matching tests. Do not start another broad refactor unless a concrete recurring failure demonstrates that a boundary is still wrong.
