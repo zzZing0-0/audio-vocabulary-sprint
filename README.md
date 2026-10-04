@@ -1,4 +1,14 @@
-# Audio Vocabulary Sprint v4.1.2
+# Audio Vocabulary Sprint
+
+## Maintainer quick start (v4.1.3 engineering stabilization)
+
+This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
+
+Run `npm run check:all` before release. It checks JavaScript syntax/static references, protected invariants, and—when Chrome/Chromium is available—a real browser smoke test of the core judgment flow.
+
+**Known-good stabilization baseline:** v4.1.2 commit `4cf8339`. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
+
+---
 
 ## v4.1.2 stable release
 
