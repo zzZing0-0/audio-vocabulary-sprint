@@ -12,14 +12,14 @@ state.highestDebt = state.highestDebt || {};
 state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
 state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
 state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {}; // imported pronunciation layer (e.g. Eudic)
-state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v4.0.1: explicit manual override layer
-// v4.0.1 briefly stored manual edits in customPronunciations. Move only entries
+state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v4.0.2: explicit manual override layer
+// v4.0.2 briefly stored manual edits in customPronunciations. Move only entries
 // explicitly marked source=manual; imported Eudic entries remain in customPronunciations.
 for(const [k,p] of Object.entries(state.customPronunciations)){
   if(p && p.source==="manual"){ state.manualPronunciations[k]=p; delete state.customPronunciations[k]; }
 }
 state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
-state.noteUpdatedAt = (state.noteUpdatedAt && typeof state.noteUpdatedAt === "object" && !Array.isArray(state.noteUpdatedAt)) ? state.noteUpdatedAt : {}; // v4.0.1: per-note edit timestamps for deterministic cross-device merge
+state.noteUpdatedAt = (state.noteUpdatedAt && typeof state.noteUpdatedAt === "object" && !Array.isArray(state.noteUpdatedAt)) ? state.noteUpdatedAt : {}; // v4.0.2: per-note edit timestamps for deterministic cross-device merge
 state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
 state.tags = (state.tags && typeof state.tags === "object" && !Array.isArray(state.tags)) ? state.tags : {}; // v3.33: tag definitions by id
 state.wordTags = (state.wordTags && typeof state.wordTags === "object" && !Array.isArray(state.wordTags)) ? state.wordTags : {}; // v3.33: lowercase word -> tag ids
@@ -36,7 +36,7 @@ if(!state.statsStartDate){
 
 
 
-// v4.0.1: device-local TTS voice blocking. System voice inventories differ by device, so this is intentionally not synced.
+// v4.0.2: device-local TTS voice blocking. System voice inventories differ by device, so this is intentionally not synced.
 const BLOCKED_VOICES_KEY="audio_vocab_sprint_blocked_voices_v1";
 function voiceIdentity(v){return [v?.name||"",v?.lang||"",v?.voiceURI||""].join("\u241f");}
 function blockedVoiceRecords(){try{const x=JSON.parse(localStorage.getItem(BLOCKED_VOICES_KEY)||"[]");return Array.isArray(x)?x:[];}catch(_){return [];}}

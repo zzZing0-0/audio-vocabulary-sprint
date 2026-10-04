@@ -12,6 +12,7 @@ let view="month";
 const now=new Date();
 let cursorYear=now.getFullYear(),cursorMonth=now.getMonth();
 let selectedDay=null;
+let editingLinkIndex=null;
 const root=document.getElementById("historyRoot"),detail=document.getElementById("dayDetail"),summary=document.getElementById("historySummary");
 
 function periodTotals(){
@@ -42,24 +43,31 @@ function safeUrl(raw){try{const u=new URL(String(raw||'').trim());return /^https
 function linkLabel(item){if(item.title&&item.title.trim())return item.title.trim();try{const u=new URL(item.url);return u.hostname.replace(/^www\./,'');}catch(_){return item.url;}}
 function renderDayDetail(key){
   selectedDay=key;const r=rowFor(key)||{total:0,new:0,review:0},links=linksFor(key);const [y,m,d]=key.split("-").map(Number);
-  let linkHtml=links.length?'<div class="historyLinkList">'+links.map((item,i)=>'<div class="historyLinkItem"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">🔗 '+esc(linkLabel(item))+'</a><button type="button" class="historyLinkDelete" data-link-delete="'+i+'" aria-label="删除链接">×</button></div>').join('')+'</div>':'<div class="historyLinkEmpty">这一天还没有链接笔记。</div>';
+  if(editingLinkIndex!==null&&(editingLinkIndex<0||editingLinkIndex>=links.length))editingLinkIndex=null;
+  let linkHtml=links.length?'<div class="historyLinkList">'+links.map((item,i)=>'<div class="historyLinkItem"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">🔗 '+esc(linkLabel(item))+'</a><button type="button" class="historyLinkEdit" data-link-edit="'+i+'" aria-label="编辑链接">编辑</button><button type="button" class="historyLinkDelete" data-link-delete="'+i+'" aria-label="删除链接">×</button></div>').join('')+'</div>':'<div class="historyLinkEmpty">这一天还没有链接笔记。</div>';
+  const editing=editingLinkIndex!==null?links[editingLinkIndex]:null;
   detail.innerHTML='<div class="dayDetailDate">'+y+'年'+m+'月'+d+'日</div>'+
     (r.total>0?'<div class="dayMetrics"><span><b>'+r.total+'</b> 完成</span><span><b>'+r.new+'</b> 新词</span><span><b>'+r.review+'</b> 复习</span></div>':'<div class="dayMetrics dayMetricsEmpty">当天没有背词记录</div>')+
     '<div class="historyLinks"><div class="historyLinksHead"><strong>链接笔记</strong><span>'+links.length+' / 3</span></div>'+linkHtml+
-    (links.length<3?'<div class="historyLinkForm"><input id="historyLinkUrl" type="url" inputmode="url" placeholder="粘贴 YouTube / 网页链接"><input id="historyLinkTitle" type="text" maxlength="80" placeholder="标题或备注（可选）"><button id="historyLinkAdd" type="button">添加</button></div>':'<div class="historyLinkLimit">每天最多 3 个链接。</div>')+'</div>';
+    ((links.length<3||editing)?'<div class="historyLinkForm"><input id="historyLinkUrl" type="url" inputmode="url" placeholder="粘贴 YouTube / 网页链接" value="'+esc(editing?editing.url:'')+'"><input id="historyLinkTitle" type="text" maxlength="80" placeholder="标题或备注（可选）" value="'+esc(editing?(editing.title||''):'')+'"><button id="historyLinkAdd" type="button">'+(editing?'保存修改':'添加')+'</button>'+(editing?'<button id="historyLinkCancelEdit" class="historyLinkCancelEdit" type="button">取消</button>':'')+'</div>':'<div class="historyLinkLimit">每天最多 3 个链接。</div>')+'</div>';
   detail.hidden=false;
   document.querySelectorAll('[data-day]').forEach(el=>el.classList.toggle('selected',el.dataset.day===key));
   const add=document.getElementById('historyLinkAdd');if(add)add.onclick=()=>{
     const input=document.getElementById('historyLinkUrl'),title=document.getElementById('historyLinkTitle');const url=safeUrl(input.value);
     if(!url){input.focus();input.setCustomValidity('请输入 http:// 或 https:// 开头的有效链接');input.reportValidity();input.oninput=()=>input.setCustomValidity('');return;}
-    const arr=linksFor(key);if(arr.length>=3)return;
-    if(arr.some(x=>x.url===url)){input.setCustomValidity('这个链接已经记录过了');input.reportValidity();return;}
-    arr.push({id:(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(16).slice(2)),url,title:title.value.trim(),addedAt:new Date().toISOString()});
+    const arr=linksFor(key);const editIndex=editingLinkIndex;
+    if(editIndex===null&&arr.length>=3)return;
+    if(arr.some((x,i)=>x.url===url&&i!==editIndex)){input.setCustomValidity('这个链接已经记录过了');input.reportValidity();return;}
+    if(editIndex!==null){const old=arr[editIndex];arr[editIndex]={...old,url,title:title.value.trim(),updatedAt:new Date().toISOString()};editingLinkIndex=null;}
+    else arr.push({id:(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(16).slice(2)),url,title:title.value.trim(),addedAt:new Date().toISOString()});
     historyState.historyLinks[key]=arr;saveHistory();rerenderKeepDay();
   };
-  detail.querySelectorAll('[data-link-delete]').forEach(btn=>btn.onclick=()=>{const arr=linksFor(key);arr.splice(Number(btn.dataset.linkDelete),1);if(arr.length)historyState.historyLinks[key]=arr;else delete historyState.historyLinks[key];saveHistory();rerenderKeepDay();});
+  const cancelEdit=document.getElementById('historyLinkCancelEdit');if(cancelEdit)cancelEdit.onclick=()=>{editingLinkIndex=null;renderDayDetail(key);};
+  detail.querySelectorAll('[data-link-edit]').forEach(btn=>btn.onclick=()=>{editingLinkIndex=Number(btn.dataset.linkEdit);renderDayDetail(key);const input=document.getElementById('historyLinkUrl');if(input){input.focus();input.setSelectionRange(input.value.length,input.value.length);}});
+  detail.querySelectorAll('[data-link-delete]').forEach(btn=>btn.onclick=()=>{const idx=Number(btn.dataset.linkDelete),arr=linksFor(key);arr.splice(idx,1);if(editingLinkIndex===idx)editingLinkIndex=null;else if(editingLinkIndex!==null&&editingLinkIndex>idx)editingLinkIndex--;if(arr.length)historyState.historyLinks[key]=arr;else delete historyState.historyLinks[key];saveHistory();rerenderKeepDay();});
 }
 function showDay(key){
+  if(selectedDay!==key)editingLinkIndex=null;
   if(selectedDay===key&&!detail.hidden){
     selectedDay=null;
     detail.hidden=true;
@@ -77,7 +85,7 @@ function renderMonth(keep=false){
   if(!keep){detail.hidden=true;selectedDay=null;}
   const first=new Date(cursorYear,cursorMonth,1),days=new Date(cursorYear,cursorMonth+1,0).getDate();const offset=(first.getDay()+6)%7;let cells='';
   for(let i=0;i<offset;i++)cells+='<div class="monthCell outside" aria-hidden="true"></div>';
-  for(let d=1;d<=days;d++){const key=dateKey(new Date(cursorYear,cursorMonth,d)),r=rowFor(key),total=r?r.total:0,before=key<historyState.statsStartDate,lc=linksFor(key).length;cells+='<button class="monthCell heat'+level(total)+(before?' beforeStats':'')+'" type="button" data-day="'+key+'"><span class="monthDate">'+d+'</span><span class="monthLinkDot"'+(lc?' title="'+lc+' 个链接"':' hidden')+' aria-label="'+(lc?lc+' 个链接':'')+'"></span><span class="monthTotal"'+(total>0?'':' aria-hidden="true"')+'>'+(total>0?total:'&nbsp;')+'</span></button>';}
+  for(let d=1;d<=days;d++){const key=dateKey(new Date(cursorYear,cursorMonth,d)),r=rowFor(key),total=r?r.total:0,before=key<historyState.statsStartDate,lc=linksFor(key).length;cells+='<button class="monthCell heat'+level(total)+(before?' beforeStats':'')+(lc&&total===0?' linkOnly':'')+'" type="button" data-day="'+key+'"><span class="monthDate">'+d+'</span><span class="monthLinkDot"'+(lc?' title="'+lc+' 个链接"':' hidden')+' aria-label="'+(lc?lc+' 个链接':'')+'"></span><span class="monthTotal"'+(total>0?'':' aria-hidden="true"')+'>'+(total>0?total:'&nbsp;')+'</span></button>';}
   const trailing=(7-((offset+days)%7))%7;for(let i=0;i<trailing;i++)cells+='<div class="monthCell outside" aria-hidden="true"></div>';
   root.innerHTML=navHead(cursorYear+'年'+(cursorMonth+1)+'月')+'<div class="weekHead"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div><div class="monthGrid">'+cells+'</div><div class="heatLegend"><span>少</span><i class="heat0"></i><i class="heat1"></i><i class="heat2"></i><i class="heat3"></i><i class="heat4"></i><span>多</span></div>';
   bindNav(()=>{cursorMonth--;if(cursorMonth<0){cursorMonth=11;cursorYear--;}renderMonth();},()=>{cursorMonth++;if(cursorMonth>11){cursorMonth=0;cursorYear++;}renderMonth();});
