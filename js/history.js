@@ -1,12 +1,10 @@
-const HISTORY_KEY="audio_vocab_sprint_universal_v3";
-let historyState=JSON.parse(localStorage.getItem(HISTORY_KEY)||"null")||{};
-historyState.dailyStats=(historyState.dailyStats&&typeof historyState.dailyStats==="object"&&!Array.isArray(historyState.dailyStats))?historyState.dailyStats:{};
-historyState.historyLinks=(historyState.historyLinks&&typeof historyState.historyLinks==="object"&&!Array.isArray(historyState.historyLinks))?historyState.historyLinks:{};
+const HISTORY_KEY=AVS_STATE_KEY;
+let historyState=readAvsState();
 function dateKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 function todayKey(){return dateKey(new Date());}
-if(!historyState.statsStartDate)historyState.statsStartDate=todayKey();
-function saveHistory(){localStorage.setItem(HISTORY_KEY,JSON.stringify(historyState));}
-saveHistory();
+if(!historyState.statsStartDate){historyState.statsStartDate=todayKey();writeAvsState(historyState);}
+function saveHistory(){writeAvsState(historyState);}
+
 
 let view="month";
 const now=new Date();

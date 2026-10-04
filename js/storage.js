@@ -1,40 +1,12 @@
 const BASE_WORDS = window.BASE_WORDS || [];
-
-const KEY="audio_vocab_sprint_universal_v3";
-let state = JSON.parse(localStorage.getItem(KEY)||"null") || {
-  debts:{}, mastered:{}, seen:{}, highestDebt:{}, current:null, queue:[], voiceIndex:0
-};
-// Migrate older saves. Current debt can be recovered; historical peaks from old versions cannot.
-state.debts = state.debts || {};
-state.mastered = state.mastered || {};
-state.seen = state.seen || {};
-state.highestDebt = state.highestDebt || {};
-state.lastReviewedDate = state.lastReviewedDate || {}; // v3.3; absent in old saves, so old progress stays intact
-state.customWords = Array.isArray(state.customWords) ? state.customWords : [];
-state.customPronunciations = (state.customPronunciations && typeof state.customPronunciations === "object" && !Array.isArray(state.customPronunciations)) ? state.customPronunciations : {}; // imported pronunciation layer (e.g. Eudic)
-state.manualPronunciations = (state.manualPronunciations && typeof state.manualPronunciations === "object" && !Array.isArray(state.manualPronunciations)) ? state.manualPronunciations : {}; // v4.1.2: explicit manual override layer
-// v4.1.2 briefly stored manual edits in customPronunciations. Move only entries
-// explicitly marked source=manual; imported Eudic entries remain in customPronunciations.
-for(const [k,p] of Object.entries(state.customPronunciations)){
-  if(p && p.source==="manual"){ state.manualPronunciations[k]=p; delete state.customPronunciations[k]; }
-}
-state.notes = (state.notes && typeof state.notes === "object") ? state.notes : {};
-state.noteUpdatedAt = (state.noteUpdatedAt && typeof state.noteUpdatedAt === "object" && !Array.isArray(state.noteUpdatedAt)) ? state.noteUpdatedAt : {}; // v4.1.2: per-note edit timestamps for deterministic cross-device merge
-state.linkedWords = (state.linkedWords && typeof state.linkedWords === "object" && !Array.isArray(state.linkedWords)) ? state.linkedWords : {}; // v3.29: bidirectional confusable-word links
-state.tags = (state.tags && typeof state.tags === "object" && !Array.isArray(state.tags)) ? state.tags : {}; // v3.33: tag definitions by id
-state.wordTags = (state.wordTags && typeof state.wordTags === "object" && !Array.isArray(state.wordTags)) ? state.wordTags : {}; // v3.33: lowercase word -> tag ids
-state.removedWords = (state.removedWords && typeof state.removedWords === "object" && !Array.isArray(state.removedWords)) ? state.removedWords : {};
-state.queueDate = (typeof state.queueDate === "string") ? state.queueDate : null; // v3.14: rebuild queue on a new local day
-state.dailyStats = (state.dailyStats && typeof state.dailyStats === "object" && !Array.isArray(state.dailyStats)) ? state.dailyStats : {}; // v3.30: learning log
-state.historyLinks = (state.historyLinks && typeof state.historyLinks === "object" && !Array.isArray(state.historyLinks)) ? state.historyLinks : {}; // v3.31: up to 3 learning links per day
-state.statsStartDate = (typeof state.statsStartDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(state.statsStartDate)) ? state.statsStartDate : null;
+const KEY=AVS_STATE_KEY;
+let state=readAvsState();
+// statsStartDate is created lazily once, preserving the existing learning-history semantics.
 if(!state.statsStartDate){
-  const _statsNow=new Date();
-  state.statsStartDate=_statsNow.getFullYear()+"-"+String(_statsNow.getMonth()+1).padStart(2,"0")+"-"+String(_statsNow.getDate()).padStart(2,"0");
-  localStorage.setItem(KEY,JSON.stringify(state));
+  const d=new Date();
+  state.statsStartDate=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  writeAvsState(state);
 }
-
-
 
 // v4.1.2: device-local TTS voice blocking. System voice inventories differ by device, so this is intentionally not synced.
 const BLOCKED_VOICES_KEY="audio_vocab_sprint_blocked_voices_v1";
@@ -183,4 +155,4 @@ function createTag(name,color){name=String(name||"").trim();if(!name)return {ok:
 function deleteTag(id){delete state.tags[id];for(const [w,ids] of Object.entries(state.wordTags||{})){const next=(Array.isArray(ids)?ids:[]).filter(x=>x!==id);if(next.length)state.wordTags[w]=next;else delete state.wordTags[w];}}
 function shuffle(a){ for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
 
-function save(){ ensureLinkedWordsInVocabulary(); localStorage.setItem(KEY,JSON.stringify(state)); if(typeof updateStats==="function") updateStats(); }
+function save(){ ensureLinkedWordsInVocabulary(); writeAvsState(state); if(typeof updateStats==="function") updateStats(); }

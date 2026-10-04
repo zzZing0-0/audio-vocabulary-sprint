@@ -1,31 +1,23 @@
-# Engineering stabilization plan
+# Engineering stabilization status — v4.2.0
 
-Baseline entering stabilization: v4.1.2, commit `4cf8339` (Lookup-modal initialization bug fixed).
+v4.1.4 is the behavior baseline. v4.2.0 is an engineering release: no intended learning-rule, sync-semantic, or persisted-schema change.
 
-## Phase 1 — safety net and handoff map (this patch)
-- Add one-command static/test/browser checks.
-- Add architecture map and regression checklist.
-- Add CI gate.
-- Preserve runtime behavior.
+## Completed
+- Centralized fresh-build detection in `runtime.js`; removed per-page refresh implementations that previously caused reload loops when versions drifted.
+- Added `state-core.js`; one canonical storage-key definition and one state-shape normalization boundary are shared by main and secondary pages.
+- Added automated `version:set`; deployed version identifiers are no longer meant to be edited by hand.
+- Extracted home search and data I/O from `app.js`, reducing unrelated change blast radius.
+- Kept scheduler and GitHub sync semantics untouched.
+- Added architecture-boundary tests in addition to behavior/invariant tests.
+- Browser regression remains isolated per case and includes real dictionary-link navigation/reuse behavior.
 
-## Phase 2 — initialization boundaries
-- Inventory top-level side effects in `app.js` and secondary-page scripts.
-- Move startup calls behind one explicit bootstrap boundary where practical.
-- Add a targeted browser test for every moved boundary.
+## Deliberately not rewritten
+- Scheduler internals: semantics are stable and protected; a pure-state rewrite would add migration risk without a current product need.
+- GitHub three-way merge: high-risk and currently working; no speculative refactor.
+- `list-pages.js`: still a larger secondary-page module, but its responsibilities are cohesive enough that splitting it now would create more churn than safety.
 
-## Phase 3 — reduce `app.js` coupling in small patches
-Candidate extractions, one at a time: feedback audio; dissolve/celebration effects; home search; import/settings UI. Each extraction must be behavior-preserving and include its own test.
+## Release gate
+A release is acceptable only when `npm run check:all` is green on a machine with Chrome/Chromium. Static/Node checks must never be treated as a substitute for browser regression.
 
-## Phase 4 — scheduler testability
-Separate pure learning-state transitions from DOM/audio feedback while preserving the deliberate stress-click behavior. Do not change queue/debt semantics as part of extraction.
-
-## Phase 5 — sync hardening review
-Review only after the study path is protected. Keep sync semantics unchanged unless a concrete bug is demonstrated.
-
-## Deferred feature
-Temporary shuffle within the same Active/Mastered sorting tier remains deferred until stabilization is complete.
-
-### Phase 1 hardening notes
-- Browser regression cases are isolated and aggregate failures; one failing case must not hide later failures.
-- Build identity (`package.json`, `app-build`, `CURRENT_BUILD`) is a guarded invariant because drift can trigger reload loops and invalidate browser tests.
-- Browser assertions must follow the existing scheduler semantics. In particular, PASS masters only when the pre-judgment debt is <= 1; higher debt is reduced by one.
+## Deferred product feature
+Temporary shuffle within the same Active/Mastered sorting tier remains deferred until this engineering release is production-verified.

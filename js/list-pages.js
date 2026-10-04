@@ -1,28 +1,12 @@
-const LIST_KEY="audio_vocab_sprint_universal_v3";
-let listState=JSON.parse(localStorage.getItem(LIST_KEY)||"null")||{};
-listState.debts=listState.debts||{};
-listState.mastered=listState.mastered||{};
-listState.seen=listState.seen||{};
-listState.highestDebt=listState.highestDebt||{};
-listState.lastReviewedDate=listState.lastReviewedDate||{};
-listState.notes=(listState.notes&&typeof listState.notes==="object")?listState.notes:{};
-listState.removedWords=(listState.removedWords&&typeof listState.removedWords==="object"&&!Array.isArray(listState.removedWords))?listState.removedWords:{};
-listState.queue=Array.isArray(listState.queue)?listState.queue:[];
-listState.customWords=Array.isArray(listState.customWords)?listState.customWords:[];
-listState.customPronunciations=(listState.customPronunciations&&typeof listState.customPronunciations==="object"&&!Array.isArray(listState.customPronunciations))?listState.customPronunciations:{};
-listState.manualPronunciations=(listState.manualPronunciations&&typeof listState.manualPronunciations==="object"&&!Array.isArray(listState.manualPronunciations))?listState.manualPronunciations:{};
-listState.linkedWords=(listState.linkedWords&&typeof listState.linkedWords==="object"&&!Array.isArray(listState.linkedWords))?listState.linkedWords:{};
-listState.tags=(listState.tags&&typeof listState.tags==="object"&&!Array.isArray(listState.tags))?listState.tags:{};
-listState.wordTags=(listState.wordTags&&typeof listState.wordTags==="object"&&!Array.isArray(listState.wordTags))?listState.wordTags:{};
-
-
+const LIST_KEY=AVS_STATE_KEY;
+let listState=readAvsState();
 const BLOCKED_VOICES_KEY="audio_vocab_sprint_blocked_voices_v1";
 function listVoiceIdentity(v){return [v?.name||"",v?.lang||"",v?.voiceURI||""].join("\u241f");}
 function listBlockedVoiceKeys(){try{const x=JSON.parse(localStorage.getItem(BLOCKED_VOICES_KEY)||"[]");return new Set((Array.isArray(x)?x:[]).map(r=>r.key||[r.name||"",r.lang||"",r.voiceURI||""].join("\u241f")));}catch(_){return new Set();}}
 function listFilterBlockedVoices(a){const b=listBlockedVoiceKeys();return (a||[]).filter(v=>!b.has(listVoiceIdentity(v)));}
 
 function h(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
-function persist(){localStorage.setItem(LIST_KEY,JSON.stringify(listState));}
+function persist(){writeAvsState(listState);}
 let listToastTimer=null;
 let listToastCountdownTimer=null;
 const listConfirmWindows=new Map();

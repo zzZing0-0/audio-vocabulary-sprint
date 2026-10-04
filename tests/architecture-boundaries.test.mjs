@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,readdirSync} from 'node:fs';import {resolve,dirname,join} from 'node:path';import {fileURLToPath} from 'node:url';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');const read=p=>readFileSync(join(root,p),'utf8');
+test('all HTML pages use one shared refresh runtime',()=>{for(const f of readdirSync(root).filter(x=>x.endsWith('.html'))){const s=read(f);assert.match(s,/js\/runtime\.js\?v=/,f);assert.doesNotMatch(s,/CURRENT_BUILD/,f);}});
+test('persisted state key has one definition',()=>{const defs=[];for(const f of readdirSync(join(root,'js')).filter(x=>x.endsWith('.js'))){if(/(?:const|let|var)\s+[A-Z_]*STATE[A-Z_]*\s*=\s*['\"]audio_vocab_sprint_universal_v3['\"]/.test(read('js/'+f)))defs.push(f);}assert.deepEqual(defs,['state-core.js']);});
+test('state consumers use shared state-core',()=>{for(const f of ['index.html','active.html','mastered.html','confusable.html','removed.html','notes.html','history.html','tags.html','lookup.html'])assert.match(read(f),/js\/state-core\.js\?v=/,f);});
+test('version mutation is automated',()=>{const pkg=JSON.parse(read('package.json'));assert.equal(pkg.scripts['version:set'],'node scripts/set-version.mjs');});
+
+test('app shell no longer owns search or import implementation',()=>{const app=read('js/app.js');assert.doesNotMatch(app,/function homeSearchWords/);assert.doesNotMatch(app,/function parseCsvVocabulary/);assert.match(read('js/home-search.js'),/function homeSearchWords/);assert.match(read('js/data-io.js'),/function parseCsvVocabulary/);});

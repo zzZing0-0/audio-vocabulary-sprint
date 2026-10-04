@@ -1,14 +1,23 @@
 # Audio Vocabulary Sprint
 
-## Maintainer quick start (v4.1.4 engineering stabilization)
+## Maintainer quick start (v4.2.0 engineering stabilization)
 
 This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
 
 Run `npm run check:all` before release. It checks JavaScript syntax/static references, protected invariants, and—when Chrome/Chromium is available—a real browser smoke test of the core judgment flow.
 
-**Known-good stabilization baseline:** v4.1.2 commit `4cf8339`. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
+**Behavior baseline for this engineering release:** v4.1.4. v4.2.0 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
 
 ---
+
+## v4.2.0 engineering stabilization
+
+- One shared build-refresh runtime replaces duplicated page-local refresh guards.
+- One shared persisted-state boundary replaces repeated state-shape initialization across secondary pages.
+- `npm run version:set -- X.Y.Z` is the supported version bump path; deployed version numbers are never reused.
+- Home search and data import/reset logic are isolated from the main study UI module.
+- Architecture/state-boundary tests supplement the existing scheduler, sync, and real-browser regression suite.
+- No intended learning-rule, GitHub merge-semantic, or persisted-schema change.
 
 ## v4.1.2 stable release
 

@@ -1,50 +1,42 @@
-# Audio Vocabulary Sprint — Architecture Map
+# Audio Vocabulary Sprint — Architecture Map (v4.2.0)
 
-This file is the first stop for a new maintainer or a new GPT session.
+Start here when handing the project to a new maintainer or GPT.
 
-## Product invariant
-The app is audio-first: hear a word → reveal → judge PASS / AGAIN. A judgment mutates learning data exactly once. During the short feedback window the same judgment button may be clicked repeatedly for sound/animation, but those extra clicks must never mutate debt/statistics again. After feedback, the app advances to another eligible word.
+## Production architecture
+The product is a **static GitHub Pages site**. There is no production Node server and no local backend. npm/Node exist only for engineering checks. `scripts/browser-smoke.mjs` temporarily starts an HTTP server solely as a browser-test fixture.
 
-## Runtime shape
-This is a static, dependency-free site. `index.html` loads scripts in this order:
+## Core product invariant
+Study flow is hear → reveal → PASS / AGAIN. A judgment may mutate learning state **exactly once**. Repeated taps during the feedback window may replay sound/animation but must never mutate debt or statistics again.
 
-1. `data/vocabulary.js` — built-in vocabulary.
-2. `js/storage.js` — state migration, storage helpers, vocabulary/tag/link helpers.
-3. `js/scheduler.js` — queue, PASS/AGAIN, undo, daily judgment statistics, next-word transition.
-4. `js/app.js` — rendering, TTS, audio feedback, particle effects, search/import/settings UI.
-5. `js/github-sync.js` — GitHub three-way merge/sync.
-6. `js/lookup-modal.js` — reusable Lookup modal.
+## Shared boundaries introduced by stabilization
+- `js/runtime.js` — the only fresh-build/reload checker. HTML pages must not implement their own `CURRENT_BUILD` logic.
+- `js/state-core.js` — the canonical persisted-state key, safe shape normalization, and raw read/write boundary. Secondary pages no longer maintain independent state-shape copies.
+- `js/storage.js` — vocabulary-domain helpers and migrations that require vocabulary context.
+- `js/scheduler.js` — queue and learning transitions.
+- `js/external-links.js` — external dictionary window ownership/reuse.
+- `js/lookup-modal.js` — in-app Lookup modal/history only.
+- `js/home-search.js` — home search UI.
+- `js/data-io.js` — reset/import/export and vocabulary-file parsing.
+- `js/app.js` — main study-page rendering, TTS and feedback UI; it no longer owns search or data-I/O code.
+- `js/github-sync.js` — conflict-sensitive GitHub merge/sync. Do not edit during unrelated work.
 
-Because these are classic scripts, functions are shared through the page global scope. **Load order is therefore a real dependency.** Do not move script tags or top-level initialization casually.
+## Main-page load order
+`vocabulary.js` → `state-core.js` → `storage.js` → `scheduler.js` → `external-links.js` → `app.js` → `home-search.js` → `data-io.js` → `github-sync.js` → `lookup-modal.js` → `runtime.js`.
 
-## High-risk boundaries
+Classic scripts intentionally share the global scope, so load order remains an explicit contract and is tested.
 
-### Judgment path
-`reveal()` → `pass()` / `again()` → `revealThenNext()` → `scheduleJudgmentExit()` → `next()`.
+## Persistence and sync invariants
+Primary key remains `audio_vocab_sprint_universal_v3`. Never rename it without an explicit migration. `current`, `queue`, `queueDate`, and `voiceIndex` remain device-local during GitHub merge. Blocked TTS voices are device-local. Sync conflict semantics are unchanged in v4.2.0.
 
-Important: `scheduler.js` calls visual/audio helpers defined later by `app.js`. This is safe only after full page initialization. A top-level exception in `app.js` can leave those helpers/constants in the temporal dead zone and make scheduler failures look unrelated.
+## Build/version invariant
+`package.json` is the release-version source used by tooling. Run `npm run version:set -- X.Y.Z`; do not manually hunt through HTML/JS for version strings. The command updates cache-busting/build markers, and `check:static` rejects stale page versions. Every already-deployed code change gets a new patch/minor version; deployed version numbers are never reused.
 
-### Persistence
-Primary localStorage key: `audio_vocab_sprint_universal_v3`. Do not rename it without an explicit migration.
+## High-risk paths
+Judgment: `reveal()` → `pass()/again()` → `revealThenNext()` → `scheduleJudgmentExit()` → `next()`.
 
-Learning state includes debt/mastery/seen/history. `current`, `queue`, `queueDate`, and `voiceIndex` are intentionally device-local during GitHub merge. TTS blocked-voice preferences are also device-local.
+Lookup: same-origin Lookup links are intercepted by `lookup-modal.js`; external dictionary links are intercepted by `external-links.js`. Do not merge these responsibilities.
 
-### Sync
-`js/github-sync.js` contains conflict-sensitive three-way merge logic. Do not modify it during unrelated UI work. Same-word conflicting learning changes require explicit conflict handling; same-day stats merge by relative deltas; word tags merge as sets.
-
-### Lookup
-Normal in-app Lookup uses `js/lookup-modal.js`. `lookup.html` remains for direct/compatibility access. The old home-return restoration path was removed; **do not reintroduce `restoreHomeAfterLookup`**.
-
-## Secondary pages
-- `active.html`, `mastered.html`, `removed.html`, `confusable.html` → mostly `js/list-pages.js`
-- `history.html` → `js/history.js`
-- `notes.html` → `js/notes.js`
-- `tags.html` → `js/tags.js`
-- `lookup.html` → `js/lookup.js`
+Sync: `github-sync.js` is a protected boundary. Preserve three-way merge semantics unless fixing a demonstrated sync bug.
 
 ## Change discipline
-1. Start from a known-good commit and keep each patch narrow.
-2. Do not combine scheduler, sync, and UI refactors in one patch.
-3. Every extracted/refactored module must receive a targeted automated test in the same patch.
-4. Run `npm run check:all` before release.
-5. If multiple unrelated features fail at once, inspect the **first uncaught browser exception** before modifying downstream code.
+Keep patches behavior-preserving and module-scoped. Every extracted/refactored boundary gets a targeted test. Run `npm run check:all` before deployment. If unrelated features fail together, inspect the first uncaught browser exception before editing downstream code.
