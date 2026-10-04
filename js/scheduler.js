@@ -259,113 +259,118 @@ function popNextEligible(){
 }
 
 function next(){
-  speechSynthesis.cancel();
-  clearDebtAnimationTimers();
+  // Data-first transition: choose and persist the next word before any optional
+  // speech/animation/DOM cleanup. A UI exception must never strand state.current.
+  const prev=state.current;
   clearJudgmentBurst();
   revealed=false;
-  resetWordDissolve();
-  document.getElementById("answer").innerHTML="";
-  updateAnswerControls();
 
-  // A queue built yesterday cannot contain words that only became review-eligible today.
-  // Rebuild immediately on the first transition of each new local calendar day.
   if(state.queueDate!==localDateKey()) refill();
   if(!state.queue.length) refill();
-  let prev=state.current, guard=0;
+  let guard=0;
   while(state.queue.length && state.queue[0]===prev && guard++<5) state.queue.push(state.queue.shift());
   state.current=popNextEligible();
   if(!state.current){ refill(); state.current=popNextEligible(); }
+  if(state.current) state.seen[state.current]=true;
+
+  // Persist the transition before touching presentation code.
+  save();
+
+  try{ speechSynthesis.cancel(); }catch(e){}
+  try{ clearDebtAnimationTimers(); }catch(e){}
+  try{ resetWordDissolve(); }catch(e){}
+  try{ document.getElementById("answer").innerHTML=""; }catch(e){}
+  try{ updateAnswerControls(); }catch(e){}
+
   if(!state.current){
-    document.getElementById("answer").innerHTML='<div class="word">🎉 今天可复习的词已完成</div>';
-    updateAnswerControls();
-    save(); return;
+    try{ document.getElementById("answer").innerHTML='<div class="word">🎉 今天可复习的词已完成</div>'; }catch(e){}
+    try{ updateAnswerControls(); }catch(e){}
+    return;
   }
-  state.seen[state.current]=true; save();
-  updateAnswerControls();
-  setTimeout(speakCurrent,120);
+  setTimeout(()=>{try{speakCurrent();}catch(e){}},120);
 }
 
 function pass(){
   if(!state.current)return;
-  if(judgmentLocked){
-    replayJudgmentFeedback("PASS");
-    return;
-  }
+  if(judgmentLocked){ replayJudgmentFeedback("PASS"); return; }
 
+  // Establish the complete judgment state before any UI/audio helper runs.
+  // This also makes rapid feedback taps impossible to observe a null debt target.
+  const w=state.current;
+  const d=Math.max(1,Number(state.debts[w])||1);
+  const nextDebt=Math.max(0,d-1);
   judgmentLocked=true;
   judgmentKind="PASS";
-  // Arm the guaranteed advance before any optional UI/audio/animation work.
-  scheduleJudgmentExit();
-  updateAnswerControls();
-  saveCurrentNote();
-  armUndo();
-  const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
-  recordDailyJudgment(wasNew);
-  celebratePass(); playPassSound();
-
-  let w=state.current, d=state.debts[w]||1;
-  const nextDebt=Math.max(0,d-1);
   judgmentFromDebt=d;
   judgmentToDebt=nextDebt;
+  lastJudgmentSnapshot=cloneLearningSnapshot();
+  scheduleJudgmentExit();
 
-  state.highestDebt[w]=Math.max(state.highestDebt[w]||0, d);
+  const wasNew=!(Number(state.debts[w]||0)>0) && !state.mastered[w];
+  recordDailyJudgment(wasNew);
+  state.highestDebt[w]=Math.max(state.highestDebt[w]||0,d);
   if(d<=1){
     delete state.debts[w];
     delete state.lastReviewedDate[w];
     state.mastered[w]=true;
-    playMasteredSound(); celebrateMastered();
   }else{
     state.debts[w]=nextDebt;
     state.lastReviewedDate[w]=localDateKey();
   }
+
+  // Commit learning data before optional presentation work.
+  save();
+
+  try{ saveCurrentNote(); }catch(e){console.warn("note save skipped during PASS",e);}
+  try{ updateAnswerControls(); }catch(e){}
+  try{ const b=document.getElementById("undoBtn"); if(b)b.disabled=false; updateAnswerControls(); }catch(e){}
+  try{ celebratePass(); }catch(e){}
+  try{ playPassSound(); }catch(e){}
+  if(d<=1){ try{playMasteredSound();}catch(e){} try{celebrateMastered();}catch(e){} }
   revealThenNext("PASS",d,nextDebt);
 }
 
 function again(){
   if(!state.current)return;
-  if(judgmentLocked){
-    replayJudgmentFeedback("AGAIN");
-    return;
-  }
+  if(judgmentLocked){ replayJudgmentFeedback("AGAIN"); return; }
 
+  const w=state.current;
+  const d=Math.max(1,Number(state.debts[w])||1);
+  const nextDebt=d+1;
   judgmentLocked=true;
   judgmentKind="AGAIN";
-  // Arm the guaranteed advance before any optional UI/audio/animation work.
-  scheduleJudgmentExit();
-  updateAnswerControls();
-  playAgainSound();
-  saveCurrentNote();
-  armUndo();
-  const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
-  recordDailyJudgment(wasNew);
-
-  let w=state.current;
-  const d=state.debts[w]||1;
-  const nextDebt=d+1;
   judgmentFromDebt=d;
   judgmentToDebt=nextDebt;
+  lastJudgmentSnapshot=cloneLearningSnapshot();
+  scheduleJudgmentExit();
 
+  const wasNew=!(Number(state.debts[w]||0)>0) && !state.mastered[w];
+  recordDailyJudgment(wasNew);
   state.debts[w]=nextDebt;
-  state.highestDebt[w]=Math.max(state.highestDebt[w]||0, nextDebt);
+  state.highestDebt[w]=Math.max(state.highestDebt[w]||0,nextDebt);
   state.lastReviewedDate[w]=localDateKey();
+
+  // Persist +1 immediately; feedback can fail without losing the judgment.
+  save();
+
+  try{ saveCurrentNote(); }catch(e){console.warn("note save skipped during AGAIN",e);}
+  try{ updateAnswerControls(); }catch(e){}
+  try{ const b=document.getElementById("undoBtn"); if(b)b.disabled=false; updateAnswerControls(); }catch(e){}
+  try{ playAgainSound(); }catch(e){}
   revealThenNext("AGAIN",d,nextDebt);
 }
 
 function revealThenNext(kind,fromDebt,toDebt){
-  // First tap commits the learning result exactly once.
-  // Re-render first so the dissolve targets the actual visible word node.
-  reveal(fromDebt,false);
-  save();
-
-  const firstBadge=document.querySelector("#answer .firstBadge");
-  if(firstBadge)firstBadge.style.display="none";
-
-  // AGAIN feedback starts immediately after the DOM rebuild: the word disappears
-  // into particles on the same tap instead of being recreated visibly afterward.
-  if(kind==="AGAIN")celebrateAgain();
-
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    animateDebtDelta(kind,fromDebt,toDebt);
-  }));
+  // Learning data has already been persisted. Everything below is presentation only.
+  try{ reveal(fromDebt,false); }catch(e){ console.warn("judgment reveal skipped:",e); }
+  try{
+    const firstBadge=document.querySelector("#answer .firstBadge");
+    if(firstBadge)firstBadge.style.display="none";
+  }catch(e){}
+  if(kind==="AGAIN"){ try{celebrateAgain();}catch(e){} }
+  try{
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      try{animateDebtDelta(kind,fromDebt,toDebt);}catch(e){}
+    }));
+  }catch(e){}
 }
-
