@@ -164,6 +164,17 @@ const cases=[
     if(page.learning!==recorded.learning)throw new Error('opening today review changed learning state');
     if(exceptions.length)throw new Error('today review exception: '+exceptions.join('\n'));
   }],
+  ['temporary random playback stays stable and preserves active priority groups',seed({debts:{alpha:3,beta:3,gamma:2},highestDebt:{alpha:5,beta:5,gamma:9},customWords:['alpha','beta','gamma']}),async({evalv,exceptions})=>{
+    await evalv(`location.href='active.html'`);await sleep(700);
+    const normal=await evalv(`libraryWords('active').join(',')`);if(normal!=='alpha,beta,gamma')throw new Error('unexpected active baseline order: '+normal);
+    const first=await evalv(`(()=>{Math.random=()=>0;openLibraryPlayer('active');document.getElementById('libraryPlayerRandom').click();return {words:libraryPlayer.words.join(','),random:libraryPlayer.random,stored:Object.keys(localStorage).filter(k=>/random|shuffle/i.test(k))};})()`);
+    if(first.words!=='beta,alpha,gamma'||!first.random)throw new Error('random order broke active tie-group semantics: '+JSON.stringify(first));
+    if(first.stored.length)throw new Error('temporary random order was persisted: '+first.stored.join(','));
+    const stable=await evalv(`(()=>{document.querySelector('#libraryPlayerBackdrop .ipaEditorClose').click();openLibraryPlayer('active');return libraryPlayer.words.join(',');})()`);if(stable!==first.words)throw new Error('random order changed when player reopened in same page session');
+    const second=await evalv(`(()=>{Math.random=()=>.999999;document.getElementById('libraryPlayerRandom').click();return libraryPlayer.words.join(',');})()`);if(second===first.words)throw new Error('explicit second random click did not generate a new order');
+    if(second!=='alpha,beta,gamma')throw new Error('second random click crossed priority groups: '+second);
+    if(exceptions.length)throw new Error('random playback exception: '+exceptions.join('\n'));
+  }],
   ['Lookup counting deduplicates active opens and ignores modal navigation',seed(),async({evalv,exceptions})=>{
     await evalv(`openLookupModal('alpha');true`);await sleep(650);
     let result=await evalv(`(()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return s.lookupStats?.alpha?.dates?.length||0;})()`);

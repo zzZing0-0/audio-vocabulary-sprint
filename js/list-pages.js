@@ -337,7 +337,8 @@ function initConfusableReading(){
 const LIBRARY_PLAYER_PAUSE_KEY="audio_vocab_sprint_library_player_pause_ms";
 const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
 const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";
-let libraryPlayer={type:null,words:[],index:0,repeatIndex:0,playing:false,token:0,voices:[],modal:null};
+let libraryPlayer={type:null,words:[],index:0,repeatIndex:0,playing:false,token:0,voices:[],modal:null,random:false};
+const libraryRandomOrders={today:null,active:null,mastered:null};
 function libraryWords(type){
   if(type==='today')return todayReviewWords();
   if(type==='active')return Object.entries(listState.debts).filter(([w,d])=>Number(d)>0&&!listState.mastered[w]&&!isRemovedListWord(w)).sort((a,b)=>Number(b[1])-Number(a[1])||(listState.highestDebt[b[0]]||0)-(listState.highestDebt[a[0]]||0)||a[0].localeCompare(b[0])).map(x=>x[0]);
@@ -362,6 +363,7 @@ function renderLibraryPlayer(){
   m.querySelector('#libraryPlayerToggle').setAttribute('aria-label',libraryPlayer.playing?'停止连续播放':'开始连续播放');
   m.querySelector('#libraryPlayerPrev').disabled=libraryPlayer.index<=0;
   m.querySelector('#libraryPlayerNext').disabled=libraryPlayer.index>=libraryPlayer.words.length-1;
+  const randomBtn=m.querySelector('#libraryPlayerRandom');if(randomBtn){randomBtn.classList.toggle('active',!!libraryPlayer.random);randomBtn.textContent=libraryPlayer.random?'🎲 已随机':'🎲 随机顺序';}
 }
 function stopLibraryPlayer(){libraryPlayer.token++;libraryPlayer.playing=false;speechSynthesis.cancel();renderLibraryPlayer();}
 function speakLibraryCurrent(resetRepeat=true){
@@ -398,18 +400,29 @@ function changeLibraryPlayerVoice(step){
   const wasPlaying=libraryPlayer.playing;libraryPlayer.token++;speechSynthesis.cancel();renderLibraryPlayer();
   if(wasPlaying)speakLibraryCurrent(true);
 }
+function randomizeLibraryPlayer(){
+  if(!libraryPlayer.type||!libraryPlayer.words.length)return;
+  stopLibraryPlayer();
+  const base=libraryWords(libraryPlayer.type);
+  const shuffled=avsRandomLibraryOrder(libraryPlayer.type,base,listState);
+  libraryRandomOrders[libraryPlayer.type]=shuffled;
+  libraryPlayer.words=[...shuffled];libraryPlayer.index=0;libraryPlayer.repeatIndex=0;libraryPlayer.random=true;
+  renderLibraryPlayer();
+}
 function openLibraryPlayer(type,startWord){
-  const words=libraryWords(type);if(!words.length){listToast('这个词库目前没有可播放的单词');return;}
+  const normalWords=libraryWords(type);if(!normalWords.length){listToast('这个词库目前没有可播放的单词');return;}
+  const remembered=libraryRandomOrders[type];const words=Array.isArray(remembered)&&remembered.length===normalWords.length?[...remembered]:normalWords;const isRandom=words!==normalWords;
   const old=document.getElementById('libraryPlayerBackdrop');if(old)old.remove();
   let idx=-1;if(startWord)idx=words.findIndex(w=>String(w).toLowerCase()===String(startWord).toLowerCase());
   if(idx<0){const saved=parseInt(localStorage.getItem(LIBRARY_PLAYER_POS_PREFIX+type)||'0',10);idx=Number.isFinite(saved)?Math.min(words.length-1,Math.max(0,saved)):0;}
-  libraryPlayer={type,words,index:idx,repeatIndex:0,playing:false,token:libraryPlayer.token+1,voices:confusablePreferredVoices(),modal:null};
+  libraryPlayer={type,words,index:idx,repeatIndex:0,playing:false,token:libraryPlayer.token+1,voices:confusablePreferredVoices(),modal:null,random:isRandom};
   const wrap=document.createElement('div');wrap.id='libraryPlayerBackdrop';wrap.className='ipaEditorBackdrop';
-  wrap.innerHTML='<div class="ipaEditor libraryPlayer" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+(type==='active'?'学习中':'已掌握')+' · 连续播放</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="libraryPlayerCount" id="libraryPlayerCount"></div><div class="libraryPlayerWord" id="libraryPlayerWord"></div><div class="libraryVoiceRow"><button class="audioIconBtn" id="libraryVoicePrev" type="button" aria-label="上一个语音">'+audioIcon('prev')+'</button><div class="libraryPlayerVoice" id="libraryPlayerVoice"></div><button class="audioIconBtn" id="libraryVoiceNext" type="button" aria-label="下一个语音">'+audioIcon('next')+'</button></div><div class="libraryTransport"><button class="audioIconBtn" id="libraryPlayerRestart" type="button" aria-label="从头播放" title="从头播放">'+audioIcon('restart')+'</button><button class="audioIconBtn" id="libraryPlayerPrev" type="button" aria-label="上一个单词">'+audioIcon('prev')+'</button><button class="audioIconBtn audioIconPrimary" id="libraryPlayerToggle" type="button" aria-label="开始连续播放">'+audioIcon('play')+'</button><button class="audioIconBtn" id="libraryPlayerNext" type="button" aria-label="下一个单词">'+audioIcon('next')+'</button></div><div class="libraryTransportLabels"><span>从头</span><span>上一个</span><span>播放 / 停止</span><span>下一个</span></div><div class="librarySettings"><div class="librarySetting"><label for="libraryRepeatInput">每词朗读次数</label><input id="libraryRepeatInput" type="number" min="1" max="5" step="1" value="'+libraryRepeat()+'"><span>次</span></div><div class="librarySetting"><label for="libraryPauseInput">词间停顿</label><input id="libraryPauseInput" type="number" min="0" max="5000" step="100" value="'+libraryPauseMs()+'"><span>ms</span></div></div><div class="ipaEditorHint">设置保存在本机。连续播放会跨越分页，一直播放到这个词库的最后一个词。</div></div>';
+  wrap.innerHTML='<div class="ipaEditor libraryPlayer" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+(type==='active'?'学习中':type==='today'?'今日复习':'已掌握')+' · 连续播放</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="libraryPlayerCount" id="libraryPlayerCount"></div><div class="libraryPlayerWord" id="libraryPlayerWord"></div><div class="libraryVoiceRow"><button class="audioIconBtn" id="libraryVoicePrev" type="button" aria-label="上一个语音">'+audioIcon('prev')+'</button><div class="libraryPlayerVoice" id="libraryPlayerVoice"></div><button class="audioIconBtn" id="libraryVoiceNext" type="button" aria-label="下一个语音">'+audioIcon('next')+'</button></div><div class="libraryTransport"><button class="audioIconBtn" id="libraryPlayerRestart" type="button" aria-label="从头播放" title="从头播放">'+audioIcon('restart')+'</button><button class="audioIconBtn" id="libraryPlayerPrev" type="button" aria-label="上一个单词">'+audioIcon('prev')+'</button><button class="audioIconBtn audioIconPrimary" id="libraryPlayerToggle" type="button" aria-label="开始连续播放">'+audioIcon('play')+'</button><button class="audioIconBtn" id="libraryPlayerNext" type="button" aria-label="下一个单词">'+audioIcon('next')+'</button></div><div class="libraryTransportLabels"><span>从头</span><span>上一个</span><span>播放 / 停止</span><span>下一个</span></div><div class="librarySettings"><button class="miniBtn" id="libraryPlayerRandom" type="button">🎲 随机顺序</button><div class="librarySetting"><label for="libraryRepeatInput">每词朗读次数</label><input id="libraryRepeatInput" type="number" min="1" max="5" step="1" value="'+libraryRepeat()+'"><span>次</span></div><div class="librarySetting"><label for="libraryPauseInput">词间停顿</label><input id="libraryPauseInput" type="number" min="0" max="5000" step="100" value="'+libraryPauseMs()+'"><span>ms</span></div></div><div class="ipaEditorHint">设置保存在本机。连续播放会跨越分页，一直播放到这个词库的最后一个词。</div></div>';
   document.body.appendChild(wrap);libraryPlayer.modal=wrap;renderLibraryPlayer();
   const close=()=>{stopLibraryPlayer();wrap.remove();libraryPlayer.modal=null;};wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#libraryPlayerToggle').onclick=()=>{if(libraryPlayer.playing)stopLibraryPlayer();else speakLibraryCurrent(true);};
   wrap.querySelector('#libraryPlayerRestart').onclick=restartLibraryPlayer;wrap.querySelector('#libraryPlayerPrev').onclick=()=>moveLibraryPlayer(-1);wrap.querySelector('#libraryPlayerNext').onclick=()=>moveLibraryPlayer(1);
+  wrap.querySelector('#libraryPlayerRandom').onclick=randomizeLibraryPlayer;
   wrap.querySelector('#libraryVoicePrev').onclick=()=>changeLibraryPlayerVoice(-1);wrap.querySelector('#libraryVoiceNext').onclick=()=>changeLibraryPlayerVoice(1);
   wrap.querySelector('#libraryRepeatInput').onchange=e=>{const v=Math.min(5,Math.max(1,Math.round(Number(e.target.value)||1)));e.target.value=v;localStorage.setItem(LIBRARY_PLAYER_REPEAT_KEY,String(v));};
   wrap.querySelector('#libraryPauseInput').onchange=e=>{const v=Math.min(5000,Math.max(0,Math.round(Number(e.target.value)||0)));e.target.value=v;localStorage.setItem(LIBRARY_PLAYER_PAUSE_KEY,String(v));};

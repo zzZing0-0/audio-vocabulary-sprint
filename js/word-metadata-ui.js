@@ -2,7 +2,7 @@
 function linkedWordsHtml(word){
   const linked=getLinkedWords(word);
   const chips=linked.map(w=>
-    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=4.4.2">'+escapeHtml(w)+'</a></span>'
+    '<span class="confusableChip"><button class="confusableSpeak" type="button" data-confusable-speak="'+escapeHtml(w)+'" aria-label="播放 '+escapeHtml(w)+'">🔊</button><a href="lookup.html?word='+encodeURIComponent(w)+'&v=4.4.3">'+escapeHtml(w)+'</a></span>'
   ).join('');
   return '<section class="confusableSection confusableCompact" id="confusableCompact" role="button" tabindex="0" aria-label="管理易混词"><div class="confusableHead"><span>易混词</span><span class="confusableHeadTools">'+(linked.length?'<button class="confusableGroupPlayHome" type="button" aria-label="依次朗读当前词和易混词" title="依次朗读当前词和易混词">▶</button>':'')+'<span class="confusableManageHint">管理 ›</span></span></div>'+
     (chips?'<div class="confusableList">'+chips+'</div>':'<div class="confusableEmpty">还没有链接易混词 · 点击添加</div>')+'</section>';
@@ -79,7 +79,7 @@ function openWordTagEditor(word,onDone){
   const old=document.getElementById('wordTagBackdrop');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='wordTagBackdrop';wrap.className='ipaEditorBackdrop';
   const selected=new Set(getWordTagIds(word)),tags=tagList();
-  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=4.4.2">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
+  wrap.innerHTML='<div class="ipaEditor tagEditor" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>'+escapeHtml(word)+'</b><button class="ipaEditorClose" type="button">×</button></div><div class="tagChoiceList">'+(tags.length?tags.map(t=>'<label class="tagChoice"><input type="checkbox" value="'+escapeHtml(t.id)+'" '+(selected.has(t.id)?'checked':'')+'><span class="wordTagChip" style="--tag-color:'+escapeHtml(t.color)+'">'+escapeHtml(t.name)+'</span></label>').join(''):'<div class="tagEmpty">还没有标签，请先到「词库 → 标签」创建。</div>')+'</div><div class="ipaEditorActions"><a class="tagManageLink" href="tags.html?v=4.4.3">管理标签</a><button class="ipaSave" id="saveWordTags" type="button">保存</button></div></div>';
   document.body.appendChild(wrap);const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
   wrap.querySelector('#saveWordTags').onclick=()=>{setWordTagIds(word,[...wrap.querySelectorAll('.tagChoice input:checked')].map(x=>x.value));save();close();if(onDone)onDone();};
 }

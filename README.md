@@ -1,16 +1,16 @@
 # Audio Vocabulary Sprint
 
-## Maintainer quick start (v4.4.2 engineering stabilization)
+## Maintainer quick start (v4.4.3 engineering stabilization)
 
 This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
 
 Run `npm run check:all` before release. It checks JavaScript syntax/static references, protected invariants, and—when Chrome/Chromium is available—a real browser smoke test of the core judgment flow.
 
-**Behavior baseline for this engineering release:** v4.1.4. v4.4.2 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
+**Behavior baseline for this engineering release:** v4.1.4. v4.4.3 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
 
 ---
 
-## v4.4.2 engineering stabilization
+## v4.4.3 engineering stabilization
 
 - One shared build-refresh runtime replaces duplicated page-local refresh guards.
 - One shared persisted-state boundary replaces repeated state-shape initialization across secondary pages.
@@ -459,5 +459,5 @@ Pronunciation layers are separated: manual override > imported Eudic > Wiktionar
 
 - v4.1.2: compact Lookup tags into inline chips and prevent mobile home tag controls from wrapping into the speaker area.
 
-### Engineering baseline: v4.4.2
-The broad stabilization work is considered complete at v4.4.2. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.
+### Engineering baseline: v4.4.3
+The broad stabilization work is considered complete at v4.4.3. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.

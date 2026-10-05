@@ -1,4 +1,4 @@
-# Audio Vocabulary Sprint — Architecture Map (v4.4.2)
+# Audio Vocabulary Sprint — Architecture Map (v4.4.3)
 
 Start here when handing the project to a new maintainer or GPT.
 
@@ -26,7 +26,7 @@ Study flow is hear → reveal → PASS / AGAIN. A judgment may mutate learning s
 Classic scripts intentionally share the global scope, so load order remains an explicit contract and is tested.
 
 ## Persistence and sync invariants
-Primary key remains `audio_vocab_sprint_universal_v3`. Never rename it without an explicit migration. `current`, `queue`, `queueDate`, and `voiceIndex` remain device-local during GitHub merge. Blocked TTS voices are device-local. Sync conflict semantics are unchanged in v4.4.2.
+Primary key remains `audio_vocab_sprint_universal_v3`. Never rename it without an explicit migration. `current`, `queue`, `queueDate`, and `voiceIndex` remain device-local during GitHub merge. Blocked TTS voices are device-local. Sync conflict semantics are unchanged in v4.4.3.
 
 ## Build/version invariant
 `package.json` is the release-version source used by tooling. Run `npm run version:set -- X.Y.Z`; do not manually hunt through HTML/JS for version strings. The command updates cache-busting/build markers, and `check:static` rejects stale page versions. Every already-deployed code change gets a new patch/minor version; deployed version numbers are never reused.
@@ -41,7 +41,7 @@ Sync: `github-sync.js` is a protected boundary. Preserve three-way merge semanti
 ## Change discipline
 Keep patches behavior-preserving and module-scoped. Every extracted/refactored boundary gets a targeted test. Run `npm run check:all` before deployment. If unrelated features fail together, inspect the first uncaught browser exception before editing downstream code.
 
-## v4.4.2 UI boundaries
+## v4.4.3 UI boundaries
 - `js/app.js`: home-screen orchestration and shared shell wiring.
 - `js/pronunciation-ui.js`: pronunciation rendering/editor only.
 - `js/word-metadata-ui.js`: per-word tags and confusable-word UI only.
