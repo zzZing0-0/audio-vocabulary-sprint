@@ -1,4 +1,4 @@
-/* Audio Vocabulary Sprint · external dictionary navigation · v4.4.0 */
+/* Audio Vocabulary Sprint · external dictionary navigation · v4.4.1 */
 (function(){
   let dictionaryWindow=null;
 

@@ -156,8 +156,10 @@ const cases=[
     if(!recorded.hiddenBefore)throw new Error('today review entry was visible before any judgment');
     if(recorded.row.length!==1||recorded.row[0]!=='alpha')throw new Error(`today review did not record judgment exactly once: ${JSON.stringify(recorded.row)}`);
     await evalv(`location.href='today.html?regression=today-review';true`);await sleep(700);
-    const page=await evalv(`({title:document.querySelector('h1')?.textContent,words:[...document.querySelectorAll('.wordListWord')].map(x=>x.textContent),mutators:[...document.querySelectorAll('button')].map(x=>x.textContent.trim()).filter(x=>['重新学习','删除','通过','再来一次'].includes(x)),learning:JSON.stringify((()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return {debts:s.debts,mastered:s.mastered,seen:s.seen,highestDebt:s.highestDebt,dailyStats:s.dailyStats};})())})`);
+    const page=await evalv(`({title:document.querySelector('h1')?.textContent,words:[...document.querySelectorAll('.wordListWord')].map(x=>x.textContent),meta:[...document.querySelectorAll('.wordListMeta')].map(x=>x.textContent.trim()),mutators:[...document.querySelectorAll('button')].map(x=>x.textContent.trim()).filter(x=>['重新学习','删除','通过','再来一次'].includes(x)),learning:JSON.stringify((()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return {debts:s.debts,mastered:s.mastered,seen:s.seen,highestDebt:s.highestDebt,dailyStats:s.dailyStats};})())})`);
     if(!page.title?.includes('今日复习')||page.words.join(',')!=='alpha')throw new Error(`today review page did not preserve first-judgment order: ${JSON.stringify(page)}`);
+    if(page.meta.join(',')!=='debt 3 · peak 3 · 学习中')throw new Error(`today review did not show current debt/peak/status: ${JSON.stringify(page.meta)}`);
+    if(page.meta.some(x=>x.includes('今日第')||x.includes('NaN')))throw new Error(`today review exposed internal ordering metadata: ${JSON.stringify(page.meta)}`);
     if(page.mutators.length)throw new Error(`today review exposed learning mutators: ${page.mutators.join(',')}`);
     if(page.learning!==recorded.learning)throw new Error('opening today review changed learning state');
     if(exceptions.length)throw new Error('today review exception: '+exceptions.join('\n'));

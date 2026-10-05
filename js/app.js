@@ -438,13 +438,13 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    ((Array.isArray(state.todayReview?.[localDateKey()])&&state.todayReview[localDateKey()].some(w=>!isRemovedWord(w)))?'<a class="utilityMenuItem" href="today.html?v=4.4.0"><span><b>今日复习</b><small>今天真正完成过学习判断的单词</small></span><i>›</i></a>':'')+
-    '<a class="utilityMenuItem" href="active.html?v=4.4.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=4.4.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=4.4.0"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=4.4.0"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=4.4.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=4.4.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    ((Array.isArray(state.todayReview?.[localDateKey()])&&state.todayReview[localDateKey()].some(w=>!isRemovedWord(w)))?'<a class="utilityMenuItem" href="today.html?v=4.4.1"><span><b>今日复习</b><small>今天真正完成过学习判断的单词</small></span><i>›</i></a>':'')+
+    '<a class="utilityMenuItem" href="active.html?v=4.4.1"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=4.4.1"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=4.4.1"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=4.4.1"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=4.4.1"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=4.4.1"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;

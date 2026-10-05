@@ -1,4 +1,4 @@
-# Regression checklist — v4.4.0
+# Regression checklist — v4.4.1
 
 Automated gate: `npm run check:all`.
 
@@ -6,7 +6,7 @@ The browser suite must protect startup, AGAIN stress-click single mutation, PASS
 
 Before production release, manually smoke-test: reveal/PASS/AGAIN; Lookup open/back/close; one secondary library page; search; GitHub sync preview without committing an unintended merge; visible footer version. Manual smoke is a final sanity check, not a replacement for automated tests.
 
-### v4.4.0 protected interactions
+### v4.4.1 protected interactions
 - Note edits persist without changing learning state.
 - Tag edits persist without changing debt/mastery.
 - Confusable links remain bidirectional and metadata-only.

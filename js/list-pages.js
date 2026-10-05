@@ -136,7 +136,7 @@ function todayReviewWords(){
 function renderToday(){
   const root=document.getElementById("listRoot"),rows=todayReviewWords();document.getElementById("count").textContent=rows.length;
   const pg=pageSlice(rows,"today");
-  root.innerHTML=pg.items.length?pg.items.map((w,i)=>{const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">今日第 '+(pg.start+i+1)+' 个学习</div><div class="listRowActions"><button class="miniBtn listListenFrom" data-listen-from="'+encodeURIComponent(w)+'" title="从这个词开始连续播放">从此播放</button></div>'+note+'</div>';}).join(''):'<p>今天还没有完成学习判断的单词。</p>';
+  root.innerHTML=pg.items.length?pg.items.map(w=>{const debt=Number(listState.debts[w]||0),peak=Number(listState.highestDebt[w]||debt||0),status=listState.mastered[w]?'已掌握':(debt>0?'学习中':'待学习'),note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">debt '+debt+' · peak '+peak+' · '+status+'</div><div class="listRowActions"><button class="miniBtn listListenFrom" data-listen-from="'+encodeURIComponent(w)+'" title="从这个词开始连续播放">从此播放</button></div>'+note+'</div>';}).join(''):'<p>今天还没有完成学习判断的单词。</p>';
   root.querySelectorAll('[data-listen-from]').forEach(btn=>btn.onclick=()=>openLibraryPlayer('today',decodeURIComponent(btn.dataset.listenFrom)));renderPagination("today",pg.totalPages,renderToday);
 }
 function renderActive(){
