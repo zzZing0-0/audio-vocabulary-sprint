@@ -29,7 +29,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function json(url,opts){const r=await fetch(url,opts);if(!r.ok)throw new Error(`${r.status} ${url}`);return r.json();}
 const STORAGE_KEY='audio_vocab_sprint_universal_v3';
 function seed(overrides={}){
-  return {debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:['alpha','beta'],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},queue:['beta'],queueDate:null,dailyStats:{},todayReview:{},historyLinks:{},statsStartDate:'2026-10-04',current:'alpha',voiceIndex:0,...overrides};
+  return {debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:['alpha','beta'],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},queue:['beta'],queueDate:null,dailyStats:{},todayReview:{},lookupStats:{},historyLinks:{},statsStartDate:'2026-10-04',current:'alpha',voiceIndex:0,...overrides};
 }
 
 let browserUnavailable=false;
@@ -163,6 +163,21 @@ const cases=[
     if(page.mutators.length)throw new Error(`today review exposed learning mutators: ${page.mutators.join(',')}`);
     if(page.learning!==recorded.learning)throw new Error('opening today review changed learning state');
     if(exceptions.length)throw new Error('today review exception: '+exceptions.join('\n'));
+  }],
+  ['Lookup counting deduplicates active opens and ignores modal navigation',seed(),async({evalv,exceptions})=>{
+    await evalv(`openLookupModal('alpha');true`);await sleep(650);
+    let result=await evalv(`(()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return s.lookupStats?.alpha?.dates?.length||0;})()`);
+    if(result!==1)throw new Error(`initial active Lookup open expected count 1, got ${result}`);
+    await evalv(`openLookupModal('beta');true`);await sleep(500);
+    result=await evalv(`(()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return {alpha:s.lookupStats?.alpha?.dates?.length||0,beta:s.lookupStats?.beta?.dates?.length||0};})()`);
+    if(result.alpha!==1||result.beta!==0)throw new Error(`modal navigation changed lookup counts: ${JSON.stringify(result)}`);
+    await evalv(`document.querySelector('.lookupModalClose').click();openLookupModal('beta');true`);await sleep(500);
+    result=await evalv(`(()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return s.lookupStats?.beta?.dates?.length||0;})()`);
+    if(result!==1)throw new Error(`new active Lookup open expected beta count 1, got ${result}`);
+    await evalv(`document.querySelector('.lookupModalClose').click();openLookupModal('beta');true`);await sleep(450);
+    result=await evalv(`(()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return s.lookupStats?.beta?.dates?.length||0;})()`);
+    if(result!==1)throw new Error(`same-day repeated active Lookup should stay at 1, got ${result}`);
+    if(exceptions.length)throw new Error('lookup counting exception: '+exceptions.join('\n'));
   }],
   ['Lookup modal close preserves underlying study card',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
     await evalv(`document.getElementById('reveal').click();openLookupModal('beta');true`);

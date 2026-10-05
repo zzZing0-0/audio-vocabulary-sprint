@@ -10,7 +10,7 @@ const context={console,TextEncoder,TextDecoder,localDateKey:()=> '2026-10-04'};
 vm.createContext(context);
 vm.runInContext(source.slice(0,cutoff)+'\nglobalThis.__mergeStates=mergeStates;',context);
 const merge=(base,local,remote)=>context.__mergeStates(base,local,remote);
-const baseState=()=>({debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},dailyStats:{},todayReview:{},historyLinks:{},statsStartDate:'2026-10-04',current:'local-current',queue:['local-q'],queueDate:'2026-10-04',voiceIndex:2});
+const baseState=()=>({debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},dailyStats:{},todayReview:{},lookupStats:{},historyLinks:{},statsStartDate:'2026-10-04',current:'local-current',queue:['local-q'],queueDate:'2026-10-04',voiceIndex:2});
 
 test('sync merges independent learning edits on different words',()=>{
   const b=baseState(),l=structuredClone(b),r=structuredClone(b);
@@ -55,4 +55,14 @@ test('sync merges same-day today-review words without duplicates or loss',()=>{
   const b=baseState();b.todayReview={'2026-10-04':['alpha']};
   const l=structuredClone(b),r=structuredClone(b);l.todayReview['2026-10-04']=['alpha','beta'];r.todayReview['2026-10-04']=['alpha','gamma','beta'];
   const {merged}=merge(b,l,r);assert.deepEqual(Array.from(merged.todayReview['2026-10-04']),['alpha','beta','gamma']);
+});
+
+test('sync unions lookup dates so independent offline-day lookups are not lost',()=>{
+  const b=baseState();b.lookupStats={alpha:{dates:['2026-10-03']}};
+  const l=structuredClone(b),r=structuredClone(b);l.lookupStats.alpha={dates:['2026-10-03','2026-10-04']};r.lookupStats.alpha={dates:['2026-10-03','2026-10-05']};
+  const {merged,conflicts}=merge(b,l,r);assert.deepEqual(Array.from(merged.lookupStats.alpha.dates),['2026-10-03','2026-10-04','2026-10-05']);assert.equal(conflicts.length,0);
+});
+test('sync same-day lookup from two devices stays deduplicated',()=>{
+  const b=baseState();b.lookupStats={};const l=structuredClone(b),r=structuredClone(b);l.lookupStats.alpha={dates:['2026-10-04']};r.lookupStats.alpha={dates:['2026-10-04']};
+  const {merged}=merge(b,l,r);assert.deepEqual(Array.from(merged.lookupStats.alpha.dates),['2026-10-04']);
 });

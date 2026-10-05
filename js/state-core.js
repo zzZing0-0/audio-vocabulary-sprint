@@ -10,7 +10,7 @@ function normalizeAvsStateShape(raw){
   s.notes=avsObject(s.notes);s.noteUpdatedAt=avsObject(s.noteUpdatedAt);s.linkedWords=avsObject(s.linkedWords);
   s.tags=avsObject(s.tags);s.wordTags=avsObject(s.wordTags);s.removedWords=avsObject(s.removedWords);
   s.queue=Array.isArray(s.queue)?s.queue:[];s.queueDate=typeof s.queueDate==='string'?s.queueDate:null;
-  s.dailyStats=avsObject(s.dailyStats);s.todayReview=avsObject(s.todayReview);s.historyLinks=avsObject(s.historyLinks);
+  s.dailyStats=avsObject(s.dailyStats);s.todayReview=avsObject(s.todayReview);s.lookupStats=avsObject(s.lookupStats);s.historyLinks=avsObject(s.historyLinks);
   s.current=typeof s.current==='string'?s.current:null;s.voiceIndex=Number.isFinite(Number(s.voiceIndex))?Number(s.voiceIndex):0;
   s.statsStartDate=(typeof s.statsStartDate==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s.statsStartDate))?s.statsStartDate:null;
   return s;

@@ -1,11 +1,11 @@
-/* Audio Vocabulary Sprint · reusable Lookup modal · v4.4.1 */
+/* Audio Vocabulary Sprint · reusable Lookup modal · v4.4.2 */
 (function(){
   let backdrop=null;
   let lookupStack=[];
   function frame(){return backdrop&&backdrop.querySelector('.lookupModalFrame');}
   function backBtn(){return backdrop&&backdrop.querySelector('.lookupModalBack');}
   function updateBack(){const b=backBtn();if(!b)return;b.hidden=lookupStack.length<=1;b.disabled=lookupStack.length<=1;}
-  function loadWord(word){const f=frame();if(!f)return;f.src='lookup.html?embed=1&word='+encodeURIComponent(word)+'&v=4.4.1';}
+  function loadWord(word,count){const f=frame();if(!f)return;f.src='lookup.html?embed=1&count='+(count?'1':'0')+'&word='+encodeURIComponent(word)+'&v=4.4.2';}
   function closeLookupModal(){
     if(!backdrop)return;
     const f=frame();if(f)f.src='about:blank';
@@ -17,17 +17,17 @@
     if(backdrop){
       const current=lookupStack[lookupStack.length-1];
       if(current!==w)lookupStack.push(w);
-      loadWord(w);updateBack();return;
+      loadWord(w,false);updateBack();return;
     }
     lookupStack=[w];
     backdrop=document.createElement('div');
     backdrop.className='lookupModalBackdrop';
-    backdrop.innerHTML='<section class="lookupModalShell" role="dialog" aria-modal="true" aria-label="查看单词"><button class="lookupModalBack" type="button" aria-label="返回上一个词" hidden>← 返回</button><button class="lookupModalClose" type="button" aria-label="关闭 Lookup">×</button><iframe class="lookupModalFrame" title="Lookup" src="lookup.html?embed=1&word='+encodeURIComponent(w)+'&v=4.4.1"></iframe></section>';
+    backdrop.innerHTML='<section class="lookupModalShell" role="dialog" aria-modal="true" aria-label="查看单词"><button class="lookupModalBack" type="button" aria-label="返回上一个词" hidden>← 返回</button><button class="lookupModalClose" type="button" aria-label="关闭 Lookup">×</button><iframe class="lookupModalFrame" title="Lookup" src="lookup.html?embed=1&count=1&word='+encodeURIComponent(w)+'&v=4.4.2"></iframe></section>';
     document.body.appendChild(backdrop);document.body.classList.add('lookupModalOpen');
     backdrop.querySelector('.lookupModalClose').onclick=closeLookupModal;
     backdrop.querySelector('.lookupModalBack').onclick=()=>{
       if(lookupStack.length<=1)return;
-      lookupStack.pop();loadWord(lookupStack[lookupStack.length-1]);updateBack();
+      lookupStack.pop();loadWord(lookupStack[lookupStack.length-1],false);updateBack();
     };
     backdrop.onclick=e=>{if(e.target===backdrop)closeLookupModal();};
     updateBack();
