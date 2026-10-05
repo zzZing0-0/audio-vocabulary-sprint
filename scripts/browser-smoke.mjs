@@ -29,7 +29,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function json(url,opts){const r=await fetch(url,opts);if(!r.ok)throw new Error(`${r.status} ${url}`);return r.json();}
 const STORAGE_KEY='audio_vocab_sprint_universal_v3';
 function seed(overrides={}){
-  return {debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:['alpha','beta'],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},queue:['beta'],queueDate:null,dailyStats:{},historyLinks:{},statsStartDate:'2026-10-04',current:'alpha',voiceIndex:0,...overrides};
+  return {debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:['alpha','beta'],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},queue:['beta'],queueDate:null,dailyStats:{},todayReview:{},historyLinks:{},statsStartDate:'2026-10-04',current:'alpha',voiceIndex:0,...overrides};
 }
 
 let browserUnavailable=false;
@@ -45,7 +45,7 @@ async function openCase(name,seedState){
   });
   const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++seq;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}));});
   await send('Runtime.enable');await send('Page.enable');
-  await send('Page.addScriptToEvaluateOnNewDocument',{source:`if(location.hostname==='127.0.0.1') localStorage.setItem(${JSON.stringify(STORAGE_KEY)},${JSON.stringify(JSON.stringify(seedState))});`});
+  await send('Page.addScriptToEvaluateOnNewDocument',{source:`if(location.hostname==='127.0.0.1'&&!sessionStorage.getItem('__avsRegressionSeeded')){localStorage.setItem(${JSON.stringify(STORAGE_KEY)},${JSON.stringify(JSON.stringify(seedState))});sessionStorage.setItem('__avsRegressionSeeded','1');}`});
   await send('Page.navigate',{url:`http://127.0.0.1:${sitePort}/index.html?regression=${encodeURIComponent(name)}`});
   await sleep(900);
   const evalv=async (expression,userGesture=false)=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture})).result.value;
@@ -149,6 +149,18 @@ const cases=[
     if(result.expectedVoice&&result.spoken.some(x=>x.voice!==result.expectedVoice))throw new Error(`grouped playback did not keep current voice: ${JSON.stringify(result)}`);
     if(result.manager)throw new Error('grouped playback click opened confusable manager');
     if(result.voiceIndex!==0)throw new Error(`grouped playback changed voiceIndex: ${result.voiceIndex}`);
+  }],
+  ['today review records real judgments once and stays read-only',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{document.getElementById('libraryBtn').click();window.__todayHiddenBefore=!document.body.textContent.includes('今日复习');document.getElementById('utilityClose').click();document.getElementById('reveal').click();document.getElementById('again').click();document.getElementById('again').click();return true;})()`);
+    const recorded=await evalv(`(()=>{const day=localDateKey(),row=state.todayReview?.[day]||[];return {day,row,hiddenBefore:window.__todayHiddenBefore,learning:JSON.stringify({debts:state.debts,mastered:state.mastered,seen:state.seen,highestDebt:state.highestDebt,dailyStats:state.dailyStats})};})()`);
+    if(!recorded.hiddenBefore)throw new Error('today review entry was visible before any judgment');
+    if(recorded.row.length!==1||recorded.row[0]!=='alpha')throw new Error(`today review did not record judgment exactly once: ${JSON.stringify(recorded.row)}`);
+    await evalv(`location.href='today.html?regression=today-review';true`);await sleep(700);
+    const page=await evalv(`({title:document.querySelector('h1')?.textContent,words:[...document.querySelectorAll('.wordListWord')].map(x=>x.textContent),mutators:[...document.querySelectorAll('button')].map(x=>x.textContent.trim()).filter(x=>['重新学习','删除','通过','再来一次'].includes(x)),learning:JSON.stringify((()=>{const s=JSON.parse(localStorage.getItem(${JSON.stringify(STORAGE_KEY)}));return {debts:s.debts,mastered:s.mastered,seen:s.seen,highestDebt:s.highestDebt,dailyStats:s.dailyStats};})())})`);
+    if(!page.title?.includes('今日复习')||page.words.join(',')!=='alpha')throw new Error(`today review page did not preserve first-judgment order: ${JSON.stringify(page)}`);
+    if(page.mutators.length)throw new Error(`today review exposed learning mutators: ${page.mutators.join(',')}`);
+    if(page.learning!==recorded.learning)throw new Error('opening today review changed learning state');
+    if(exceptions.length)throw new Error('today review exception: '+exceptions.join('\n'));
   }],
   ['Lookup modal close preserves underlying study card',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
     await evalv(`document.getElementById('reveal').click();openLookupModal('beta');true`);

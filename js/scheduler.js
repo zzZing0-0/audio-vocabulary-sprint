@@ -12,6 +12,14 @@ function ensureDailyStatsStart(){
   if(!state.statsStartDate)state.statsStartDate=localDateKey();
 }
 
+function recordTodayReviewWord(word){
+  const w=String(word||'').trim();if(!w)return;
+  if(!state.todayReview||typeof state.todayReview!=='object'||Array.isArray(state.todayReview))state.todayReview={};
+  const day=localDateKey(),row=Array.isArray(state.todayReview[day])?state.todayReview[day]:[];
+  if(!row.some(x=>String(x).toLowerCase()===w.toLowerCase()))row.push(w);
+  state.todayReview[day]=row;
+}
+
 function recordDailyJudgment(isNew){
   ensureDailyStatsStart();
   const day=localDateKey();
@@ -170,6 +178,7 @@ function cloneLearningSnapshot(){
     lastReviewedDate:JSON.parse(JSON.stringify(state.lastReviewedDate||{})),
     removedWords:JSON.parse(JSON.stringify(state.removedWords||{})),
     dailyStats:JSON.parse(JSON.stringify(state.dailyStats||{})),
+    todayReview:JSON.parse(JSON.stringify(state.todayReview||{})),
     statsStartDate:state.statsStartDate||null,
     current:state.current,
     queue:Array.isArray(state.queue)?state.queue.slice():[],
@@ -212,6 +221,7 @@ function undoLastJudgment(){
   state.lastReviewedDate=s.lastReviewedDate;
   state.removedWords=s.removedWords||{};
   state.dailyStats=s.dailyStats||{};
+  state.todayReview=s.todayReview||{};
   state.statsStartDate=s.statsStartDate||null;
   state.current=s.current;
   state.queue=s.queue;
@@ -309,6 +319,7 @@ function pass(){
   armUndo();
   const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
   recordDailyJudgment(wasNew);
+  recordTodayReviewWord(state.current);
   celebratePass(); playPassSound();
 
   let w=state.current, d=state.debts[w]||1;
@@ -344,6 +355,7 @@ function again(){
   armUndo();
   const wasNew=!(Number(state.debts[state.current]||0)>0) && !state.mastered[state.current];
   recordDailyJudgment(wasNew);
+  recordTodayReviewWord(state.current);
 
   let w=state.current;
   const d=state.debts[w]||1;

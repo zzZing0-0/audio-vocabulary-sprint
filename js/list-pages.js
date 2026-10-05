@@ -106,7 +106,7 @@ function removeListWord(w,rerender){
 }
 
 const PAGE_SIZE=20;
-const pageState={active:1,mastered:1,confusable:1,removed:1};
+const pageState={today:1,active:1,mastered:1,confusable:1,removed:1};
 function lookupHref(w){return "lookup.html?word="+encodeURIComponent(w);}
 function pageSlice(rows,key){
   const totalPages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));
@@ -126,6 +126,18 @@ function renderPagination(key,totalPages,rerender){
   el.querySelector('.pageLast').onclick=()=>go(totalPages);
   el.querySelector('.pageGo').onclick=()=>{const n=parseInt(el.querySelector('.pageJumpInput').value,10);if(Number.isFinite(n))go(n);};
   el.querySelector('.pageJumpInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.querySelector('.pageGo').click();}};
+}
+
+function todayReviewWords(){
+  const day=(typeof localDateKey==='function'?localDateKey():(()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");})());
+  const rows=Array.isArray(listState.todayReview?.[day])?listState.todayReview[day]:[];
+  const seen=new Set();return rows.filter(w=>{const k=String(w||'').toLowerCase();if(!k||seen.has(k)||isRemovedListWord(w))return false;seen.add(k);return true;});
+}
+function renderToday(){
+  const root=document.getElementById("listRoot"),rows=todayReviewWords();document.getElementById("count").textContent=rows.length;
+  const pg=pageSlice(rows,"today");
+  root.innerHTML=pg.items.length?pg.items.map((w,i)=>{const note=listState.notes[w]?'<div class="wordListNote">📝 '+h(listState.notes[w])+'</div>':'';return '<div class="wordListRow"><a class="wordListWord wordLookupLink" href="'+lookupHref(w)+'">'+h(w)+'</a><div class="wordListMeta">今日第 '+(pg.start+i+1)+' 个学习</div><div class="listRowActions"><button class="miniBtn listListenFrom" data-listen-from="'+encodeURIComponent(w)+'" title="从这个词开始连续播放">从此播放</button></div>'+note+'</div>';}).join(''):'<p>今天还没有完成学习判断的单词。</p>';
+  root.querySelectorAll('[data-listen-from]').forEach(btn=>btn.onclick=()=>openLibraryPlayer('today',decodeURIComponent(btn.dataset.listenFrom)));renderPagination("today",pg.totalPages,renderToday);
 }
 function renderActive(){
   const root=document.getElementById("listRoot");
@@ -327,6 +339,7 @@ const LIBRARY_PLAYER_REPEAT_KEY="audio_vocab_sprint_library_player_repeat";
 const LIBRARY_PLAYER_POS_PREFIX="audio_vocab_sprint_library_player_pos_";
 let libraryPlayer={type:null,words:[],index:0,repeatIndex:0,playing:false,token:0,voices:[],modal:null};
 function libraryWords(type){
+  if(type==='today')return todayReviewWords();
   if(type==='active')return Object.entries(listState.debts).filter(([w,d])=>Number(d)>0&&!listState.mastered[w]&&!isRemovedListWord(w)).sort((a,b)=>Number(b[1])-Number(a[1])||(listState.highestDebt[b[0]]||0)-(listState.highestDebt[a[0]]||0)||a[0].localeCompare(b[0])).map(x=>x[0]);
   return Object.keys(listState.mastered).filter(w=>!isRemovedListWord(w)).map(w=>[w,listState.highestDebt[w]||0]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(x=>x[0]);
 }

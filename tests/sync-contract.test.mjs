@@ -10,7 +10,7 @@ const context={console,TextEncoder,TextDecoder,localDateKey:()=> '2026-10-04'};
 vm.createContext(context);
 vm.runInContext(source.slice(0,cutoff)+'\nglobalThis.__mergeStates=mergeStates;',context);
 const merge=(base,local,remote)=>context.__mergeStates(base,local,remote);
-const baseState=()=>({debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},dailyStats:{},historyLinks:{},statsStartDate:'2026-10-04',current:'local-current',queue:['local-q'],queueDate:'2026-10-04',voiceIndex:2});
+const baseState=()=>({debts:{},mastered:{},seen:{},highestDebt:{},lastReviewedDate:{},customWords:[],customPronunciations:{},manualPronunciations:{},notes:{},noteUpdatedAt:{},linkedWords:{},tags:{},wordTags:{},removedWords:{},dailyStats:{},todayReview:{},historyLinks:{},statsStartDate:'2026-10-04',current:'local-current',queue:['local-q'],queueDate:'2026-10-04',voiceIndex:2});
 
 test('sync merges independent learning edits on different words',()=>{
   const b=baseState(),l=structuredClone(b),r=structuredClone(b);
@@ -49,4 +49,10 @@ test('sync preserves set-style word tags from both sides',()=>{
 test('sync reports divergent notes instead of silently choosing remote',()=>{
   const b=baseState();b.notes.alpha='old';const l=structuredClone(b),r=structuredClone(b);l.notes.alpha='local';r.notes.alpha='remote';
   const {merged,conflicts}=merge(b,l,r);assert.equal(merged.notes.alpha,'local');assert.ok(conflicts.some(c=>c.type==='note'&&c.word==='alpha'));
+});
+
+test('sync merges same-day today-review words without duplicates or loss',()=>{
+  const b=baseState();b.todayReview={'2026-10-04':['alpha']};
+  const l=structuredClone(b),r=structuredClone(b);l.todayReview['2026-10-04']=['alpha','beta'];r.todayReview['2026-10-04']=['alpha','gamma','beta'];
+  const {merged}=merge(b,l,r);assert.deepEqual(Array.from(merged.todayReview['2026-10-04']),['alpha','beta','gamma']);
 });
