@@ -190,6 +190,15 @@ const cases=[
     if(result!==1)throw new Error(`same-day repeated active Lookup should stay at 1, got ${result}`);
     if(exceptions.length)throw new Error('lookup counting exception: '+exceptions.join('\n'));
   }],
+  ['Lookup displays sourced exam tags and Zipf without changing study state',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
+    const before=await evalv(`JSON.stringify(({debts,mastered,seen,highestDebt})=>({debts,mastered,seen,highestDebt}))(state)`);
+    await evalv(`openLookupModal('sprawl');true`);await sleep(1000);
+    const result=await evalv(`(()=>{const doc=document.querySelector('.lookupModalFrame')?.contentDocument;return {text:doc?.querySelector('.lookupWordInfo')?.textContent||'',count:doc?.querySelector('.lookupStatusRow')?.textContent||''};})()`);
+    if(!result.text.includes('IELTS')||!result.text.includes('TOEFL')||!result.text.includes('Zipf 3.0'))throw new Error('word information missing from Lookup: '+JSON.stringify(result));
+    const after=await evalv(`JSON.stringify(({debts,mastered,seen,highestDebt})=>({debts,mastered,seen,highestDebt}))(state)`);
+    if(before!==after)throw new Error('word info mutated learning state');
+    if(exceptions.length)throw new Error('word info exception: '+exceptions.join('\n'));
+  }],
   ['Lookup modal close preserves underlying study card',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
     await evalv(`document.getElementById('reveal').click();openLookupModal('beta');true`);
     const opened=await evalv(`Boolean(document.querySelector('.lookupModalBackdrop'))`);

@@ -1657,3 +1657,9 @@ main{padding-top:18px;}
 
 /* v4.3.1: grouped playback on the main-card confusable header. */
 .confusableHeadTools{display:inline-flex;align-items:center;gap:8px}.confusableGroupPlayHome{appearance:none;-webkit-appearance:none;border:1px solid #ddd;border-radius:8px;background:#fff;color:#777;width:28px;height:28px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;line-height:1;cursor:pointer}.confusableGroupPlayHome:hover{background:#f6f6f4;color:#333}.confusableGroupPlayHome:active{transform:scale(.96)}
+
+/* Static exam vocabulary and word frequency reference (v4.5.0) */
+.lookupWordInfo{max-width:560px;margin:15px auto 18px;padding:12px 14px;background:#f8f9fc;border:1px solid #e9ecf3;border-radius:14px;text-align:left;font-size:13px;color:#48536b}
+.wordInfoLine{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:4px 0}
+.wordInfoLabel{font-weight:650;color:#58657b;margin-right:6px;min-width:60px}
+.wordInfoTag{border-radius:7px;background:#e9effb;color:#365785;padding:3px 7px;font-size:12px}

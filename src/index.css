@@ -1,0 +1,67 @@
+:root {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: #202724;
+  background: #f5f7f4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: #f5f7f4;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(214, 225, 217, 0.42), transparent 28rem),
+    #f5f7f4;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid #708f7f;
+  outline-offset: 2px;
+}
+
+/* v0.4.3 — iPhone standalone/safe-area support */
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 520px) {
+  .day-drawer,
+  .task-editor,
+  .tag-manager,
+  .tag-browser {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .editor-footer {
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .day-drawer .detail-section:last-child {
+    padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+  }
+}
