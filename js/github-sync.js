@@ -65,7 +65,14 @@ function mergeStates(base,local,remote){
     const vals=[l,r,b].filter(Boolean).sort();return vals[vals.length-1];
   });
   out.customWords=set3(base.customWords,local.customWords,remote.customWords);
-  out.linkedWords=map3(base.linkedWords,local.linkedWords,remote.linkedWords,linkedResolver);
+  out.linkedWords=map3(base.linkedWords,local.linkedWords,remote.linkedWords,(key,b,l,r)=>{
+    const normalize=x=>(Array.isArray(x)?x:[]).map(w=>String(w).toLowerCase()).sort().join('\u0000');
+    if(normalize(l)===normalize(r)&&!same(l,r)){
+      conflicts.push({type:'metadata',field:'linkedWords',key,base:b,local:l,remote:r});
+      return l;
+    }
+    return linkedResolver(key,b,l,r);
+  });
   out.wordTags=map3(base.wordTags,local.wordTags,remote.wordTags,(k,b,l,r)=>set3(Array.isArray(b)?b:[],Array.isArray(l)?l:[],Array.isArray(r)?r:[]));
   out.dailyStats=map3(base.dailyStats,local.dailyStats,remote.dailyStats,dailyResolver);
   out.todayReview=map3(base.todayReview,local.todayReview,remote.todayReview,orderedWordListResolver);

@@ -1681,3 +1681,10 @@ main{padding-top:18px;}
 .homeSearchSuggestions{z-index:2;max-height:min(44dvh,360px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .homeSearch + .card{z-index:0}
 @media(max-width:600px){.homeSearchSuggestions{max-height:min(38dvh,310px)}.wordInfoLine{align-items:baseline}.lookupWordInfo{margin-top:12px}}
+
+/* v4.5.2: compact confusable ordering handles */
+.confusableDragHandle{flex:0 0 auto;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;border:0;background:transparent;color:#8b8990;font-size:24px;padding:5px 8px;line-height:1;border-radius:8px}
+.confusableDragHandle:active{cursor:grabbing;background:#eee9f9}
+.confusableManageRow>span{flex:1;min-width:0}
+.confusableManageRow.confusableDragging{opacity:.55}
+.confusableManageRow.confusableDropTarget{box-shadow:inset 0 -3px #9786c9}

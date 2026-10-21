@@ -66,3 +66,13 @@ test('sync same-day lookup from two devices stays deduplicated',()=>{
   const b=baseState();b.lookupStats={};const l=structuredClone(b),r=structuredClone(b);l.lookupStats.alpha={dates:['2026-10-04']};r.lookupStats.alpha={dates:['2026-10-04']};
   const {merged}=merge(b,l,r);assert.deepEqual(Array.from(merged.lookupStats.alpha.dates),['2026-10-04']);
 });
+
+test('sync retains one-sided confusable reordering',()=>{
+ const b=baseState();b.linkedWords.A=['B','C','D'];const l=structuredClone(b),r=structuredClone(b);l.linkedWords.A=['B','D','C'];
+ const {merged,conflicts}=merge(b,l,r);assert.deepEqual([...merged.linkedWords.A],['B','D','C']);assert.equal(conflicts.length,0);
+});
+test('sync flags concurrent different confusable orderings as a conflict',()=>{
+ const b=baseState();b.linkedWords.A=['B','C','D'];const l=structuredClone(b),r=structuredClone(b);
+ l.linkedWords.A=['C','B','D'];r.linkedWords.A=['B','D','C'];
+ const {merged,conflicts}=merge(b,l,r);assert.deepEqual([...merged.linkedWords.A],['C','B','D']);assert.ok(conflicts.some(c=>c.field==='linkedWords'&&c.key==='A'));
+});

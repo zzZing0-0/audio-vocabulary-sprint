@@ -125,6 +125,12 @@ function setLinkedList(word,list){
   if(clean.length)state.linkedWords[canonical]=clean.slice(0,3);
   else delete state.linkedWords[canonical];
 }
+// Reorder only this word's list. Reverse links are deliberately unchanged.
+function reorderLinkedWords(word,from,to){
+  const list=getLinkedWords(word);
+  if(!Number.isInteger(from)||!Number.isInteger(to)||from<0||to<0||from>=list.length||to>=list.length||from===to)return false;
+  const [item]=list.splice(from,1);list.splice(to,0,item);setLinkedList(word,list);return true;
+}
 function linkWords(a,b){
   const A=findWordCaseInsensitive(a,true),B=findWordCaseInsensitive(b,true);
   if(!A||!B)return {ok:false,reason:"missing"};

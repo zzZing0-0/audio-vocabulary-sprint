@@ -150,6 +150,22 @@ const cases=[
     if(result.manager)throw new Error('grouped playback click opened confusable manager');
     if(result.voiceIndex!==0)throw new Error(`grouped playback changed voiceIndex: ${result.voiceIndex}`);
   }],
+  ['confusable drag reorders playback and persists without altering reverse links',seed({debts:{alpha:2},customWords:['alpha','beta','gamma','delta'],linkedWords:{alpha:['beta','gamma','delta'],beta:['alpha'],gamma:['alpha'],delta:['alpha']}}),async({evalv,exceptions})=>{
+    const result=await evalv(`(()=>{
+      document.getElementById('reveal').click();openConfusableManager();
+      const handles=[...document.querySelectorAll('#confusableManagerModal [data-confusable-drag]')];
+      if(handles.length!==3)return {error:'missing drag handles'};
+      const first=handles[0],last=handles[2],end=last.getBoundingClientRect();first.setPointerCapture=()=>{};
+      first.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:1,button:0,clientX:10,clientY:10}));
+      const old=document.elementFromPoint;document.elementFromPoint=()=>last;
+      first.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerId:1,clientX:end.x+10,clientY:end.y+10}));
+      document.elementFromPoint=old;
+      first.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:1}));
+      return {order:state.linkedWords.alpha,reverse:state.linkedWords.beta,persisted:JSON.parse(localStorage.getItem('audio_vocab_sprint_universal_v3')).linkedWords.alpha,display:[...document.querySelectorAll('.confusableChip a')].map(x=>x.textContent)};
+    })()`);
+    if(result.error||result.order?.join(',')!=='gamma,delta,beta'||result.persisted?.join(',')!=='gamma,delta,beta'||result.display?.join(',')!=='gamma,delta,beta'||result.reverse?.join(',')!=='alpha')throw new Error('confusable drag failed: '+JSON.stringify(result));
+    if(exceptions.length)throw new Error('confusable drag exception: '+exceptions.join('\n'));
+  }],
   ['today review records real judgments once and stays read-only',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2}}),async({evalv,exceptions})=>{
     await evalv(`(()=>{document.getElementById('libraryBtn').click();window.__todayHiddenBefore=!document.body.textContent.includes('今日复习');document.getElementById('utilityClose').click();document.getElementById('reveal').click();document.getElementById('again').click();document.getElementById('again').click();return true;})()`);
     const recorded=await evalv(`(()=>{const day=localDateKey(),row=state.todayReview?.[day]||[];return {day,row,hiddenBefore:window.__todayHiddenBefore,learning:JSON.stringify({debts:state.debts,mastered:state.mastered,seen:state.seen,highestDebt:state.highestDebt,dailyStats:state.dailyStats})};})()`);
@@ -190,9 +206,9 @@ const cases=[
     if(result!==1)throw new Error(`same-day repeated active Lookup should stay at 1, got ${result}`);
     if(exceptions.length)throw new Error('lookup counting exception: '+exceptions.join('\n'));
   }],
-  ['study card renders colored word info below notes and search overlays card',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
+  ['study card renders colored word info above notes and search overlays card',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
     await evalv(`(()=>{state.current='sprawl';reveal();return true})()`);await sleep(900);
-    const result=await evalv(`(()=>{const a=document.getElementById('answer'),n=a.querySelector('.noteDetails'),w=a.querySelector('.lookupWordInfo');return {text:w?.textContent||'',below:!!n&&!!w&&Boolean(n.compareDocumentPosition(w)&Node.DOCUMENT_POSITION_FOLLOWING),colored:!!w?.querySelector('.wordInfoTag--ielts'),layer:getComputedStyle(document.querySelector('.homeSearch')).zIndex};})()`);
+    const result=await evalv(`(()=>{const a=document.getElementById('answer'),n=a.querySelector('.noteDetails'),w=a.querySelector('.lookupWordInfo');return {text:w?.textContent||'',below:!!n&&!!w&&Boolean(w.compareDocumentPosition(n)&Node.DOCUMENT_POSITION_FOLLOWING),colored:!!w?.querySelector('.wordInfoTag--ielts'),layer:getComputedStyle(document.querySelector('.homeSearch')).zIndex};})()`);
     if(!result.text.includes('IELTS')||!result.text.includes('Zipf 3.0')||!result.below||!result.colored)throw new Error('study word info missing/misplaced: '+JSON.stringify(result));
     await evalv(`(()=>{const i=document.getElementById('homeSearchInput');i.value='epi';i.dispatchEvent(new Event('input',{bubbles:true}));return true})()`);
     const overlay=await evalv(`(()=>{const box=document.querySelector('.homeSearchSuggestions');const card=document.querySelector('.card');return {shown:!box.hidden,searchZ:getComputedStyle(document.querySelector('.homeSearch')).zIndex,cardZ:getComputedStyle(card).zIndex,scroll:getComputedStyle(box).overflowY};})()`);

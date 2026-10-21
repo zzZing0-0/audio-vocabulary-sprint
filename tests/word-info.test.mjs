@@ -31,12 +31,12 @@ test('exam tags use distinct stable colors and safe HTML',()=>{
  assert.equal(renderHtml({words:{x:{tags:['<script>'],zipf:3.5}}},'x').includes('<script>'),false);
  assert.equal(renderHtml({words:{x:{tags:[],zipf:null}}},'x'),'');
 });
-test('study and Lookup both reuse reference renderer after notes',()=>{
+test('study and Lookup both reuse reference renderer before notes',()=>{
  const home=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
  const lookup=readFileSync(new URL('../js/lookup.js',import.meta.url),'utf8');
  const index=readFileSync(new URL('../index.html',import.meta.url),'utf8');
- assert.match(home, /<\/details>'\+\s*\(window\.avsWordInfo\?\.renderHtml/);
- assert.ok(lookup.includes("'</textarea></details>'+lookupWordInfoHtml(w)"));
+ assert.match(home, /linkedWordsHtml\(state.current\)\+\s*\(window\.avsWordInfo\?\.renderHtml/);
+ assert.ok(lookup.includes("+confusableLookupHtml(w)+lookupWordInfoHtml(w)+'<details"));
  assert.ok(lookup.includes('window.avsWordInfo?.renderHtml(lookupWordInfo,w)'));
  assert.ok(index.indexOf('js/word-info.js')<index.indexOf('js/app.js'));
 });
