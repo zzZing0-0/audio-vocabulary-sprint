@@ -1,16 +1,16 @@
 # Audio Vocabulary Sprint
 
-## Maintainer quick start (v4.6.0 engineering stabilization)
+## Maintainer quick start (v4.6.1 engineering stabilization)
 
 This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
 
 Run `npm run check:all` before release. It checks JavaScript syntax/static references, protected invariants, and—when Chrome/Chromium is available—a real browser smoke test of the core judgment flow.
 
-**Behavior baseline for this engineering release:** v4.1.4. v4.6.0 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
+**Behavior baseline for this engineering release:** v4.1.4. v4.6.1 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
 
 ---
 
-## v4.6.0 engineering stabilization
+## v4.6.1 engineering stabilization
 
 - One shared build-refresh runtime replaces duplicated page-local refresh guards.
 - One shared persisted-state boundary replaces repeated state-shape initialization across secondary pages.
@@ -41,7 +41,7 @@ Run `npm run check:all` before release. It checks JavaScript syntax/static refer
 - A learning word is judged at most once per local calendar day.
 - `highestDebt` preserves the historical peak debt.
 - Removing a word excludes it from the learning queue without deleting its debt, mastery, notes, or links; it can be restored.
-- TXT/CSV imports add custom vocabulary. Re-importing an active word increases debt; re-importing a mastered word reactivates it at debt = 1.
+- TXT/CSV imports add only new vocabulary; existing Unseen, Active, Mastered, and Removed words retain their learning state, debt, peak, and queue position. CSV IPA updates are independent of learning progress.
 - Built-in words cannot be permanently deleted; custom words may be permanently deleted from 已移除.
 
 ## Sync rules
@@ -56,7 +56,7 @@ Run `npm run check:all` before release. It checks JavaScript syntax/static refer
 - `data/vocabulary.js` — built-in 3453-word base vocabulary
 - `js/storage.js` — state initialization, migration, localStorage, combined word bank
 - `js/scheduler.js` — PASS / AGAIN, debt, daily eligibility, queue scheduling
-- `js/app.js` — UI, speech, dictionary links, Mastered/Active panels, word-list import
+- `js/app.js` — study UI and orchestration; `js/data-io.js` handles TXT/CSV parsing; `js/vocabulary-import.js` performs non-destructive vocabulary additions
 - `js/github-sync.js` — GitHub progress.json upload/download and token handling
 
 ## Persistence
@@ -67,6 +67,7 @@ Run `npm run check:all` before release. It checks JavaScript syntax/static refer
 - older saves without `customWords` migrate automatically
 
 ## Word-list import
+As of v4.6.1, imports only add genuinely new words. Existing words keep their learning status, debt, peak, and daily review history; CSV IPA may still update. If no new words are added, the study queue is not regenerated. Re-importing the same file has no further effect.
 UTF-8 `.txt`, one word or phrase per line.
 Empty lines, `vc_vocabulary`, standalone `a`, `an`, `the`, and case-insensitive duplicates are ignored.
 
@@ -159,7 +160,7 @@ python3 tools/update_pronunciations.py --base-only
 
 Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/missing-page entries.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Fixed IPA maintenance so `customWords` come directly from cloud `progress.json`.
 - Removed the need for a local private-data repo or local `progress.json`.
 - Normal daily study remains: study → GitHub Sync upload → done.
@@ -176,7 +177,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - IPA maintenance reads cloud `removedWords` and excludes them from the combined vocabulary, so newly removed custom words are not fetched unnecessarily.
 
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - `移出词库` is now included in the one-step Undo system.
 - Undo restores `removedWords`, queue/current word, seen/debt/Mastered/peak/review state from the pre-removal snapshot.
 - Removal feedback no longer overwrites the listening hint for the next word.
@@ -219,17 +220,17 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - Top-right actions no longer reserve an empty slot; whichever action is visible occupies the top position.
 - `显示答案` text now matches its purple border color exactly.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Main study UI localized to `查看答案` / `通过` / `再来一次` / `笔记`.
 - PASS / AGAIN result badges localized to `通过` / `再来一次`.
 - `debt` remains unchanged.
 - Primary study buttons get a subtle border-colored glow on mouse hover.
 - Hover styling applies only to fine-pointer devices, so touch behavior is unchanged.
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Fixed `查看答案` hover glow being visually overridden by existing action-button CSS.
 - Added a higher-specificity purple radiating glow for mouse/fine-pointer hover.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - `重新加入` renamed to `重新学习`.
 - `移出词库` renamed to `删除` for a more compact UI.
 - Header status labels now use traffic-light dots:
@@ -237,13 +238,13 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - yellow = 学习中
   - red = 未学习
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Header status rows are left-aligned so the three traffic-light dots share one vertical line.
 - `debt: N` and `首次出现` are separate top-left pills.
 - Undo/Delete are compact outline buttons, laid out horizontally at the top-right with no reserved empty slot.
 - Undo uses a warm yellow outline/text; Delete uses a soft pink outline/text.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Hardened IPA rendering for Safari/macOS without altering the IPA database:
   explicit LTR/bidi isolation, stable IPA-capable font fallback, and safer shaping.
 - Judgment feedback now visualizes the debt arithmetic instead of repeating button labels:
@@ -251,24 +252,24 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - `通过`: `−1` drops away from the debt badge, then the number decrements.
 - Passing `debt: 1` visibly resolves to `debt: 0` before the word leaves the screen.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Before `查看答案`, the pronunciation controls (`‹  🔊  ›`) are enlarged.
 - Mobile receives the strongest enlargement for easier one-handed tapping.
 - After reveal, the pronunciation controls smoothly shrink back to the existing compact layout.
 - The same transition runs in reverse when the next unrevealed word appears.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Mobile pre-reveal pronunciation controls moved significantly lower into the one-handed thumb reach zone.
 - Pre-reveal speaker enlarged again (164px on mobile) and side arrows enlarged proportionally.
 - Post-reveal layout remains unchanged and compact.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Fixed repeated taps on `通过` / `再来一次` applying multiple debt changes during the animation delay.
 - The first judgment now locks the word until the next card appears.
 - Judgment buttons are disabled during the debt animation; extra taps are ignored at both UI and logic layers.
 - Undo immediately clears the judgment lock.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Restores playful rapid tapping without corrupting learning state.
 - The first `通过` / `再来一次` tap commits exactly one debt change.
 - Repeated taps on that same button replay the `−1` / `+1` visual and sound only; debt does not change again.
@@ -276,13 +277,13 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - The opposite judgment button is disabled after the first choice, so the committed judgment cannot flip accidentally.
 - AGAIN particle dissolve is deferred until the final idle timeout, so it runs only once after the user stops tapping.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - AGAIN dissolve is finer, denser, and spreads farther before fading.
 - Particle sampling is tighter and fragments are smaller for a more "魂飞魄散" effect.
 - After the user stops rapid tapping, the app now waits for the full dissolve to finish before showing/speaking the next word.
 - Judgment controls freeze during the final dissolve so the transition cannot restart mid-animation.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - AGAIN particle dissolve now starts immediately on the tap, together with the sound.
 - Rapid repeated AGAIN taps each launch another particle burst and replay the sound, while the actual debt still changes only once.
 - The next word waits until the last particle burst is fully gone.
@@ -293,14 +294,14 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - per-burst and total particle counts are bounded;
   - dead particles are compacted in-place instead of creating a new render loop per tap.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Fixed a single-tap AGAIN race: the particle engine used to hide the old word,
   then `reveal()` rebuilt a fresh visible word on top of the particles.
 - The first AGAIN now rebuilds the answer first and immediately dissolves that exact
   visible word, so single-tap and rapid-tap behavior match.
 - Mobile post-reveal listening/answer content is shifted lower; desktop placement is unchanged.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Added a home-screen freshness check for iOS/Safari standalone launches:
   - on `pageshow` and when the app returns to the foreground, it fetches a cache-busted `index.html`;
   - if the published `app-build` is newer, it force-reloads that build;
@@ -311,7 +312,7 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
 - After reveal, mobile returns to the existing upper `‹ 🔊 ›` layout.
 - Desktop pronunciation controls and layout remain unchanged.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Home screen reordered around study priority:
   1. learning card
   2. traffic-light progress bar
@@ -322,24 +323,24 @@ Use `--retry-missing` only when you intentionally want to retry genuine no-IPA/m
   - yellow = 学习中
   - red = 未学习
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Adopted the approved preview layout: top traffic progress + horizontal status legend.
 - Removed the in-card ellipsis menu and utility row.
 - Moved Rules/Progress, Sync, Import, Reset Progress, and version into a quiet website-style footer separated by ｜.
 - Renamed 重置本机 to 重置进度.
 - Removed the bottom app-name/status block.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Simplified AGAIN debt feedback color: +1 now stays blue (#47719a).
 - Removed the brown intermediate visual, so debt 1 → debt 2 reads as gray initial state → blue final state.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Debt number updates earlier after +1/−1: 240ms instead of 430ms.
 - Repeated-tap impact starts earlier as well.
 - Removed the `offsetWidth` forced reflow used to restart the debt impact animation.
 - Debt impact now uses Web Animations API for smoother repeated taps.
 
-## v3.26
+## v3.26 (historical import behavior; superseded by v4.6.1)
 - Importer now skips any line containing Chinese characters.
 - Phrases remain valid: one line equals one vocabulary entry.
 - Duplicates inside the same TXT are deduplicated and do not stack debt.
@@ -459,16 +460,16 @@ Pronunciation layers are separated: manual override > imported Eudic > Wiktionar
 
 - v4.1.2: compact Lookup tags into inline chips and prevent mobile home tag controls from wrapping into the speaker area.
 
-### Engineering baseline: v4.6.0
-The broad stabilization work is considered complete at v4.6.0. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.
+### Engineering baseline: v4.6.1
+The broad stabilization work is considered complete at v4.6.1. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.
 
-### v4.6.0 · Lookup 词汇信息
+### v4.6.1 · Lookup 词汇信息
 
 Lookup 中自动显示考试词汇标签（CET-4、CET-6、考研、IELTS、TOEFL、GRE）与英语 Zipf 词频（保留一位小数）。仅显示，不参与筛选、排序、学习状态或同步。数据预生成自 ECDICT `tag` 字段与 wordfreq 3.1.1 的 `zipf_frequency(word, 'en')`；考试标签是第三方词典分类，并非官方考试词表。当前静态包覆盖内置 3453 个词；用户新添加的自定义词如果不在静态包中，则暂不显示参考信息。原始数据不随网站打包，构建结果为 `data/word-info.json`。
 
 - ECDICT: MIT License, Copyright (c) 2025 Linwei.
 - wordfreq: Apache License 2.0, Copyright 2022 Robyn Speer.
 
-### v4.6.0 朗读设置
+### v4.6.1 朗读设置
 
 首页「设置 → 朗读设置」可以配置本机的独立单词发音重复开关、次数（1–10）和间隔（0–5000 ms）。原易混词组停顿设置会作为首次读取时的默认间隔（若未设置则 700 ms）；易混词整组播放仅共享间隔，不重复每个词。学习中、已掌握、今日复习的连续播放仍使用自己的设置，不参与此开关。

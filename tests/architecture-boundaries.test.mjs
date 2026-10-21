@@ -12,3 +12,5 @@ test('main script order exposes boundaries before app shell',()=>{const html=rea
 test('version tool usage text is version-agnostic',()=>{assert.match(read('scripts/set-version.mjs'),/-- x\.y\.z/);});
 
 test('home confusable playback reuses the existing pause preference and current voice',()=>{const ui=read('js/word-metadata-ui.js');assert.match(ui,/avsPronunciation.intervalMs\(\)/);assert.match(ui,/\[state\.current,\.\.\.getLinkedWords\(state\.current\)\]/);assert.match(ui,/voice=selectedVoice\(\)/);assert.match(ui,/setTimeout\(\(\)=>next\(i\+1\),pause\)/);assert.doesNotMatch(ui,/localStorage\.setItem\(CONFUSABLE_PAUSE_KEY/);});
+
+test('import uses a separate non-destructive module loaded before data-io',()=>{const html=read('index.html');assert.ok(html.indexOf('js/vocabulary-import.js')<html.indexOf('js/data-io.js'));const io=read('js/data-io.js');assert.match(io,/applyVocabularyImport\(state,BASE_WORDS,imported\)/);assert.doesNotMatch(io,/oldDebt\+1|delete state\.mastered\[masteredKey\]/);});

@@ -207,87 +207,24 @@ document.getElementById("importWordsFile").onchange=(ev)=>{
       const isCsv=/\.csv$/i.test(file.name||"") || /csv/i.test(file.type||"");
       const normalized=isCsv?parseCsvVocabulary(text):parseTxtVocabulary(text);
       const imported=normalized.entries;
-      const baseSet=new Set(BASE_WORDS.map(w=>String(w).toLowerCase()));
-      const customSet=new Set((state.customWords||[]).map(w=>String(w).toLowerCase()));
-      state.customPronunciations=(state.customPronunciations&&typeof state.customPronunciations==="object")?state.customPronunciations:{};
-
-      let added=0;
-      let unseenDuplicate=0;
-      let activeRaised=0;
-      let masteredReactivated=0;
-      let ipaImported=0;
-
-      imported.forEach(entry=>{
-        const w=entry.word;
-        const k=w.toLowerCase();
-        const alreadyExists=baseSet.has(k)||customSet.has(k);
-
-        // Eudic/CSV pronunciation belongs to the learner's private state and overrides
-        // the static Wiktionary database for this word on every synced device.
-        if(entry.pronunciation){
-          state.customPronunciations[k]=entry.pronunciation;
-          ipaImported++;
-        }
-
-        // New vocabulary entry: add it, but importing is not a learning failure.
-        if(!alreadyExists){
-          state.customWords.push(w);
-          customSet.add(k);
-          added++;
-          return;
-        }
-
-        const masteredKey=findStateKeyCaseInsensitive(state.mastered,k);
-        const debtKey=findStateKeyCaseInsensitive(state.debts,k);
-        const seenKey=findStateKeyCaseInsensitive(state.seen,k);
-        const reviewKey=findStateKeyCaseInsensitive(state.lastReviewedDate,k);
-        const hasLearningHistory=Boolean(masteredKey||debtKey||seenKey||reviewKey);
-
-        // Existing but never studied: keep it Unseen. Import overlap alone is not failure.
-        if(!hasLearningHistory){
-          unseenDuplicate++;
-          return;
-        }
-
-        // Mastered + re-imported => reactivate at debt 1.
-        if(masteredKey){
-          delete state.mastered[masteredKey];
-          const canonical=debtKey||masteredKey||w;
-          state.debts[canonical]=1;
-          state.highestDebt[canonical]=Math.max(state.highestDebt[canonical]||0,1);
-          delete state.lastReviewedDate[canonical];
-          masteredReactivated++;
-          return;
-        }
-
-        // Active + re-imported => debt +1.
-        if(debtKey){
-          const oldDebt=Math.max(1,Number(state.debts[debtKey])||1);
-          state.debts[debtKey]=oldDebt+1;
-          state.highestDebt[debtKey]=Math.max(state.highestDebt[debtKey]||0,oldDebt+1);
-          delete state.lastReviewedDate[debtKey];
-          activeRaised++;
-          return;
-        }
-
-        unseenDuplicate++;
-      });
-
-      state.queue=[];
-      state.queueDate=null;
-      refill();
-      save();
-      updateStats();
-      refreshCurrentPronunciation();
+      const result=applyVocabularyImport(state,BASE_WORDS,imported);
+      // Only newly added vocabulary changes the queue's membership. IPA-only
+      // imports and repeated imports must not reshuffle the current session.
+      if(result.added>0){
+        state.queue=[];
+        state.queueDate=null;
+        refill();
+      }
+      if(result.added>0||result.ipaChanged>0)save();
+      if(result.added>0)updateStats();
+      if(result.ipaChanged>0)refreshCurrentPronunciation();
 
       const invalid=normalized.skipped.chinese+normalized.skipped.stopword+normalized.skipped.header;
       showTransientToast(
         (isCsv?"CSV":"TXT")+" 导入完成：有效 "+imported.length+
-        "｜新增 "+added+
-        "｜未学习重复 "+unseenDuplicate+
-        "｜学习中 debt+1 "+activeRaised+
-        "｜重新激活 "+masteredReactivated+
-        (isCsv?"｜导入 IPA "+ipaImported:"")+
+        "｜新增 "+result.added+
+        "｜跳过已有 "+result.existing+
+        (isCsv?"｜IPA 更新 "+result.ipaChanged:"")+
         "｜跳过无效 "+invalid+
         (normalized.skipped.duplicateInFile?"｜文件内重复 "+normalized.skipped.duplicateInFile:"")
       );

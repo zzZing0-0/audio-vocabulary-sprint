@@ -83,6 +83,27 @@ const cases=[
     if(!result.menu||!result.fields||result.p?.repeatCount!==4||result.p?.intervalMs!==1200||!result.p?.repeatEnabled||!result.stateUnchanged||!result.independent)throw new Error('pronunciation settings failed: '+JSON.stringify(result));
     if(exceptions.length)throw new Error('pronunciation settings exception: '+exceptions.join('\n'));
   }],
+  ['vocabulary import preserves existing progress and queue while updating IPA and adding new words',seed({debts:{alpha:2},highestDebt:{alpha:5},seen:{alpha:true,beta:true},mastered:{beta:true},removedWords:{gamma:true},customWords:['alpha','beta','gamma'],queue:['alpha'],queueDate:'2026-10-21'}),async({evalv,exceptions})=>{
+    const result=await evalv(`(()=>{
+      const original=window.FileReader;
+      const input=document.getElementById('importWordsFile');
+      const importCsv=(text)=>{
+        window.FileReader=class {readAsText(){this.result=text;this.onload();}};
+        Object.defineProperty(input,'files',{configurable:true,value:[{name:'vocab.csv',type:'text/csv'}]});
+        input.dispatchEvent(new Event('change'));
+      };
+      try{
+        importCsv('单词,音标\\nalpha,英: /a/\\nbeta,\\ngamma,\\n');
+        const first={debt:state.debts.alpha,peak:state.highestDebt.alpha,mastered:state.mastered.beta,removed:state.removedWords.gamma,queue:[...state.queue],queueDate:state.queueDate,ipa:state.customPronunciations.alpha?.uk};
+        importCsv('单词,音标\\nALPHA,英: /a/\\nBETA,\\n');
+        const second={queue:[...state.queue],queueDate:state.queueDate,ipa:state.customPronunciations.alpha?.uk};
+        importCsv('单词,音标\\nbrandnew,\\nalpha,\\n');
+        return {first,second,added:state.customWords.filter(w=>w.toLowerCase()==='brandnew').length,debt:state.debts.alpha,mastered:state.mastered.beta};
+      }finally{window.FileReader=original;}
+    })()`);
+    if(result.first.debt!==2||result.first.peak!==5||!result.first.mastered||!result.first.removed||result.first.queue.join()!=='alpha'||result.first.queueDate!=='2026-10-21'||result.first.ipa!=='/a/'||result.second.queue.join()!=='alpha'||result.second.queueDate!=='2026-10-21'||result.added!==1||result.debt!==2||!result.mastered)throw new Error('non-destructive import failed: '+JSON.stringify(result));
+    if(exceptions.length)throw new Error('import exception: '+exceptions.join('\n'));
+  }],
   ['startup initializes seeded current word',seed(),async({evalv,exceptions})=>{
     if(exceptions.length)throw new Error('startup exception: '+exceptions.join('\n'));
     const current=await evalv('state.current');
