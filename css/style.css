@@ -1694,3 +1694,9 @@ main{padding-top:18px;}
 .confusableDragHandle{display:inline-flex;align-items:center;justify-content:center;align-self:center;min-width:42px;min-height:42px;line-height:1}
 @media(max-width:500px){.confusableManageRow{align-items:center}}
 .pronunciationSettings{padding:16px 0}.pronunciationSetting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 4px;border-bottom:1px solid #ece8e2}.pronunciationSetting span{font-weight:600}.pronunciationSetting small{display:block;font-size:12px;color:#888;font-weight:400;margin-top:4px}.pronunciationSetting input[type=number]{width:75px;max-width:25%;padding:8px;border:1px solid #ddd;border-radius:9px}.pronunciationSetting input[type=checkbox]{width:21px;height:21px;flex-shrink:0}
+
+/* Confusable IPA: compact, wrapping word cards with a pronunciation line below the word. */
+.confusableChip{border-radius:15px;max-width:100%;box-sizing:border-box;align-items:center}
+.confusableWordDetail{display:flex;flex-direction:column;align-items:flex-start;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.confusableIpa{display:flex;flex-direction:column;gap:1px;margin-top:2px;font-size:11px;font-weight:400;line-height:1.35;color:#888;overflow-wrap:anywhere}
+.confusableIpaLine{display:block}

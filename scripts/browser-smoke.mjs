@@ -246,6 +246,17 @@ const cases=[
     if(result!==1)throw new Error(`same-day repeated active Lookup should stay at 1, got ${result}`);
     if(exceptions.length)throw new Error('lookup counting exception: '+exceptions.join('\n'));
   }],
+  ['linked-word IPA appears under the word in study and Lookup without changing learning state',seed({customWords:['alpha','special'],current:'alpha',debts:{alpha:2},highestDebt:{alpha:3},linkedWords:{alpha:['special'],special:['alpha']},customPronunciations:{special:{uk:'/ˈspeʃəl/',us:'/ˈspɛʃəl/'}}}),async({evalv,exceptions})=>{
+    const before=await evalv(`JSON.stringify({debts:state.debts,mastered:state.mastered,highestDebt:state.highestDebt})`);
+    const home=await evalv(`(()=>{document.getElementById('reveal').click();const chip=document.querySelector('#confusableCompact .confusableChip');const word=chip?.querySelector('.confusableWordDetail');return {word:word?.querySelector('a')?.textContent,ipa:word?.querySelector('.confusableIpa')?.textContent,lines:word?.querySelectorAll('.confusableIpaLine').length,manager:!!document.getElementById('confusableManagerBackdrop')};})()`);
+    if(home.word!=='special'||!home.ipa?.includes('/ˈspeʃəl/')||home.lines!==2||home.manager)throw new Error('study linked IPA missing: '+JSON.stringify(home));
+    await evalv(`openLookupModal('alpha');true`);await sleep(800);
+    const lookup=await evalv(`(()=>{const doc=document.querySelector('.lookupModalFrame')?.contentDocument;const word=doc?.querySelector('#lookupConfusableCompact .confusableWordDetail');return {word:word?.querySelector('a')?.textContent,ipa:word?.querySelector('.confusableIpa')?.textContent,lines:word?.querySelectorAll('.confusableIpaLine').length};})()`);
+    if(lookup.word!=='special'||!lookup.ipa?.includes('/ˈspeʃəl/')||lookup.lines!==2)throw new Error('Lookup linked IPA missing: '+JSON.stringify(lookup));
+    const after=await evalv(`JSON.stringify({debts:state.debts,mastered:state.mastered,highestDebt:state.highestDebt})`);
+    if(before!==after)throw new Error('IPA display changed learning state');
+    if(exceptions.length)throw new Error('linked IPA exception: '+exceptions.join('\n'));
+  }],
   ['study card renders colored word info above notes and search overlays card',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
     await evalv(`(()=>{state.current='sprawl';reveal();return true})()`);await sleep(900);
     const result=await evalv(`(()=>{const a=document.getElementById('answer'),n=a.querySelector('.noteDetails'),w=a.querySelector('.lookupWordInfo');return {text:w?.textContent||'',below:!!n&&!!w&&Boolean(w.compareDocumentPosition(n)&Node.DOCUMENT_POSITION_FOLLOWING),colored:!!w?.querySelector('.wordInfoTag--ielts'),layer:getComputedStyle(document.querySelector('.homeSearch')).zIndex};})()`);

@@ -39,11 +39,12 @@ function refreshCurrentPronunciation(){
   if(!revealed || !state.current)return;
   const slot=document.getElementById("pronunciationSlot");
   if(slot) slot.innerHTML=pronunciationHtml(state.current);
+  if(typeof refreshConfusableSection==='function') refreshConfusableSection();
 }
 
 async function loadPronunciations(){
   try{
-    const r=await fetch("data/pronunciations.json?v=4.6.1",{cache:"no-cache"});
+    const r=await fetch("data/pronunciations.json?v=4.6.2",{cache:"no-cache"});
     if(!r.ok) throw new Error("HTTP "+r.status);
     const payload=await r.json();
     pronunciationWords=(payload&&payload.words&&typeof payload.words==="object") ? payload.words : {};
