@@ -1,16 +1,16 @@
 # Audio Vocabulary Sprint
 
-## Maintainer quick start (v4.5.2 engineering stabilization)
+## Maintainer quick start (v4.6.0 engineering stabilization)
 
 This is a static Local-first app. Before changing code, read `docs/ARCHITECTURE.md` and `docs/REGRESSION_CHECKLIST.md`. The stabilization roadmap is in `docs/ENGINEERING_STABILIZATION.md`.
 
 Run `npm run check:all` before release. It checks JavaScript syntax/static references, protected invariants, and—when Chrome/Chromium is available—a real browser smoke test of the core judgment flow.
 
-**Behavior baseline for this engineering release:** v4.1.4. v4.5.2 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
+**Behavior baseline for this engineering release:** v4.1.4. v4.6.0 centralizes runtime refresh and persisted-state boundaries and extracts search/data-I/O without intentionally changing scheduler or sync semantics. Do not modify scheduler, sync, and UI architecture in one patch. Every future refactor/extraction should add a targeted test in the same patch.
 
 ---
 
-## v4.5.2 engineering stabilization
+## v4.6.0 engineering stabilization
 
 - One shared build-refresh runtime replaces duplicated page-local refresh guards.
 - One shared persisted-state boundary replaces repeated state-shape initialization across secondary pages.
@@ -459,12 +459,16 @@ Pronunciation layers are separated: manual override > imported Eudic > Wiktionar
 
 - v4.1.2: compact Lookup tags into inline chips and prevent mobile home tag controls from wrapping into the speaker area.
 
-### Engineering baseline: v4.5.2
-The broad stabilization work is considered complete at v4.5.2. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.
+### Engineering baseline: v4.6.0
+The broad stabilization work is considered complete at v4.6.0. The home shell is split by responsibility, sync semantics have invariant tests, and browser regression protects the highest-risk user interactions. Future changes should be small feature-local patches with matching tests rather than another broad refactor.
 
-### v4.5.2 · Lookup 词汇信息
+### v4.6.0 · Lookup 词汇信息
 
 Lookup 中自动显示考试词汇标签（CET-4、CET-6、考研、IELTS、TOEFL、GRE）与英语 Zipf 词频（保留一位小数）。仅显示，不参与筛选、排序、学习状态或同步。数据预生成自 ECDICT `tag` 字段与 wordfreq 3.1.1 的 `zipf_frequency(word, 'en')`；考试标签是第三方词典分类，并非官方考试词表。当前静态包覆盖内置 3453 个词；用户新添加的自定义词如果不在静态包中，则暂不显示参考信息。原始数据不随网站打包，构建结果为 `data/word-info.json`。
 
 - ECDICT: MIT License, Copyright (c) 2025 Linwei.
 - wordfreq: Apache License 2.0, Copyright 2022 Robyn Speer.
+
+### v4.6.0 朗读设置
+
+首页「设置 → 朗读设置」可以配置本机的独立单词发音重复开关、次数（1–10）和间隔（0–5000 ms）。原易混词组停顿设置会作为首次读取时的默认间隔（若未设置则 700 ms）；易混词整组播放仅共享间隔，不重复每个词。学习中、已掌握、今日复习的连续播放仍使用自己的设置，不参与此开关。

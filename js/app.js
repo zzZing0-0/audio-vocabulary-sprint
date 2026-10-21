@@ -70,7 +70,7 @@ function updateAnswerControls(){
 function blockCurrentVoice(){
   const v=selectedVoice();if(!v)return;
   if(voices.length<=1){alert("至少保留一个可用 Voice。可以先到设置里恢复其他 Voice。");return;}
-  speechSynthesis.cancel();blockVoice(v);
+  avsPronunciation.stop();blockVoice(v);
   voices=getPreferredEnglishVoices();
   state.voiceIndex=Math.min(Number(state.voiceIndex)||0,Math.max(0,voices.length-1));save();updateVoiceInfo();
   if(state.current)speakCurrent();
@@ -97,13 +97,7 @@ function changeVoice(step){
 }
 
 
-function speakText(text){
-  speechSynthesis.cancel();
-  let u=new SpeechSynthesisUtterance(text);
-  u.lang="en-US"; u.rate=.86;
-  let v=selectedVoice(); if(v) u.voice=v;
-  speechSynthesis.speak(u);
-}
+function speakText(text){ avsPronunciation.speak(text,selectedVoice()); }
 function speakCurrent(){ if(state.current) speakText(state.current); }
 function goToLookup(word){
   const w=String(word||"").trim();if(!w)return;
@@ -351,7 +345,7 @@ function removeCurrentWord(){
       state.removedWords[w]={removedAt:new Date().toISOString()};
       state.queue=(state.queue||[]).filter(x=>String(x).toLowerCase()!==String(w).toLowerCase());
 
-      speechSynthesis.cancel();
+      avsPronunciation.stop();
       state.current=null;
       revealed=false;
       save();
@@ -392,7 +386,7 @@ speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
 document.getElementById("speak").onclick=()=>{
   started=true;
   if(!state.current){
-    speechSynthesis.cancel();
+    avsPronunciation.stop();
     revealed=false;
     if(state.queueDate!==localDateKey()) refill();
     if(!state.queue.length) refill();
@@ -439,24 +433,37 @@ if(libraryBtn)libraryBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>词库</h2><div class="sub">查看和管理不同状态的单词</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
-    ((Array.isArray(state.todayReview?.[localDateKey()])&&state.todayReview[localDateKey()].some(w=>!isRemovedWord(w)))?'<a class="utilityMenuItem" href="today.html?v=4.5.2"><span><b>今日复习</b><small>今天真正完成过学习判断的单词</small></span><i>›</i></a>':'')+
-    '<a class="utilityMenuItem" href="active.html?v=4.5.2"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="mastered.html?v=4.5.2"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="confusable.html?v=4.5.2"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="tags.html?v=4.5.2"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="notes.html?v=4.5.2"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
-    '<a class="utilityMenuItem" href="removed.html?v=4.5.2"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
+    ((Array.isArray(state.todayReview?.[localDateKey()])&&state.todayReview[localDateKey()].some(w=>!isRemovedWord(w)))?'<a class="utilityMenuItem" href="today.html?v=4.6.0"><span><b>今日复习</b><small>今天真正完成过学习判断的单词</small></span><i>›</i></a>':'')+
+    '<a class="utilityMenuItem" href="active.html?v=4.6.0"><span><b>学习中</b><small>需要继续复习的单词 · 钉子户</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="mastered.html?v=4.6.0"><span><b>已掌握</b><small>已经完成当前学习周期的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="confusable.html?v=4.6.0"><span><b>易混词</b><small>查看所有已经建立易混词关联的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="tags.html?v=4.6.0"><span><b>标签</b><small>按自定义标签浏览和管理词汇</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="notes.html?v=4.6.0"><span><b>笔记</b><small>查看所有带笔记的单词</small></span><i>›</i></a>'+ 
+    '<a class="utilityMenuItem" href="removed.html?v=4.6.0"><span><b>已移除</b><small>从学习队列中移出的单词</small></span><i>›</i></a>'+ 
    '</div>'
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
 };
 
+function openPronunciationSettings(){
+ const p=avsPronunciation.read();
+ openUtilityPanel('<div class="utilityPanelHead"><div><h2>🔊 朗读设置</h2><div class="sub">本机设置；不影响学习中、已掌握、今日复习的连续播放。</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+
+ '<div class="pronunciationSettings">'+
+ '<label class="pronunciationSetting"><span>重复播放<small>学习卡片、左右 Voice 切换、独立单词喇叭</small></span><input id="pronRepeat" type="checkbox" '+(p.repeatEnabled?'checked':'')+'></label>'+
+ '<label class="pronunciationSetting"><span>重复次数<small>仅在开启重复播放时生效（1–10 次）</small></span><input id="pronCount" type="number" min="1" max="10" step="1" value="'+p.repeatCount+'"></label>'+
+ '<label class="pronunciationSetting"><span>朗读间隔<small>重复朗读及易混词整组朗读共用（0–5000 ms）</small></span><input id="pronInterval" type="number" min="0" max="5000" step="100" value="'+p.intervalMs+'"> ms</label>'+
+ '<div class="ipaEditorActions"><button type="button" id="pronDefaults">恢复默认</button><button type="button" class="ipaSave" id="pronSave">保存</button></div></div>');
+ document.getElementById('utilityClose').onclick=closePanel;
+ document.getElementById('pronDefaults').onclick=()=>{document.getElementById('pronRepeat').checked=false;document.getElementById('pronCount').value='3';document.getElementById('pronInterval').value='700';};
+ document.getElementById('pronSave').onclick=()=>{avsPronunciation.save({repeatEnabled:document.getElementById('pronRepeat').checked,repeatCount:document.getElementById('pronCount').value,intervalMs:document.getElementById('pronInterval').value});closePanel();};
+}
 const settingsBtn=document.getElementById("settingsBtn");
 if(settingsBtn)settingsBtn.onclick=()=>{
  openUtilityPanel(
    '<div class="utilityPanelHead"><div><h2>设置</h2><div class="sub">同步、导入与本机数据维护</div></div><button class="small" id="utilityClose" type="button">关闭</button></div>'+ 
    '<div class="utilityMenu">'+
     '<button class="utilityMenuItem utilityMenuButton" id="panelSync" type="button"><span><b>GitHub 同步</b><small>检查本机与 GitHub 的学习数据并确认合并</small></span><i>›</i></button>'+
+    '<button class="utilityMenuItem utilityMenuButton" id="panelPronunciation" type="button"><span><b>🔊 朗读设置</b><small>重复次数、间隔与易混词整组停顿</small></span><i>›</i></button>'+
     '<button class="utilityMenuItem utilityMenuButton" id="panelBlockedVoices" type="button"><span><b>管理屏蔽 Voice</b><small>恢复这台设备上被隐藏的 TTS Voice</small></span><i>›</i></button>'+ 
     '<label class="utilityMenuItem utilityMenuButton" for="importWordsFile"><span><b>导入新词表</b><small>支持 TXT 与 CSV</small></span><i>›</i></label>'+ 
    '</div>'+ 
@@ -464,6 +471,7 @@ if(settingsBtn)settingsBtn.onclick=()=>{
  );
  const c=document.getElementById("utilityClose");if(c)c.onclick=closePanel;
  const sync=document.getElementById("panelSync");if(sync)sync.onclick=()=>{closePanel();document.getElementById("syncBtn").click();};
+ const ps=document.getElementById("panelPronunciation");if(ps)ps.onclick=openPronunciationSettings;
  const bv=document.getElementById("panelBlockedVoices");if(bv)bv.onclick=openBlockedVoiceManager;
  const reset=document.getElementById("panelReset");if(reset)reset.onclick=resetProgress;
 };

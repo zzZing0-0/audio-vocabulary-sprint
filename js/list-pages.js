@@ -269,7 +269,7 @@ function renderRemoved(){
 // v4.1.2: auditory comparison controls with one global voice display.
 let confusableVoices=[];
 let confusablePlaybackToken=0;
-const CONFUSABLE_PAUSE_KEY="audio_vocab_sprint_confusable_pause_ms";
+
 function confusablePreferredVoices(){
   const all=speechSynthesis.getVoices();
   const en=all.filter(v=>/^en([-_]|$)/i.test(v.lang||""));
@@ -298,13 +298,12 @@ function changeConfusableVoice(step,words){
   if(Array.isArray(words)&&words.length)playConfusableGroup(words);
 }
 function confusablePauseMs(){
-  const raw=Number(localStorage.getItem(CONFUSABLE_PAUSE_KEY));
-  return Number.isFinite(raw)?Math.min(5000,Math.max(0,raw)):700;
+  return avsPronunciation.intervalMs();
 }
 function playConfusableGroup(words){
   const seq=(words||[]).map(x=>String(x||"").trim()).filter(Boolean);
   if(!seq.length)return;
-  refreshConfusableVoices();speechSynthesis.cancel();
+  refreshConfusableVoices();avsPronunciation.stop();
   const token=++confusablePlaybackToken, pause=confusablePauseMs(), voice=confusableSelectedVoice();
   const next=i=>{
     if(token!==confusablePlaybackToken||i>=seq.length)return;
@@ -314,22 +313,10 @@ function playConfusableGroup(words){
     speechSynthesis.speak(u);
   };next(0);
 }
-function openConfusableReadSettings(){
-  const old=document.getElementById('confusableReadSettingsBackdrop');if(old)old.remove();
-  const wrap=document.createElement('div');wrap.id='confusableReadSettingsBackdrop';wrap.className='ipaEditorBackdrop';
-  const current=confusablePauseMs();
-  wrap.innerHTML='<div class="ipaEditor confusableReadSettings" role="dialog" aria-modal="true"><div class="ipaEditorHead"><b>朗读设置</b><button class="ipaEditorClose" type="button" aria-label="关闭">×</button></div><div class="ipaEditorSource">设置同一组中每个单词朗读结束后，到下一个单词开始前的停顿时间。</div><div class="ipaEditorRow"><label>单词间停顿</label><div class="pauseSettingRow"><input id="confusablePauseRange" type="range" min="0" max="3000" step="100" value="'+current+'"><input id="confusablePauseNumber" class="ipaEditorInput pauseNumber" type="number" min="0" max="5000" step="100" value="'+current+'"><span>ms</span></div></div><div class="ipaEditorHint">0–5000 ms；默认 700 ms。这个设置只影响易混词整组朗读。</div><div class="ipaEditorActions"><button type="button" id="confusablePauseDefault">恢复默认</button><button type="button" class="ipaSave" id="confusablePauseSave">保存</button></div></div>';
-  document.body.appendChild(wrap);
-  const range=wrap.querySelector('#confusablePauseRange'), num=wrap.querySelector('#confusablePauseNumber');
-  range.oninput=()=>{num.value=range.value;};num.oninput=()=>{const v=Math.min(3000,Math.max(0,Number(num.value)||0));range.value=v;};
-  const close=()=>wrap.remove();wrap.querySelector('.ipaEditorClose').onclick=close;wrap.onclick=e=>{if(e.target===wrap)close();};
-  wrap.querySelector('#confusablePauseDefault').onclick=()=>{range.value='700';num.value='700';};
-  wrap.querySelector('#confusablePauseSave').onclick=()=>{const v=Math.min(5000,Math.max(0,Number(num.value)||0));localStorage.setItem(CONFUSABLE_PAUSE_KEY,String(v));close();listToast('易混词朗读停顿已设为 '+v+' ms');};
-}
 function initConfusableReading(){
   refreshConfusableVoices();
   if('speechSynthesis' in window){speechSynthesis.addEventListener?.('voiceschanged',refreshConfusableVoices);}
-  const b=document.getElementById('confusableReadSettingsBtn');if(b)b.onclick=openConfusableReadSettings;
+
 }
 
 

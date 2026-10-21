@@ -64,6 +64,25 @@ async function waitFor(predicate,{timeout=2500,step=50}={}){
 }
 
 const cases=[
+  ['pronunciation settings save and preserve independent library playback',seed(),async({evalv,exceptions})=>{
+    const result=await evalv(`(()=>{
+      document.getElementById('settingsBtn').click();
+      const menu=!!document.getElementById('panelPronunciation');
+      document.getElementById('panelPronunciation')?.click();
+      const fields=!!document.getElementById('pronRepeat')&&!!document.getElementById('pronCount')&&!!document.getElementById('pronInterval');
+      if(!fields)return {menu,fields};
+      document.getElementById('pronRepeat').checked=true;
+      document.getElementById('pronCount').value='4';
+      document.getElementById('pronInterval').value='1200';
+      document.getElementById('pronSave').click();
+      const p=avsPronunciation.read();
+      const stateUnchanged=JSON.parse(localStorage.getItem('audio_vocab_sprint_universal_v3')).current==='alpha';
+      const independent=!localStorage.getItem('audio_vocab_sprint_library_player_repeat')&&!localStorage.getItem('audio_vocab_sprint_library_player_pause_ms');
+      return {menu,fields,p,stateUnchanged,independent};
+    })()`);
+    if(!result.menu||!result.fields||result.p?.repeatCount!==4||result.p?.intervalMs!==1200||!result.p?.repeatEnabled||!result.stateUnchanged||!result.independent)throw new Error('pronunciation settings failed: '+JSON.stringify(result));
+    if(exceptions.length)throw new Error('pronunciation settings exception: '+exceptions.join('\n'));
+  }],
   ['startup initializes seeded current word',seed(),async({evalv,exceptions})=>{
     if(exceptions.length)throw new Error('startup exception: '+exceptions.join('\n'));
     const current=await evalv('state.current');
@@ -140,8 +159,8 @@ const cases=[
     if(exceptions.length)throw new Error('confusable exception: '+exceptions.join('\n'));
   }],
   ['main confusable group play reads current word then linked words without opening manager',seed({debts:{alpha:2},seen:{alpha:true},highestDebt:{alpha:2},customWords:['alpha','beta','gamma'],linkedWords:{alpha:['beta','gamma'],beta:['alpha'],gamma:['alpha']}}),async({evalv,exceptions})=>{
-    await evalv(`(()=>{localStorage.setItem('audio_vocab_sprint_confusable_pause_ms','0');document.getElementById('reveal').click();window.__spoken=[];window.__voiceCalls=0;window.__expectedVoice=(selectedVoice()&&selectedVoice().name)||null;const originalSelectedVoice=selectedVoice;selectedVoice=()=>{window.__voiceCalls++;return originalSelectedVoice();};Object.defineProperty(SpeechSynthesis.prototype,'speak',{configurable:true,writable:true,value:function(u){window.__spoken.push({text:u.text,voice:u.voice&&u.voice.name});setTimeout(()=>u.onend&&u.onend(),0);}});document.querySelector('.confusableGroupPlayHome').click();return true;})()`);
-    await sleep(120);
+    await evalv(`(()=>{avsPronunciation.save({repeatEnabled:false,repeatCount:3,intervalMs:0});document.getElementById('reveal').click();window.__spoken=[];window.__voiceCalls=0;window.__expectedVoice=(selectedVoice()&&selectedVoice().name)||null;const originalSelectedVoice=selectedVoice;selectedVoice=()=>{window.__voiceCalls++;return originalSelectedVoice();};Object.defineProperty(SpeechSynthesis.prototype,'speak',{configurable:true,writable:true,value:function(u){window.__spoken.push({text:u.text,voice:u.voice&&u.voice.name});setTimeout(()=>u.onend&&u.onend(),0);}});document.querySelector('.confusableGroupPlayHome').click();return true;})()`);
+    await waitFor(async()=>await evalv(`window.__spoken.length>=3`),{timeout:1500});
     const result=await evalv(`({spoken:window.__spoken,voiceCalls:window.__voiceCalls,expectedVoice:window.__expectedVoice,manager:Boolean(document.getElementById('confusableManagerBackdrop')),voiceIndex:state.voiceIndex})`);
     if(exceptions.length)throw new Error('grouped playback exception: '+exceptions.join('\n'));
     if(result.spoken.map(x=>x.text).join(',')!=='alpha,beta,gamma')throw new Error(`wrong grouped playback order: ${JSON.stringify(result.spoken)}`);
