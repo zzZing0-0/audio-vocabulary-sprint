@@ -1663,3 +1663,21 @@ main{padding-top:18px;}
 .wordInfoLine{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:4px 0}
 .wordInfoLabel{font-weight:650;color:#58657b;margin-right:6px;min-width:60px}
 .wordInfoTag{border-radius:7px;background:#e9effb;color:#365785;padding:3px 7px;font-size:12px}
+
+/* v4.5.1: quiet reference information and distinct, stable exam colors. */
+.lookupWordInfo{max-width:560px;margin:14px auto 0;padding:9px 11px;background:#fafaf9;border:1px solid #eeece8;border-radius:12px;color:#747474;font-size:12px}
+.wordInfoLine{gap:5px;margin:3px 0;line-height:1.5}
+.wordInfoLabel{color:#888;font-size:12px;min-width:52px;margin-right:3px}
+.wordInfoTag{font-size:11px;font-weight:550;border-radius:7px;padding:2px 7px;background:#eee;color:#555}
+.wordInfoTag--cet4{background:#e2f3e8;color:#356f4d}
+.wordInfoTag--cet6{background:#e3eefc;color:#315c92}
+.wordInfoTag--kaoyan{background:#eee6f9;color:#73539a}
+.wordInfoTag--ielts{background:#fff0de;color:#97642b}
+.wordInfoTag--toefl{background:#fbe7ef;color:#98506c}
+.wordInfoTag--gre{background:#f9f3d9;color:#877020}
+.wordInfoTag--other{background:#eceef1;color:#60636b}
+/* Keep search suggestions in front of the card's absolutely positioned badges. */
+.homeSearch{isolation:isolate;z-index:60}
+.homeSearchSuggestions{z-index:2;max-height:min(44dvh,360px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.homeSearch + .card{z-index:0}
+@media(max-width:600px){.homeSearchSuggestions{max-height:min(38dvh,310px)}.wordInfoLine{align-items:baseline}.lookupWordInfo{margin-top:12px}}

@@ -190,6 +190,15 @@ const cases=[
     if(result!==1)throw new Error(`same-day repeated active Lookup should stay at 1, got ${result}`);
     if(exceptions.length)throw new Error('lookup counting exception: '+exceptions.join('\n'));
   }],
+  ['study card renders colored word info below notes and search overlays card',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
+    await evalv(`(()=>{state.current='sprawl';reveal();return true})()`);await sleep(900);
+    const result=await evalv(`(()=>{const a=document.getElementById('answer'),n=a.querySelector('.noteDetails'),w=a.querySelector('.lookupWordInfo');return {text:w?.textContent||'',below:!!n&&!!w&&Boolean(n.compareDocumentPosition(w)&Node.DOCUMENT_POSITION_FOLLOWING),colored:!!w?.querySelector('.wordInfoTag--ielts'),layer:getComputedStyle(document.querySelector('.homeSearch')).zIndex};})()`);
+    if(!result.text.includes('IELTS')||!result.text.includes('Zipf 3.0')||!result.below||!result.colored)throw new Error('study word info missing/misplaced: '+JSON.stringify(result));
+    await evalv(`(()=>{const i=document.getElementById('homeSearchInput');i.value='epi';i.dispatchEvent(new Event('input',{bubbles:true}));return true})()`);
+    const overlay=await evalv(`(()=>{const box=document.querySelector('.homeSearchSuggestions');const card=document.querySelector('.card');return {shown:!box.hidden,searchZ:getComputedStyle(document.querySelector('.homeSearch')).zIndex,cardZ:getComputedStyle(card).zIndex,scroll:getComputedStyle(box).overflowY};})()`);
+    if(!overlay.shown||Number(overlay.searchZ)<=Number(overlay.cardZ)||overlay.scroll!=='auto')throw new Error('search overlay broken: '+JSON.stringify(overlay));
+    if(exceptions.length)throw new Error('study word info exception: '+exceptions.join('\n'));
+  }],
   ['Lookup displays sourced exam tags and Zipf without changing study state',seed({customWords:['sprawl'],debts:{sprawl:2},highestDebt:{sprawl:4}}),async({evalv,exceptions})=>{
     const before=await evalv(`JSON.stringify(({debts,mastered,seen,highestDebt})=>({debts,mastered,seen,highestDebt}))(state)`);
     await evalv(`openLookupModal('sprawl');true`);await sleep(1000);

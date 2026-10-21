@@ -23,3 +23,26 @@ test('unknown words and invalid frequency do not imply absence from exam lists',
 test('Zipf bands are consistent at thresholds',()=>{
  for(const [value,expected] of [[2.9,'罕见'],[3,'较少见'],[4,'中等频率'],[5,'常见'],[6,'非常常见'],[0,null]])assert.equal(describeZipf(value),expected);
 });
+test('exam tags use distinct stable colors and safe HTML',()=>{
+ const {renderHtml}=require('../js/word-info.js');
+ const html=renderHtml(data,'episode');
+ for(const name of ['cet4','cet6','kaoyan','ielts','toefl','gre'])assert.ok(html.includes('wordInfoTag--'+name),name);
+ assert.ok(html.includes('Zipf 5.0'));
+ assert.equal(renderHtml({words:{x:{tags:['<script>'],zipf:3.5}}},'x').includes('<script>'),false);
+ assert.equal(renderHtml({words:{x:{tags:[],zipf:null}}},'x'),'');
+});
+test('study and Lookup both reuse reference renderer after notes',()=>{
+ const home=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
+ const lookup=readFileSync(new URL('../js/lookup.js',import.meta.url),'utf8');
+ const index=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+ assert.match(home, /<\/details>'\+\s*\(window\.avsWordInfo\?\.renderHtml/);
+ assert.ok(lookup.includes("'</textarea></details>'+lookupWordInfoHtml(w)"));
+ assert.ok(lookup.includes('window.avsWordInfo?.renderHtml(lookupWordInfo,w)'));
+ assert.ok(index.indexOf('js/word-info.js')<index.indexOf('js/app.js'));
+});
+test('mobile search suggestions overlay card and have bounded scrolling',()=>{
+ const css=readFileSync(new URL('../css/style.css',import.meta.url),'utf8');
+ assert.match(css,/\.homeSearch\{isolation:isolate;z-index:60\}/);
+ assert.match(css,/\.homeSearchSuggestions\{z-index:2;max-height:[^}]+overflow-y:auto/);
+ assert.match(css,/\.homeSearch \+ \.card\{z-index:0\}/);
+});
